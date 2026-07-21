@@ -12,30 +12,38 @@ APPS = [
     {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"}
 ]
 
+# Extenciones prioritarias y secundarias
+EXEC_EXTENSIONS = ('.elf', '.bin')
+ARCHIVE_EXTENSIONS = ('.zip', '.7z', '.tar.gz')
+
 def obtener_datos_api(url):
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
             
-            # Si devuelve una lista, cogemos el primer elemento (el más reciente de todos)
+            # Si devuelve una lista, cogemos la release más reciente
             if isinstance(releases, list) and len(releases) > 0:
                 datos = releases[0]
             else:
                 datos = releases
 
             version = datos.get("tag_name", "Desconocida")
-            
-            url_descarga = ""
-            nombre_archivo = ""
-            for asset in datos.get("assets", []):
+            assets = datos.get("assets", [])
+
+            # Pasada 1: Prioridad a ejecutables directos (.elf, .bin)
+            for asset in assets:
                 nombre = asset.get("name", "")
-                if nombre.endswith(".elf") or nombre.endswith(".bin"):
-                    url_descarga = asset.get("browser_download_url", "")
-                    nombre_archivo = nombre
-                    break
+                if nombre.lower().endswith(EXEC_EXTENSIONS):
+                    return version, nombre, asset.get("browser_download_url", "")
+
+            # Pasada 2: Fallback para archivos comprimidos (.zip, .7z)
+            for asset in assets:
+                nombre = asset.get("name", "")
+                if nombre.lower().endswith(ARCHIVE_EXTENSIONS):
+                    return version, nombre, asset.get("browser_download_url", "")
                     
-            return version, nombre_archivo, url_descarga
+            return version, None, None
     except Exception as e:
         print(f"Error consultando {url}: {e}")
         return None, None, None
@@ -62,12 +70,12 @@ def main():
             })
             print(f" -> Encontrada versión {version}: {nombre_archivo}")
         else:
-            print(f" -> ERROR: No se encontró ningún .elf/.bin directo en {app['name']}")
+            print(f" -> ERROR: No se encontró ningún archivo válido en {app['name']}")
 
     with open("repo.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4)
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
-   
+
     main()
