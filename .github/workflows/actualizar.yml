@@ -2,7 +2,8 @@ name: Actualizador de Payloads
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    # Se ejecuta cada 8 horas: a las 00:00, 08:00 y 16:00 UTC
+    - cron: '0 0,8,16 * * *'
   workflow_dispatch:
 
 jobs:
@@ -30,7 +31,7 @@ jobs:
           git add repo.json
           
           if git status --porcelain | grep -q "repo.json"; then
-            git commit -m "Actualizados payloads"
+            git commit -m "Actualizados payloads [skip ci]"
             git push
           else
             echo "No hay actualizaciones nuevas, no hace falta guardar nada."
