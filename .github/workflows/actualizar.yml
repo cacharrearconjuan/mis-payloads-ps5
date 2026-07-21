@@ -1,0 +1,33 @@
+name: Actualizador de Payloads
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Se ejecuta todos los días a las 3:00 AM (UTC)
+  workflow_dispatch: # Te permite darle a un botón para ejecutarlo manualmente cuando quieras
+
+jobs:
+  generar-json:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Descargar mi repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Ejecutar el script buscador
+        run: python actualizador.py
+
+      - name: Guardar los cambios (Commit)
+        run: |
+          git config --global user.name "Bot Payload"
+          git config --global user.email "bot@github.com"
+          git add repo.json
+          # Solo guarda si detecta que alguna versión ha cambiado o es la primera vez
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Actualizados payloads" && git p
+          ush)
