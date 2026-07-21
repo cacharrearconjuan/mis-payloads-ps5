@@ -21,8 +21,8 @@
             "name": "FTP Server",
             "author": "ps5-payload-dev",
             "version": "v0.20",
-            "filename": "ftpsrv-ps4.elf",
-            "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps4.elf"
+            "filename": "ftpsrv-ps5-install.elf",
+            "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf"
         },
         {
             "name": "Kstuff Lite",
