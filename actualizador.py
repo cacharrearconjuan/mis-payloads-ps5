@@ -2,21 +2,28 @@ import json
 import urllib.request
 
 APPS = [
-    {"name": "PS5 Payload Manager", "author": "itsPLK", "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases/latest"},
-    {"name": "ShadowMountPlus", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases/latest"},
-    {"name": "FTP Server", "author": "ps5-payload-dev", "api": "https://api.github.com/repos/ps5-payload-dev/ftpsrv/releases/latest"},
-    {"name": "Kstuff Lite", "author": "EchoStretch", "api": "https://api.github.com/repos/EchoStretch/kstuff-lite/releases/latest"},
-    {"name": "Elf Arsenal", "author": "soniciso", "api": "https://git.etawen.dev/api/v1/repos/soniciso/elf-arsenal/releases/latest"},
-    {"name": "PS5 Game Compressor", "author": "juma-sayeh", "api": "https://api.github.com/repos/juma-sayeh/PS5-Game-Compressor/releases/latest"},
-    {"name": "nanoDNS", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/nanoDNS/releases/latest"},
-    {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases/latest"}
+    {"name": "PS5 Payload Manager", "author": "itsPLK", "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases"},
+    {"name": "ShadowMountPlus", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases"},
+    {"name": "FTP Server", "author": "ps5-payload-dev", "api": "https://api.github.com/repos/ps5-payload-dev/ftpsrv/releases"},
+    {"name": "Kstuff Lite", "author": "EchoStretch", "api": "https://api.github.com/repos/EchoStretch/kstuff-lite/releases"},
+    {"name": "Elf Arsenal", "author": "soniciso", "api": "https://git.etawen.dev/api/v1/repos/soniciso/elf-arsenal/releases"},
+    {"name": "PS5 Game Compressor", "author": "juma-sayeh", "api": "https://api.github.com/repos/juma-sayeh/PS5-Game-Compressor/releases"},
+    {"name": "nanoDNS", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/nanoDNS/releases"},
+    {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"}
 ]
 
 def obtener_datos_api(url):
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req) as response:
-            datos = json.loads(response.read().decode())
+            releases = json.loads(response.read().decode())
+            
+            # Si devuelve una lista, cogemos el primer elemento (el más reciente de todos)
+            if isinstance(releases, list) and len(releases) > 0:
+                datos = releases[0]
+            else:
+                datos = releases
+
             version = datos.get("tag_name", "Desconocida")
             
             url_descarga = ""
@@ -62,4 +69,5 @@ def main():
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
+   
     main()
