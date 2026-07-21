@@ -12,9 +12,8 @@ APPS = [
     {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"}
 ]
 
-# Extenciones prioritarias y secundarias
+# Solo se permiten ejecutables directos
 EXEC_EXTENSIONS = ('.elf', '.bin')
-ARCHIVE_EXTENSIONS = ('.zip', '.7z', '.tar.gz')
 
 def obtener_datos_api(url):
     try:
@@ -22,7 +21,6 @@ def obtener_datos_api(url):
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
             
-            # Si devuelve una lista, cogemos la release más reciente
             if isinstance(releases, list) and len(releases) > 0:
                 datos = releases[0]
             else:
@@ -31,16 +29,10 @@ def obtener_datos_api(url):
             version = datos.get("tag_name", "Desconocida")
             assets = datos.get("assets", [])
 
-            # Pasada 1: Prioridad a ejecutables directos (.elf, .bin)
+            # Filtrado exclusivo de extensiones .elf y .bin
             for asset in assets:
                 nombre = asset.get("name", "")
                 if nombre.lower().endswith(EXEC_EXTENSIONS):
-                    return version, nombre, asset.get("browser_download_url", "")
-
-            # Pasada 2: Fallback para archivos comprimidos (.zip, .7z)
-            for asset in assets:
-                nombre = asset.get("name", "")
-                if nombre.lower().endswith(ARCHIVE_EXTENSIONS):
                     return version, nombre, asset.get("browser_download_url", "")
                     
             return version, None, None
@@ -70,12 +62,11 @@ def main():
             })
             print(f" -> Encontrada versión {version}: {nombre_archivo}")
         else:
-            print(f" -> ERROR: No se encontró ningún archivo válido en {app['name']}")
+            print(f" -> ERROR: No se encontró ningún .elf/.bin directo en {app['name']}")
 
     with open("repo.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4)
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
-
     main()
