@@ -12,7 +12,7 @@ APPS = [
     {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"}
 ]
 
-# Solo se permiten ejecutables directos
+# Exclusivamente ejecutables directos
 EXEC_EXTENSIONS = ('.elf', '.bin')
 
 def obtener_datos_api(url):
@@ -21,21 +21,21 @@ def obtener_datos_api(url):
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
             
-            if isinstance(releases, list) and len(releases) > 0:
-                datos = releases[0]
-            else:
-                datos = releases
+            if not isinstance(releases, list):
+                releases = [releases]
 
-            version = datos.get("tag_name", "Desconocida")
-            assets = datos.get("assets", [])
+            # Recorre las releases ordenadas por fecha para encontrar
+            # la más reciente que contenga un .elf o .bin directo
+            for datos in releases:
+                version = datos.get("tag_name", "Desconocida")
+                assets = datos.get("assets", [])
 
-            # Filtrado exclusivo de extensiones .elf y .bin
-            for asset in assets:
-                nombre = asset.get("name", "")
-                if nombre.lower().endswith(EXEC_EXTENSIONS):
-                    return version, nombre, asset.get("browser_download_url", "")
+                for asset in assets:
+                    nombre = asset.get("name", "")
+                    if nombre.lower().endswith(EXEC_EXTENSIONS):
+                        return version, nombre, asset.get("browser_download_url", "")
                     
-            return version, None, None
+            return None, None, None
     except Exception as e:
         print(f"Error consultando {url}: {e}")
         return None, None, None
@@ -69,4 +69,5 @@ def main():
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
+ 
     main()
