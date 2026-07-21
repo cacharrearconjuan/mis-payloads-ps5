@@ -24,16 +24,33 @@ def obtener_datos_api(url):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            # Recorre las releases ordenadas por fecha para encontrar
-            # la más reciente que contenga un .elf o .bin directo
+            # Recorre las releases ordenadas por fecha
             for datos in releases:
                 version = datos.get("tag_name", "Desconocida")
                 assets = datos.get("assets", [])
 
+                # Recopilar todos los ejecutables de esta versión
+                ejecutables = []
                 for asset in assets:
                     nombre = asset.get("name", "")
                     if nombre.lower().endswith(EXEC_EXTENSIONS):
-                        return version, nombre, asset.get("browser_download_url", "")
+                        ejecutables.append({
+                            "nombre": nombre,
+                            "url": asset.get("browser_download_url", "")
+                        })
+                
+                # Si hemos encontrado ejecutables en esta versión
+                if ejecutables:
+                    # Por defecto, cogemos el primero
+                    elegido = ejecutables[0]
+                    
+                    # Pero si hay varios, priorizamos el que tenga "ps5" en el nombre
+                    for exe in ejecutables:
+                        if "ps5" in exe["nombre"].lower():
+                            elegido = exe
+                            break
+                            
+                    return version, elegido["nombre"], elegido["url"]
                     
             return None, None, None
     except Exception as e:
@@ -69,5 +86,4 @@ def main():
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
- 
     main()
