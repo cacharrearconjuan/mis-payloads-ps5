@@ -11,13 +11,6 @@
             "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf"
         },
         {
-            "name": "ShadowMountPlus",
-            "author": "drakmor",
-            "version": "1.6beta16",
-            "filename": "shadowmountplus.elf",
-            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf"
-        },
-        {
             "name": "FTP Server",
             "author": "ps5-payload-dev",
             "version": "v0.20",
