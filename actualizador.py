@@ -1,15 +1,16 @@
 import json
 import urllib.request
 
+# He puesto "PS5 Game Compressor" y "nanoDNS" al final de la lista
 APPS = [
     {"name": "PS5 Payload Manager", "author": "itsPLK", "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases"},
     {"name": "ShadowMountPlus", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases"},
     {"name": "FTP Server", "author": "ps5-payload-dev", "api": "https://api.github.com/repos/ps5-payload-dev/ftpsrv/releases"},
     {"name": "Kstuff Lite", "author": "EchoStretch", "api": "https://api.github.com/repos/EchoStretch/kstuff-lite/releases"},
     {"name": "Elf Arsenal", "author": "soniciso", "api": "https://git.etawen.dev/api/v1/repos/soniciso/elf-arsenal/releases"},
+    {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"},
     {"name": "PS5 Game Compressor", "author": "juma-sayeh", "api": "https://api.github.com/repos/juma-sayeh/PS5-Game-Compressor/releases"},
-    {"name": "nanoDNS", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/nanoDNS/releases"},
-    {"name": "Garlic Save Manager", "author": "earthonion", "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases"}
+    {"name": "nanoDNS", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/nanoDNS/releases"}
 ]
 
 # Exclusivamente ejecutables directos
@@ -39,16 +40,25 @@ def obtener_datos_api(url):
                             "url": asset.get("browser_download_url", "")
                         })
                 
-                # Si hemos encontrado ejecutables en esta versión
                 if ejecutables:
-                    # Por defecto, cogemos el primero
-                    elegido = ejecutables[0]
+                    elegido = None
                     
-                    # Pero si hay varios, priorizamos el que tenga "ps5" en el nombre
+                    # Prioridad 1: Que tenga "ps5" en el nombre
                     for exe in ejecutables:
                         if "ps5" in exe["nombre"].lower():
                             elegido = exe
                             break
+                            
+                    # Prioridad 2: Que sea genérico (que NO tenga "ps4" en el nombre)
+                    if not elegido:
+                        for exe in ejecutables:
+                            if "ps4" not in exe["nombre"].lower():
+                                elegido = exe
+                                break
+                                
+                    # Prioridad 3: Si no queda más remedio, coger el primero de la lista
+                    if not elegido:
+                        elegido = ejecutables[0]
                             
                     return version, elegido["nombre"], elegido["url"]
                     
@@ -86,4 +96,5 @@ def main():
     print("El archivo repo.json se ha generado correctamente.")
 
 if __name__ == "__main__":
+ 
     main()
