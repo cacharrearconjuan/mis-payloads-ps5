@@ -2,8 +2,8 @@ name: Actualizador de Payloads
 
 on:
   schedule:
-    - cron: '0 3 * * *' # Se ejecuta todos los días a las 3:00 AM (UTC)
-  workflow_dispatch: # Te permite darle a un botón para ejecutarlo manualmente cuando quieras
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
 jobs:
   generar-json:
@@ -28,6 +28,10 @@ jobs:
           git config --global user.name "Bot Payload"
           git config --global user.email "bot@github.com"
           git add repo.json
-          # Solo guarda si detecta que alguna versión ha cambiado o es la primera vez
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Actualizados payloads" && git p
-          ush)
+          
+          if git status --porcelain | grep -q "repo.json"; then
+            git commit -m "Actualizados payloads"
+            git push
+          else
+            echo "No hay actualizaciones nuevas, no hace falta guardar nada."
+          fi
