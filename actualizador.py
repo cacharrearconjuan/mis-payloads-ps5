@@ -2,7 +2,6 @@ import json
 import urllib.request
 import hashlib
 
-# Configuración con los IDs cortos exactos que espera el manager oficial
 APPS = [
     {
         "id": "pldmgr", 
@@ -74,11 +73,8 @@ APPS = [
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 
 def es_version_valida(tag_name):
-    """ Filtra versiones alpha para quedarse solo con Beta o Estables """
-    tag_lower = tag_name.lower()
-    if "alpha" in tag_lower:
-        return False
-    return True
+    """ Filtra únicamente versiones Alpha. Permite versiones Beta y Estables. """
+    return "alpha" not in tag_name.lower()
 
 def obtener_datos_api(app):
     url = app['api']
@@ -91,15 +87,11 @@ def obtener_datos_api(app):
                 releases = [releases]
 
             for datos in releases:
-                # Omitir borradores
                 if datos.get("draft", False):
                     continue
 
                 version = datos.get("tag_name", "Desconocida")
-                
-                # OMITIR ALPHAS: Si la versión contiene 'alpha', pasa a la siguiente release
                 if not es_version_valida(version):
-                    print(f"  [-] Omitiendo versión alpha: {version}")
                     continue
 
                 last_update = datos.get("published_at", "2026-01-01T")[:10] 
@@ -116,25 +108,18 @@ def obtener_datos_api(app):
                 
                 if ejecutables:
                     elegido = None
-                    
-                    # 1. Prioridad PS5
                     for exe in ejecutables:
                         if "ps5" in exe["nombre"].lower():
                             elegido = exe
                             break
-                            
-                    # 2. Prioridad No-PS4
                     if not elegido:
                         for exe in ejecutables:
                             if "ps4" not in exe["nombre"].lower():
                                 elegido = exe
                                 break
-                                
-                    # 3. Primer ejecutable disponible
                     if not elegido:
                         elegido = ejecutables[0]
 
-                    # Calcular Checksum SHA-256
                     checksum = ""
                     try:
                         req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
@@ -160,7 +145,7 @@ def main():
         
         if version and url_descarga:
             payload = {
-                "name": app['id'],  # Nombre corto / ID nativo
+                "name": app['id'],
                 "filename": nombre_archivo,
                 "url": url_descarga,
                 "source": app['source'],
@@ -172,17 +157,19 @@ def main():
                 "checksum": checksum
             }
             
-            if 'extract_file' in app:
+            # Solo incluir extract_file si el archivo de descarga realmente termina en .zip
+            if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se encontró versión válida (Beta/Estable).")
+            print(f" -> ERROR: No se encontró versión válida.")
 
-    with open("repo.json", "w", encoding="utf-8") as f:
+    # Guardar con el nombre de archivo objetivo
+    with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4)
-    print("\nEl archivo repo.json ha sido generado correctamente.")
+    print("\nArchivo 'payloads.json' generado correctamente.")
 
 if __name__ == "__main__":
     main()
