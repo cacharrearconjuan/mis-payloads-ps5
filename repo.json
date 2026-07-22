@@ -4,55 +4,71 @@
         "filename": "pldmgr_v0.5.0.elf",
         "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
         "version": "v0.5.0",
-        "author": "itsPLK"
+        "author": "itsPLK",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "ShadowMountPlus",
         "filename": "shadowmountplus.elf",
         "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "version": "1.6beta16",
-        "author": "drakmor"
+        "author": "drakmor",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "FTP Server",
         "filename": "ftpsrv-ps5-install.elf",
         "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
         "version": "v0.20",
-        "author": "ps5-payload-dev"
+        "author": "ps5-payload-dev",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "Kstuff Lite",
         "filename": "kstuff.elf",
         "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
         "version": "v1.09",
-        "author": "EchoStretch"
+        "author": "EchoStretch",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "Elf Arsenal",
         "filename": "elf-arsenal.elf",
         "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
         "version": "v1.6.22",
-        "author": "soniciso"
+        "author": "soniciso",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "Garlic Save Manager",
         "filename": "garlic-savemgr.elf",
         "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
         "version": "v1.12",
-        "author": "earthonion"
+        "author": "earthonion",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "PS5 Game Compressor",
         "filename": "game-compressor.elf",
         "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
         "version": "v1.0.3",
-        "author": "juma-sayeh"
+        "author": "juma-sayeh",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     },
     {
         "name": "nanoDNS",
         "filename": "nanodns.elf",
         "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
         "version": "0.3",
-        "author": "drakmor"
+        "author": "drakmor",
+        "category": "Utilities & Tools",
+        "description": "Actualizado autom\u00e1ticamente"
     }
 ]
