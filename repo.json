@@ -1,6 +1,6 @@
 [
     {
-        "name": "PS5 Payload Manager",
+        "name": "pldmgr",
         "filename": "pldmgr_v0.5.0.elf",
         "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
         "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
@@ -13,19 +13,19 @@
     },
     {
         "name": "ShadowMountPlus",
-        "filename": "ShadowMountPlus_1.7alpha4.zip",
-        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha4/ShadowMountPlus_1.7alpha4.zip",
+        "filename": "shadowmountplus.elf",
+        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha4/ShadowMountPlus_1.7alpha4.zip",
+        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "description": "A fully automated, background 'Auto-Mounter' payload for Jailbroken PlayStation 5 consoles.",
-        "last_update": "2026-07-16",
-        "version": "1.7alpha4",
+        "last_update": "2026-06-28",
+        "version": "1.6beta16",
         "category": "Utilities & Tools",
-        "checksum": "e192a6b972d7b160e0d61f3543b0f0519ae8393d482d6e8c62bc40e6ef16a65c",
+        "checksum": "a35246fb3bb6042b25653b51cdcbc33254b40339342bf1d2dd0d2eceee2ca526",
         "extract_file": "shadowmountplus.elf"
     },
     {
-        "name": "FTP Server",
+        "name": "ftpsrv",
         "filename": "ftpsrv-ps5-install.elf",
         "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
         "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
@@ -37,7 +37,7 @@
         "checksum": "23f69de0f1ab1e1a3869473e87a271f750ec595056df0142fabbf21f5153c077"
     },
     {
-        "name": "Kstuff Lite",
+        "name": "kstuff-lite",
         "filename": "kstuff.elf",
         "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
         "source": "https://github.com/EchoStretch/kstuff-lite/releases",
@@ -49,7 +49,7 @@
         "checksum": "ec5212794dc6e44ee8e70fd0549abec6d3dac8c3e03ddbeafd9f869ffe97d4e8"
     },
     {
-        "name": "Elf Arsenal",
+        "name": "elf-arsenal",
         "filename": "elf-arsenal.elf",
         "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
         "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
@@ -61,7 +61,7 @@
         "checksum": "ee8f47e4d6a5fd85cef113341aa1eb74d68e373a58fcb1fb5a9274acd2b83bd2"
     },
     {
-        "name": "Garlic Save Manager",
+        "name": "garlic-savemgr",
         "filename": "garlic-savemgr.elf",
         "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
         "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
@@ -73,7 +73,7 @@
         "checksum": "245150007dd2c48da6d0fdf791396a31434095e27f0175587b7b18ec3b8d6d5d"
     },
     {
-        "name": "PS5 Game Compressor",
+        "name": "game-compressor",
         "filename": "game-compressor.elf",
         "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
         "source": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases",
