@@ -1,7 +1,7 @@
 import json
 import urllib.request
 
-# He puesto "PS5 Game Compressor" y "nanoDNS" al final de la lista
+# Lista de aplicaciones a rastrear
 APPS = [
     {"name": "PS5 Payload Manager", "author": "itsPLK", "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases"},
     {"name": "ShadowMountPlus", "author": "drakmor", "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases"},
@@ -76,13 +76,15 @@ def main():
         version, nombre_archivo, url = obtener_datos_api(app['api'])
         
         if version and url:
-            # Añadimos los objetos directamente a la lista
+            # Añadimos los objetos con todos los campos que la app oficial usa
             repo_data.append({
                 "name": app['name'],
                 "filename": nombre_archivo,
                 "url": url,
                 "version": version,
-                "author": app['author']
+                "author": app['author'],
+                "category": "Utilities & Tools", 
+                "description": "Actualizado automáticamente"
             })
             print(f" -> Encontrada versión {version}: {nombre_archivo}")
         else:
