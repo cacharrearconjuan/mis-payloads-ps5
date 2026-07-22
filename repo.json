@@ -1,63 +1,58 @@
-{
-    "name": "Mi Repositorio Autom\u00e1tico",
-    "description": "Actualizado autom\u00e1ticamente mediante GitHub Actions",
-    "version": "1.0",
-    "payloads": [
-        {
-            "name": "PS5 Payload Manager",
-            "author": "itsPLK",
-            "version": "v0.5.0",
-            "filename": "pldmgr_v0.5.0.elf",
-            "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf"
-        },
-        {
-            "name": "ShadowMountPlus",
-            "author": "drakmor",
-            "version": "1.6beta16",
-            "filename": "shadowmountplus.elf",
-            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf"
-        },
-        {
-            "name": "FTP Server",
-            "author": "ps5-payload-dev",
-            "version": "v0.20",
-            "filename": "ftpsrv-ps5-install.elf",
-            "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf"
-        },
-        {
-            "name": "Kstuff Lite",
-            "author": "EchoStretch",
-            "version": "v1.09",
-            "filename": "kstuff.elf",
-            "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf"
-        },
-        {
-            "name": "Elf Arsenal",
-            "author": "soniciso",
-            "version": "v1.6.22",
-            "filename": "elf-arsenal.elf",
-            "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf"
-        },
-        {
-            "name": "Garlic Save Manager",
-            "author": "earthonion",
-            "version": "v1.12",
-            "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf"
-        },
-        {
-            "name": "PS5 Game Compressor",
-            "author": "juma-sayeh",
-            "version": "v1.0.3",
-            "filename": "game-compressor.elf",
-            "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf"
-        },
-        {
-            "name": "nanoDNS",
-            "author": "drakmor",
-            "version": "0.3",
-            "filename": "nanodns.elf",
-            "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf"
-        }
-    ]
-}
+[
+    {
+        "name": "PS5 Payload Manager",
+        "filename": "pldmgr_v0.5.0.elf",
+        "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "version": "v0.5.0",
+        "author": "itsPLK"
+    },
+    {
+        "name": "ShadowMountPlus",
+        "filename": "shadowmountplus.elf",
+        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
+        "version": "1.6beta16",
+        "author": "drakmor"
+    },
+    {
+        "name": "FTP Server",
+        "filename": "ftpsrv-ps5-install.elf",
+        "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
+        "version": "v0.20",
+        "author": "ps5-payload-dev"
+    },
+    {
+        "name": "Kstuff Lite",
+        "filename": "kstuff.elf",
+        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "version": "v1.09",
+        "author": "EchoStretch"
+    },
+    {
+        "name": "Elf Arsenal",
+        "filename": "elf-arsenal.elf",
+        "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "version": "v1.6.22",
+        "author": "soniciso"
+    },
+    {
+        "name": "Garlic Save Manager",
+        "filename": "garlic-savemgr.elf",
+        "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
+        "version": "v1.12",
+        "author": "earthonion"
+    },
+    {
+        "name": "PS5 Game Compressor",
+        "filename": "game-compressor.elf",
+        "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
+        "version": "v1.0.3",
+        "author": "juma-sayeh"
+    },
+    {
+        "name": "nanoDNS",
+        "filename": "nanodns.elf",
+        "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "version": "0.3",
+        "author": "drakmor"
+    }
+]
