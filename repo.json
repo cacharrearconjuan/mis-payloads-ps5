@@ -3,72 +3,97 @@
         "name": "PS5 Payload Manager",
         "filename": "pldmgr_v0.5.0.elf",
         "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
+        "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "description": "A modern, web-based dashboard to easily manage, import, and automatically load payloads on your PS5.",
+        "last_update": "2026-07-21",
         "version": "v0.5.0",
-        "author": "itsPLK",
         "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "checksum": "1fe181908027fc625147ac888288ed1bee72a378b4751d36a8a8e0582d306169"
     },
     {
         "name": "ShadowMountPlus",
-        "filename": "shadowmountplus.elf",
-        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
-        "version": "1.6beta16",
-        "author": "drakmor",
+        "filename": "ShadowMountPlus_1.7alpha4.zip",
+        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha4/ShadowMountPlus_1.7alpha4.zip",
+        "source": "https://github.com/drakmor/ShadowMountPlus/releases",
+        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha4/ShadowMountPlus_1.7alpha4.zip",
+        "description": "A fully automated, background 'Auto-Mounter' payload for Jailbroken PlayStation 5 consoles.",
+        "last_update": "2026-07-16",
+        "version": "1.7alpha4",
         "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "checksum": "e192a6b972d7b160e0d61f3543b0f0519ae8393d482d6e8c62bc40e6ef16a65c",
+        "extract_file": "shadowmountplus.elf"
     },
     {
         "name": "FTP Server",
         "filename": "ftpsrv-ps5-install.elf",
         "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
+        "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
+        "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
+        "description": "A simple FTP server for the PS5.",
+        "last_update": "2026-05-12",
         "version": "v0.20",
-        "author": "ps5-payload-dev",
-        "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "category": "Networking & Servers",
+        "checksum": "23f69de0f1ab1e1a3869473e87a271f750ec595056df0142fabbf21f5153c077"
     },
     {
         "name": "Kstuff Lite",
         "filename": "kstuff.elf",
         "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "source": "https://github.com/EchoStretch/kstuff-lite/releases",
+        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "description": "Lite version of kstuff.",
+        "last_update": "2026-07-04",
         "version": "v1.09",
-        "author": "EchoStretch",
-        "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "category": "System & Jailbreak",
+        "checksum": "ec5212794dc6e44ee8e70fd0549abec6d3dac8c3e03ddbeafd9f869ffe97d4e8"
     },
     {
         "name": "Elf Arsenal",
         "filename": "elf-arsenal.elf",
         "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
+        "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "description": "Various ELF payloads packed together.",
+        "last_update": "2026-07-03",
         "version": "v1.6.22",
-        "author": "soniciso",
         "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "checksum": "ee8f47e4d6a5fd85cef113341aa1eb74d68e373a58fcb1fb5a9274acd2b83bd2"
     },
     {
         "name": "Garlic Save Manager",
         "filename": "garlic-savemgr.elf",
         "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
+        "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
+        "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
+        "description": "PS5 save decrypt/encrypt/browse with embedded web UI.",
+        "last_update": "2026-07-13",
         "version": "v1.12",
-        "author": "earthonion",
         "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "checksum": "245150007dd2c48da6d0fdf791396a31434095e27f0175587b7b18ec3b8d6d5d"
     },
     {
         "name": "PS5 Game Compressor",
         "filename": "game-compressor.elf",
         "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
+        "source": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases",
+        "source_direct": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
+        "description": "Compress PS5 games easily.",
+        "last_update": "2026-06-20",
         "version": "v1.0.3",
-        "author": "juma-sayeh",
         "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "checksum": "51b66edf6210c022d57a31ab12bf97f95a3c71ea683df387d9081494f11606b2"
     },
     {
         "name": "nanoDNS",
         "filename": "nanodns.elf",
         "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "source": "https://github.com/drakmor/nanoDNS/releases",
+        "source_direct": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "description": "A tiny, fast, and secure DNS server.",
+        "last_update": "2026-06-03",
         "version": "0.3",
-        "author": "drakmor",
-        "category": "Utilities & Tools",
-        "description": "Actualizado autom\u00e1ticamente"
+        "category": "Networking & Servers",
+        "checksum": "ce1c8b31036ab948da65b362a4b6f249ffca8a555fc5bc4b051ec65d041bc944"
     }
 ]
