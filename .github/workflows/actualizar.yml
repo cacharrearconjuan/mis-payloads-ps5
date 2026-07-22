@@ -28,9 +28,11 @@ jobs:
         run: |
           git config --global user.name "Bot Payload"
           git config --global user.email "bot@github.com"
-          git add repo.json
           
-          if git status --porcelain | grep -q "repo.json"; then
+          # Cambiado repo.json -> payloads.json
+          git add payloads.json
+          
+          if git status --porcelain | grep -q "payloads.json"; then
             git commit -m "Actualizados payloads [skip ci]"
             git push
           else
