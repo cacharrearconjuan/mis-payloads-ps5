@@ -2,10 +2,10 @@ import json
 import urllib.request
 import hashlib
 
-# Configuracion exacta simulando la base de datos de itsPLK
+# Configuración con los IDs cortos exactos que espera el manager oficial
 APPS = [
     {
-        "name": "PS5 Payload Manager", 
+        "id": "pldmgr", 
         "author": "itsPLK", 
         "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases",
         "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
@@ -13,16 +13,16 @@ APPS = [
         "description": "A modern, web-based dashboard to easily manage, import, and automatically load payloads on your PS5."
     },
     {
-        "name": "ShadowMountPlus", 
+        "id": "ShadowMountPlus", 
         "author": "drakmor", 
         "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
         "category": "Utilities & Tools",
         "description": "A fully automated, background 'Auto-Mounter' payload for Jailbroken PlayStation 5 consoles.",
-        "extract_file": "shadowmountplus.elf" # Fundamental para que extraiga el ZIP
+        "extract_file": "shadowmountplus.elf"
     },
     {
-        "name": "FTP Server", 
+        "id": "ftpsrv", 
         "author": "ps5-payload-dev", 
         "api": "https://api.github.com/repos/ps5-payload-dev/ftpsrv/releases",
         "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
@@ -30,7 +30,7 @@ APPS = [
         "description": "A simple FTP server for the PS5."
     },
     {
-        "name": "Kstuff Lite", 
+        "id": "kstuff-lite", 
         "author": "EchoStretch", 
         "api": "https://api.github.com/repos/EchoStretch/kstuff-lite/releases",
         "source": "https://github.com/EchoStretch/kstuff-lite/releases",
@@ -38,7 +38,7 @@ APPS = [
         "description": "Lite version of kstuff."
     },
     {
-        "name": "Elf Arsenal", 
+        "id": "elf-arsenal", 
         "author": "soniciso", 
         "api": "https://git.etawen.dev/api/v1/repos/soniciso/elf-arsenal/releases",
         "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
@@ -46,7 +46,7 @@ APPS = [
         "description": "Various ELF payloads packed together."
     },
     {
-        "name": "Garlic Save Manager", 
+        "id": "garlic-savemgr", 
         "author": "earthonion", 
         "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases",
         "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
@@ -54,7 +54,7 @@ APPS = [
         "description": "PS5 save decrypt/encrypt/browse with embedded web UI."
     },
     {
-        "name": "PS5 Game Compressor", 
+        "id": "game-compressor", 
         "author": "juma-sayeh", 
         "api": "https://api.github.com/repos/juma-sayeh/PS5-Game-Compressor/releases",
         "source": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases",
@@ -62,7 +62,7 @@ APPS = [
         "description": "Compress PS5 games easily."
     },
     {
-        "name": "nanoDNS", 
+        "id": "nanoDNS", 
         "author": "drakmor", 
         "api": "https://api.github.com/repos/drakmor/nanoDNS/releases",
         "source": "https://github.com/drakmor/nanoDNS/releases",
@@ -71,8 +71,14 @@ APPS = [
     }
 ]
 
-# Añadimos .zip para que ShadowMountPlus funcione
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
+
+def es_version_valida(tag_name):
+    """ Filtra versiones alpha para quedarse solo con Beta o Estables """
+    tag_lower = tag_name.lower()
+    if "alpha" in tag_lower:
+        return False
+    return True
 
 def obtener_datos_api(app):
     url = app['api']
@@ -85,10 +91,18 @@ def obtener_datos_api(app):
                 releases = [releases]
 
             for datos in releases:
+                # Omitir borradores
+                if datos.get("draft", False):
+                    continue
+
                 version = datos.get("tag_name", "Desconocida")
                 
-                # Extraemos la fecha real de la release (formato YYYY-MM-DD)
-                last_update = datos.get("published_at", "2024-01-01T")[:10] 
+                # OMITIR ALPHAS: Si la versión contiene 'alpha', pasa a la siguiente release
+                if not es_version_valida(version):
+                    print(f"  [-] Omitiendo versión alpha: {version}")
+                    continue
+
+                last_update = datos.get("published_at", "2026-01-01T")[:10] 
                 assets = datos.get("assets", [])
 
                 ejecutables = []
@@ -103,24 +117,24 @@ def obtener_datos_api(app):
                 if ejecutables:
                     elegido = None
                     
-                    # Prioridad 1: PS5 explícito
+                    # 1. Prioridad PS5
                     for exe in ejecutables:
                         if "ps5" in exe["nombre"].lower():
                             elegido = exe
                             break
                             
-                    # Prioridad 2: Genérico (sin PS4)
+                    # 2. Prioridad No-PS4
                     if not elegido:
                         for exe in ejecutables:
                             if "ps4" not in exe["nombre"].lower():
                                 elegido = exe
                                 break
                                 
-                    # Prioridad 3: El primero
+                    # 3. Primer ejecutable disponible
                     if not elegido:
                         elegido = ejecutables[0]
 
-                    # Calculamos el SHA256 real descargando el archivo (requerido por la app)
+                    # Calcular Checksum SHA-256
                     checksum = ""
                     try:
                         req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
@@ -128,7 +142,7 @@ def obtener_datos_api(app):
                             checksum = hashlib.sha256(r.read()).hexdigest()
                     except Exception as e:
                         print(f"  [!] Error calculando checksum: {e}")
-                        checksum = "0000000000000000000000000000000000000000000000000000000000000000"
+                        checksum = ""
                             
                     return version, elegido["nombre"], elegido["url"], last_update, checksum
                     
@@ -141,13 +155,12 @@ def main():
     repo_data = []
 
     for app in APPS:
-        print(f"Procesando {app['name']}...")
+        print(f"Procesando {app['id']}...")
         version, nombre_archivo, url_descarga, last_update, checksum = obtener_datos_api(app)
         
         if version and url_descarga:
-            # Construimos el objeto exacto que requiere el manager
             payload = {
-                "name": app['name'],
+                "name": app['id'],  # Nombre corto / ID nativo
                 "filename": nombre_archivo,
                 "url": url_descarga,
                 "source": app['source'],
@@ -159,18 +172,17 @@ def main():
                 "checksum": checksum
             }
             
-            # Solo añadimos extract_file si la aplicación lo requiere (ej. ZIPs)
             if 'extract_file' in app:
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo}) | Checksum: {checksum[:8]}...")
+            print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se encontró ningún archivo válido.")
+            print(f" -> ERROR: No se encontró versión válida (Beta/Estable).")
 
     with open("repo.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4)
-    print("\nEl archivo repo.json se ha generado con la estructura completa.")
+    print("\nEl archivo repo.json ha sido generado correctamente.")
 
 if __name__ == "__main__":
     main()
