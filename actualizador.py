@@ -68,24 +68,21 @@ def obtener_datos_api(url):
         return None, None, None
 
 def main():
-    repo_data = {
-        "name": "Mi Repositorio Automático",
-        "description": "Actualizado automáticamente mediante GitHub Actions",
-        "version": "1.0",
-        "payloads": []
-    }
+    # AHORA ES UNA LISTA DIRECTA, COMO EXIGE LA APP
+    repo_data = []
 
     for app in APPS:
         print(f"Buscando actualizaciones para {app['name']}...")
         version, nombre_archivo, url = obtener_datos_api(app['api'])
         
         if version and url:
-            repo_data["payloads"].append({
+            # Añadimos los objetos directamente a la lista
+            repo_data.append({
                 "name": app['name'],
-                "author": app['author'],
-                "version": version,
                 "filename": nombre_archivo,
-                "url": url
+                "url": url,
+                "version": version,
+                "author": app['author']
             })
             print(f" -> Encontrada versión {version}: {nombre_archivo}")
         else:
@@ -93,8 +90,7 @@ def main():
 
     with open("repo.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4)
-    print("El archivo repo.json se ha generado correctamente.")
+    print("El archivo repo.json se ha generado correctamente con la estructura nativa.")
 
 if __name__ == "__main__":
- 
     main()
