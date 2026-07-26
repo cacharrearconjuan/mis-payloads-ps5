@@ -109,6 +109,10 @@ def obtener_datos_api(app):
                 for asset in assets:
                     nombre = asset.get("name", "")
                     if nombre.lower().endswith(EXEC_EXTENSIONS):
+                        # OMITIR los archivos que contengan "install" en el nombre
+                        if "install" in nombre.lower():
+                            continue
+                            
                         ejecutables.append({
                             "nombre": nombre,
                             "url": asset.get("browser_download_url", "")
