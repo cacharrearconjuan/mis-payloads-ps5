@@ -1,175 +1,110 @@
-import json
-import urllib.request
-import hashlib
-
-APPS = [
+[
     {
-        "id": "pldmgr", 
-        "author": "itsPLK", 
-        "api": "https://api.github.com/repos/itsPLK/ps5-payload-manager/releases",
+        "name": "pldmgr",
+        "filename": "pldmgr_v0.5.0.elf",
+        "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
         "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
-        "category": "Utilities & Tools",
-        "description": "A modern, web-based dashboard to easily manage, import, and automatically load payloads on your PS5."
+        "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "description": "Un panel moderno basado en web para administrar, importar y cargar automáticamente payloads en tu PS5 de manera sencilla.",
+        "last_update": "2026-07-21",
+        "version": "v0.5.0",
+        "category": "Utilidades y Herramientas",
+        "checksum": "1fe181908027fc625147ac888288ed1bee72a378b4751d36a8a8e0582d306169"
     },
     {
-        "id": "ShadowMountPlus", 
-        "author": "drakmor", 
-        "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
+        "name": "ShadowMountPlus",
+        "filename": "shadowmountplus.elf",
+        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-        "category": "Utilities & Tools",
-        "description": "A fully automated, background 'Auto-Mounter' payload for Jailbroken PlayStation 5 consoles.",
-        "extract_file": "shadowmountplus.elf"
+        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
+        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
+        "last_update": "2026-06-28",
+        "version": "1.6beta16",
+        "category": "Utilidades y Herramientas",
+        "checksum": "a35246fb3bb6042b25653b51cdcbc33254b40339342bf1d2dd0d2eceee2ca526"
     },
     {
-        "id": "ftpsrv", 
-        "author": "ps5-payload-dev", 
-        "api": "https://api.github.com/repos/ps5-payload-dev/ftpsrv/releases",
+        "name": "ftpsrv",
+        "filename": "ftpsrv-ps5-install.elf",
+        "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
         "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
-        "category": "Networking & Servers",
-        "description": "A simple FTP server for the PS5."
+        "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5-install.elf",
+        "description": "Un servidor FTP sencillo para la PS5.",
+        "last_update": "2026-05-12",
+        "version": "v0.20",
+        "category": "Redes y Servidores",
+        "checksum": "23f69de0f1ab1e1a3869473e87a271f750ec595056df0142fabbf21f5153c077"
     },
     {
-        "id": "kstuff-lite", 
-        "author": "EchoStretch", 
-        "api": "https://api.github.com/repos/EchoStretch/kstuff-lite/releases",
+        "name": "kstuff-lite",
+        "filename": "kstuff.elf",
+        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
         "source": "https://github.com/EchoStretch/kstuff-lite/releases",
-        "category": "System & Jailbreak",
-        "description": "Lite version of kstuff."
+        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "description": "Versión ligera (Lite) de kstuff.",
+        "last_update": "2026-07-04",
+        "version": "v1.09",
+        "category": "Sistema y Jailbreak",
+        "checksum": "ec5212794dc6e44ee8e70fd0549abec6d3dac8c3e03ddbeafd9f869ffe97d4e8"
     },
     {
-        "id": "elf-arsenal", 
-        "author": "soniciso", 
-        "api": "https://git.etawen.dev/api/v1/repos/soniciso/elf-arsenal/releases",
+        "name": "elf-arsenal",
+        "filename": "elf-arsenal.elf",
+        "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
         "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
-        "category": "Utilities & Tools",
-        "description": "Various ELF payloads packed together."
+        "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "description": "Varios payloads ELF empaquetados juntos.",
+        "last_update": "2026-07-03",
+        "version": "v1.6.22",
+        "category": "Utilidades y Herramientas",
+        "checksum": "ee8f47e4d6a5fd85cef113341aa1eb74d68e373a58fcb1fb5a9274acd2b83bd2"
     },
     {
-        "id": "garlic-savemgr", 
-        "author": "earthonion", 
-        "api": "https://git.etawen.dev/api/v1/repos/earthonion/garlic-savemgr/releases",
+        "name": "garlic-savemgr",
+        "filename": "garlic-savemgr.elf",
+        "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
         "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-        "category": "Utilities & Tools",
-        "description": "PS5 save decrypt/encrypt/browse with embedded web UI."
+        "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.12/garlic-savemgr.elf",
+        "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
+        "last_update": "2026-07-13",
+        "version": "v1.12",
+        "category": "Utilidades y Herramientas",
+        "checksum": "245150007dd2c48da6d0fdf791396a31434095e27f0175587b7b18ec3b8d6d5d"
     },
     {
-        "id": "game-compressor", 
-        "author": "juma-sayeh", 
-        "api": "https://api.github.com/repos/juma-sayeh/PS5-Game-Compressor/releases",
+        "name": "Lapy-JB-Daemon",
+        "filename": "lapy_jb_daemon-v1.2.elf",
+        "url": "https://github.com/itsPLK/PS5-Lapy-JB-Daemon/releases/download/v1.2/lapy_jb_daemon-v1.2.elf",
+        "source": "https://github.com/itsPLK/PS5-Lapy-JB-Daemon/releases",
+        "source_direct": "https://github.com/itsPLK/PS5-Lapy-JB-Daemon/releases/download/v1.2/lapy_jb_daemon-v1.2.elf",
+        "description": "Demonio de jailbreak homebrew independiente para PS5. Imita la API de jailbreak bajo demanda de etaHEN.",
+        "last_update": "2026-06-01",
+        "version": "v1.2",
+        "category": "Sistema y Jailbreak",
+        "checksum": "13559b858fc33cc7fa3dc89e10dccf139070d99ee5d378dd75c969293700799e"
+    },
+    {
+        "name": "game-compressor",
+        "filename": "game-compressor.elf",
+        "url": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
         "source": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases",
-        "category": "Utilities & Tools",
-        "description": "Compress PS5 games easily."
+        "source_direct": "https://github.com/juma-sayeh/PS5-Game-Compressor/releases/download/v1.0.3/game-compressor.elf",
+        "description": "Comprime juegos de PS5 fácilmente.",
+        "last_update": "2026-06-20",
+        "version": "v1.0.3",
+        "category": "Utilidades y Herramientas",
+        "checksum": "51b66edf6210c022d57a31ab12bf97f95a3c71ea683df387d9081494f11606b2"
     },
     {
-        "id": "nanoDNS", 
-        "author": "drakmor", 
-        "api": "https://api.github.com/repos/drakmor/nanoDNS/releases",
+        "name": "nanoDNS",
+        "filename": "nanodns.elf",
+        "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
         "source": "https://github.com/drakmor/nanoDNS/releases",
-        "category": "Networking & Servers",
-        "description": "A tiny, fast, and secure DNS server."
+        "source_direct": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "description": "Un servidor DNS diminuto, rápido y seguro.",
+        "last_update": "2026-06-03",
+        "version": "0.3",
+        "category": "Redes y Servidores",
+        "checksum": "ce1c8b31036ab948da65b362a4b6f249ffca8a555fc5bc4b051ec65d041bc944"
     }
 ]
-
-EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
-
-def es_version_valida(tag_name):
-    """ Filtra únicamente versiones Alpha. Permite versiones Beta y Estables. """
-    return "alpha" not in tag_name.lower()
-
-def obtener_datos_api(app):
-    url = app['api']
-    try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req) as response:
-            releases = json.loads(response.read().decode())
-            
-            if not isinstance(releases, list):
-                releases = [releases]
-
-            for datos in releases:
-                if datos.get("draft", False):
-                    continue
-
-                version = datos.get("tag_name", "Desconocida")
-                if not es_version_valida(version):
-                    continue
-
-                last_update = datos.get("published_at", "2026-01-01T")[:10] 
-                assets = datos.get("assets", [])
-
-                ejecutables = []
-                for asset in assets:
-                    nombre = asset.get("name", "")
-                    if nombre.lower().endswith(EXEC_EXTENSIONS):
-                        ejecutables.append({
-                            "nombre": nombre,
-                            "url": asset.get("browser_download_url", "")
-                        })
-                
-                if ejecutables:
-                    elegido = None
-                    for exe in ejecutables:
-                        if "ps5" in exe["nombre"].lower():
-                            elegido = exe
-                            break
-                    if not elegido:
-                        for exe in ejecutables:
-                            if "ps4" not in exe["nombre"].lower():
-                                elegido = exe
-                                break
-                    if not elegido:
-                        elegido = ejecutables[0]
-
-                    checksum = ""
-                    try:
-                        req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
-                        with urllib.request.urlopen(req_file) as r:
-                            checksum = hashlib.sha256(r.read()).hexdigest()
-                    except Exception as e:
-                        print(f"  [!] Error calculando checksum: {e}")
-                        checksum = ""
-                            
-                    return version, elegido["nombre"], elegido["url"], last_update, checksum
-                    
-            return None, None, None, None, None
-    except Exception as e:
-        print(f"Error consultando {url}: {e}")
-        return None, None, None, None, None
-
-def main():
-    repo_data = []
-
-    for app in APPS:
-        print(f"Procesando {app['id']}...")
-        version, nombre_archivo, url_descarga, last_update, checksum = obtener_datos_api(app)
-        
-        if version and url_descarga:
-            payload = {
-                "name": app['id'],
-                "filename": nombre_archivo,
-                "url": url_descarga,
-                "source": app['source'],
-                "source_direct": url_descarga,
-                "description": app.get('description', ''),
-                "last_update": last_update,
-                "version": version,
-                "category": app.get('category', 'Utilities & Tools'),
-                "checksum": checksum
-            }
-            
-            # Solo incluir extract_file si el archivo de descarga realmente termina en .zip
-            if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
-                payload["extract_file"] = app['extract_file']
-
-            repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo})")
-        else:
-            print(f" -> ERROR: No se encontró versión válida.")
-
-    # Guardar con el nombre de archivo objetivo
-    with open("payloads.json", "w", encoding="utf-8") as f:
-        json.dump(repo_data, f, indent=4)
-    print("\nArchivo 'payloads.json' generado correctamente.")
-
-if __name__ == "__main__":
-    main()
