@@ -75,6 +75,14 @@ APPS = [
         "source": "https://github.com/drakmor/nanoDNS/releases",
         "category": "Redes y Servidores",
         "description": "Un servidor DNS diminuto, rápido y seguro."
+    },
+    {
+        "id": "PS5-AutoupdaterPM", 
+        "author": "cacharrearconjuan", 
+        "api": "https://api.github.com/repos/cacharrearconjuan/PS5-AutoupdaterPM/releases",
+        "source": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Payload para la descarga y actualización automática del Payload Manager en PS5."
     }
 ]
 
