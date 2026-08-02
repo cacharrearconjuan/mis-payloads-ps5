@@ -1,15 +1,15 @@
 [
     {
         "name": "pldmgr",
-        "filename": "pldmgr_v0.5.0.elf",
-        "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "filename": "pldmgr_v0.5.1.elf",
+        "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.1/pldmgr_v0.5.1.elf",
         "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.0/pldmgr_v0.5.0.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.5.1/pldmgr_v0.5.1.elf",
         "description": "Un panel moderno basado en web para administrar, importar y cargar automáticamente payloads en tu PS5.",
-        "last_update": "2026-07-21",
-        "version": "v0.5.0",
+        "last_update": "2026-08-02",
+        "version": "v0.5.1",
         "category": "Utilidades y Herramientas",
-        "checksum": "1fe181908027fc625147ac888288ed1bee72a378b4751d36a8a8e0582d306169"
+        "checksum": "05617c69ea145d1c11b8f7a6b7d3bd9e6df3831afd25d71a4ac85d63fb8e28aa"
     },
     {
         "name": "ShadowMountPlus",
@@ -26,14 +26,14 @@
     {
         "name": "ftpsrv",
         "filename": "ftpsrv-ps5.elf",
-        "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5.elf",
+        "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.21/ftpsrv-ps5.elf",
         "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
-        "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.20/ftpsrv-ps5.elf",
+        "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.21/ftpsrv-ps5.elf",
         "description": "Un servidor FTP sencillo para la PS5.",
-        "last_update": "2026-05-12",
-        "version": "v0.20",
+        "last_update": "2026-08-02",
+        "version": "v0.21",
         "category": "Redes y Servidores",
-        "checksum": "8f305a959fb9d70fd8d52ba88409e0d5a1632e83d4ecdd38646a0a33e54089da"
+        "checksum": "c580f0534ac6349dc5a4a5c656eaced537b4c2b18da51886d943cea6393436c8"
     },
     {
         "name": "kstuff-lite",
