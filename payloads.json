@@ -118,5 +118,17 @@
         "version": "v1.0.0",
         "category": "Utilidades y Herramientas",
         "checksum": "36d26c99cdd4e4b3431802f314cf7bd9a52625fba628cd6d5620dbff0332bcef"
+    },
+    {
+        "name": "pegasus-dl",
+        "filename": "pegasus_dl.elf",
+        "url": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.7.0/pegasus_dl.elf",
+        "source": "https://github.com/pegasus-ps5/pegasus-dl/releases",
+        "source_direct": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.7.0/pegasus_dl.elf",
+        "description": "Herramienta de descarga pegasus-dl para PS5.",
+        "last_update": "2026-06-24",
+        "version": "v1.7.0",
+        "category": "Utilidades y Herramientas",
+        "checksum": "cb2a4b3c248323f2432ce118cb1bf4975146035239ce9b571a9bdb51b3fee226"
     }
 ]
