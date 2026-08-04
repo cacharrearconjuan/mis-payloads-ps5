@@ -83,6 +83,14 @@ APPS = [
         "source": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases",
         "category": "Utilidades y Herramientas",
         "description": "Payload para la descarga y actualización automática del Payload Manager en PS5."
+    },
+    {
+        "id": "pegasus-dl", 
+        "author": "pegasus-ps5", 
+        "api": "https://api.github.com/repos/pegasus-ps5/pegasus-dl/releases",
+        "source": "https://github.com/pegasus-ps5/pegasus-dl/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Herramienta de descarga pegasus-dl para PS5."
     }
 ]
 
