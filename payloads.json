@@ -98,14 +98,14 @@
     {
         "name": "nanoDNS",
         "filename": "nanodns.elf",
-        "url": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "url": "https://github.com/drakmor/nanoDNS/releases/download/0.4/nanodns.elf",
         "source": "https://github.com/drakmor/nanoDNS/releases",
-        "source_direct": "https://github.com/drakmor/nanoDNS/releases/download/0.3/nanodns.elf",
+        "source_direct": "https://github.com/drakmor/nanoDNS/releases/download/0.4/nanodns.elf",
         "description": "Un servidor DNS diminuto, rápido y seguro.",
-        "last_update": "2026-06-03",
-        "version": "0.3",
+        "last_update": "2026-08-04",
+        "version": "0.4",
         "category": "Redes y Servidores",
-        "checksum": "ce1c8b31036ab948da65b362a4b6f249ffca8a555fc5bc4b051ec65d041bc944"
+        "checksum": "dcb845f3570771275b22b37534bf924a7f8ae219fb91ef00c6bccab85d1c2420"
     },
     {
         "name": "PS5-AutoupdaterPM",
