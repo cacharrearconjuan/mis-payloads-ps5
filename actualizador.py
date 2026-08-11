@@ -114,7 +114,6 @@ def obtener_datos_api(app):
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         
-        # Inyecta el token de GitHub Actions si está disponible para evitar bloqueos por Rate Limit
         token = os.environ.get('GITHUB_TOKEN')
         if token and "github.com" in url:
             headers['Authorization'] = f'Bearer {token}'
@@ -140,8 +139,10 @@ def obtener_datos_api(app):
                 ejecutables = []
                 for asset in assets:
                     nombre = asset.get("name", "")
-                    if nombre.lower().endswith(EXEC_EXTENSIONS):
-                        if "install" in nombre.lower():
+                    nombre_lower = nombre.lower()
+                    if nombre_lower.endswith(EXEC_EXTENSIONS):
+                        # Omitir archivos con "install", EXCEPTO si contienen "installer_"
+                        if "install" in nombre_lower and "installer_" not in nombre_lower:
                             continue
                             
                         ejecutables.append({
