@@ -2,7 +2,6 @@ name: Actualizador de Payloads
 
 on:
   schedule:
-    # Se ejecuta cada 8 horas: a las 00:00, 08:00 y 16:00 UTC
     - cron: '0 0,8,16 * * *'
   workflow_dispatch:
 
@@ -22,6 +21,8 @@ jobs:
           python-version: '3.11'
 
       - name: Ejecutar el script buscador
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # <-- Le pasa el token al script
         run: python actualizador.py
 
       - name: Guardar los cambios (Commit)
