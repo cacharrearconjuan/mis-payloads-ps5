@@ -19,20 +19,19 @@ jobs:
       - name: Preparar Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Ejecutar el script buscador
         run: python actualizador.py
 
       - name: Guardar los cambios (Commit)
         run: |
-          git config --global user.name "Bot Payload"
-          git config --global user.email "bot@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Cambiado repo.json -> payloads.json
           git add payloads.json
           
-          if git status --porcelain | grep -q "payloads.json"; then
+          if ! git diff --cached --quiet; then
             git commit -m "Actualizados payloads [skip ci]"
             git push
           else
