@@ -91,6 +91,14 @@ APPS = [
         "source": "https://github.com/pegasus-ps5/pegasus-dl/releases",
         "category": "Utilidades y Herramientas",
         "description": "Herramienta de descarga pegasus-dl para PS5."
+    },
+    {
+        "id": "ps5-webkit-autoloader", 
+        "author": "itsPLK", 
+        "api": "https://api.github.com/repos/itsPLK/ps5-webkit-autoloader/releases",
+        "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
+        "category": "Sistema y Jailbreak",
+        "description": "Cargador automático para PS5 basado en el exploit WebKit."
     }
 ]
 
@@ -199,3 +207,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
