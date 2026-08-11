@@ -1,6 +1,7 @@
 import json
 import urllib.request
 import hashlib
+import os
 
 APPS = [
     {
@@ -111,7 +112,14 @@ def es_version_valida(tag_name):
 def obtener_datos_api(app):
     url = app['api']
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        
+        # Inyecta el token de GitHub Actions si está disponible para evitar bloqueos por Rate Limit
+        token = os.environ.get('GITHUB_TOKEN')
+        if token and "github.com" in url:
+            headers['Authorization'] = f'Bearer {token}'
+
+        req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
             
@@ -133,7 +141,6 @@ def obtener_datos_api(app):
                 for asset in assets:
                     nombre = asset.get("name", "")
                     if nombre.lower().endswith(EXEC_EXTENSIONS):
-                        # OMITIR los archivos que contengan "install" en el nombre
                         if "install" in nombre.lower():
                             continue
                             
@@ -207,4 +214,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
