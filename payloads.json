@@ -38,14 +38,14 @@
     {
         "name": "kstuff-lite",
         "filename": "kstuff.elf",
-        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.10/kstuff.elf",
         "source": "https://github.com/EchoStretch/kstuff-lite/releases",
-        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.09/kstuff.elf",
+        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.10/kstuff.elf",
         "description": "Versión ligera (Lite) de kstuff.",
-        "last_update": "2026-07-04",
-        "version": "v1.09",
+        "last_update": "2026-08-12",
+        "version": "v1.10",
         "category": "Sistema y Jailbreak",
-        "checksum": "ec5212794dc6e44ee8e70fd0549abec6d3dac8c3e03ddbeafd9f869ffe97d4e8"
+        "checksum": "b1dfe57f367a35374f605127915eda38c76a6ed5d1c729e427955798bd78c66a"
     },
     {
         "name": "elf-arsenal",
@@ -133,14 +133,14 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.2.0.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.0/webkit-autoloader-installer_v0.2.0.elf",
+        "filename": "webkit-autoloader-installer_v0.2.1.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.0/webkit-autoloader-installer_v0.2.0.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
         "last_update": "2026-08-12",
-        "version": "v0.2.0",
+        "version": "v0.2.1",
         "category": "Sistema y Jailbreak",
-        "checksum": "a477483c523b15fea00216f5f1b4a06a50414f47ab065ffd5823ca6b89776117"
+        "checksum": "e8cfaaf19855ae58a12394ab2277e2f878903594c6a6a84b04174324e0e92d6a"
     }
 ]
