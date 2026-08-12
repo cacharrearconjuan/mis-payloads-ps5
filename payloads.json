@@ -133,14 +133,14 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.2.1.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
+        "filename": "webkit-autoloader-installer_v0.2.2-pre-e1b7e6b.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.2-pre-e1b7e6b/webkit-autoloader-installer_v0.2.2-pre-e1b7e6b.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.2-pre-e1b7e6b/webkit-autoloader-installer_v0.2.2-pre-e1b7e6b.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
         "last_update": "2026-08-12",
-        "version": "v0.2.1",
+        "version": "v0.2.2-pre-e1b7e6b",
         "category": "Sistema y Jailbreak",
-        "checksum": "e8cfaaf19855ae58a12394ab2277e2f878903594c6a6a84b04174324e0e92d6a"
+        "checksum": "dfd0d0353b46eff01968bf00df0998ef49a829690d74642d0790208d1ca53064"
     }
 ]
