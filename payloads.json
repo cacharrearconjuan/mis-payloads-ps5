@@ -133,14 +133,26 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.2.3-pre-ed88da6.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.3-pre-ed88da6/webkit-autoloader-installer_v0.2.3-pre-ed88da6.elf",
+        "filename": "webkit-autoloader-installer_v0.2.1.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.3-pre-ed88da6/webkit-autoloader-installer_v0.2.3-pre-ed88da6.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.2.1/webkit-autoloader-installer_v0.2.1.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-        "last_update": "2026-08-13",
-        "version": "v0.2.3-pre-ed88da6",
+        "last_update": "2026-08-12",
+        "version": "v0.2.1",
         "category": "Sistema y Jailbreak",
-        "checksum": "696ed27a7f49e07c5e1cca88eab03b327fe16a888d9247cc8de2702943521735"
+        "checksum": "e8cfaaf19855ae58a12394ab2277e2f878903594c6a6a84b04174324e0e92d6a"
+    },
+    {
+        "name": "Spectrum-Library",
+        "filename": "SpectrumLibrary_1.4.2.elf",
+        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.2/SpectrumLibrary_1.4.2.elf",
+        "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
+        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.2/SpectrumLibrary_1.4.2.elf",
+        "description": "Librería y utilidades Spectrum para PS5.",
+        "last_update": "2026-06-20",
+        "version": "1.4.2",
+        "category": "Utilidades y Herramientas",
+        "checksum": "54755ce62d99be610afe364e26de05eaa9e2d92192cda525790a563c6296261f"
     }
 ]
