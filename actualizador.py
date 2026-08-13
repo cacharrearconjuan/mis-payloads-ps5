@@ -18,8 +18,7 @@ APPS = [
         "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
         "category": "Utilidades y Herramientas",
-        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
-        "extract_file": "shadowmountplus.elf"
+        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak."
     },
     {
         "id": "ftpsrv", 
@@ -100,14 +99,19 @@ APPS = [
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
         "category": "Sistema y Jailbreak",
         "description": "Cargador automático para PS5 basado en el exploit WebKit."
+    },
+    {
+        "id": "Spectrum-Library", 
+        "author": "Phoenixx1202", 
+        "api": "https://api.github.com/repos/Phoenixx1202/Spectrum-Library/releases",
+        "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Librería y utilidades Spectrum para PS5."
     }
 ]
 
-EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
-
-def es_version_valida(tag_name):
-    """ Filtra únicamente versiones Alpha. Permite versiones Beta y Estables. """
-    return "alpha" not in tag_name.lower()
+# Unicamente archivos ejecutables directos (.zip descartado)
+EXEC_EXTENSIONS = ('.elf', '.bin')
 
 def obtener_datos_api(app):
     url = app['api']
@@ -125,56 +129,56 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            for datos in releases:
-                if datos.get("draft", False):
+            # Selecciona únicamente la última versión ESTABLE (Ignora borradores y pre-releases/alphas)
+            latest_release = next(
+                (r for r in releases if not r.get("draft", False) and not r.get("prerelease", False)), 
+                None
+            )
+
+            if not latest_release:
+                return None, None, None, None, None
+
+            version = latest_release.get("tag_name", "Desconocida")
+            last_update = latest_release.get("published_at", "2026-01-01T")[:10] 
+            assets = latest_release.get("assets", [])
+
+            ejecutables = []
+            for asset in assets:
+                nombre = asset.get("name", "")
+                nombre_lower = nombre.lower()
+
+                # Filtro 1: Extensiones permitidas (.elf, .bin)
+                if not nombre_lower.endswith(EXEC_EXTENSIONS):
                     continue
 
-                version = datos.get("tag_name", "Desconocida")
-                if not es_version_valida(version):
+                # Filtro 2: Omitir archivos para PS4
+                if "ps4" in nombre_lower:
                     continue
 
-                last_update = datos.get("published_at", "2026-01-01T")[:10] 
-                assets = datos.get("assets", [])
-
-                ejecutables = []
-                for asset in assets:
-                    nombre = asset.get("name", "")
-                    nombre_lower = nombre.lower()
-                    if nombre_lower.endswith(EXEC_EXTENSIONS):
-                        # Omitir archivos con "install", EXCEPTO si contienen "installer_"
-                        if "install" in nombre_lower and "installer_" not in nombre_lower:
-                            continue
-                            
-                        ejecutables.append({
-                            "nombre": nombre,
-                            "url": asset.get("browser_download_url", "")
-                        })
-                
-                if ejecutables:
-                    elegido = None
-                    for exe in ejecutables:
-                        if "ps5" in exe["nombre"].lower():
-                            elegido = exe
-                            break
-                    if not elegido:
-                        for exe in ejecutables:
-                            if "ps4" not in exe["nombre"].lower():
-                                elegido = exe
-                                break
-                    if not elegido:
-                        elegido = ejecutables[0]
-
-                    checksum = ""
-                    try:
-                        req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
-                        with urllib.request.urlopen(req_file) as r:
-                            checksum = hashlib.sha256(r.read()).hexdigest()
-                    except Exception as e:
-                        print(f"  [!] Error calculando checksum: {e}")
-                        checksum = ""
-                            
-                    return version, elegido["nombre"], elegido["url"], last_update, checksum
+                # Filtro 3: Omitir "install", salvo que contenga "installer_"
+                if "install" in nombre_lower and "installer_" not in nombre_lower:
+                    continue
                     
+                ejecutables.append({
+                    "nombre": nombre,
+                    "url": asset.get("browser_download_url", "")
+                })
+            
+            if ejecutables:
+                # Priorizar el archivo que contenga "ps5" en el nombre; de lo contrario toma el primero
+                elegido = next((exe for exe in ejecutables if "ps5" in exe["nombre"].lower()), ejecutables[0])
+
+                checksum = ""
+                try:
+                    req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req_file) as r:
+                        checksum = hashlib.sha256(r.read()).hexdigest()
+                except Exception as e:
+                    print(f"  [!] Error calculando checksum: {e}")
+                    checksum = ""
+                        
+                return version, elegido["nombre"], elegido["url"], last_update, checksum
+                
             return None, None, None, None, None
     except Exception as e:
         print(f"Error consultando {url}: {e}")
@@ -200,9 +204,6 @@ def main():
                 "category": app.get('category', 'Utilidades y Herramientas'),
                 "checksum": checksum
             }
-            
-            if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
-                payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
