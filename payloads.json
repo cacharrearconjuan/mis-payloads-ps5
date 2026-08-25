@@ -145,14 +145,14 @@
     },
     {
         "name": "Spectrum-Library",
-        "filename": "SpectrumLibrary_1.4.2.elf",
-        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.2/SpectrumLibrary_1.4.2.elf",
+        "filename": "SpectrumLibrary_1.4.3.elf",
+        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.3/SpectrumLibrary_1.4.3.elf",
         "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
-        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.2/SpectrumLibrary_1.4.2.elf",
+        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.3/SpectrumLibrary_1.4.3.elf",
         "description": "Librería y utilidades Spectrum para PS5.",
-        "last_update": "2026-06-20",
-        "version": "1.4.2",
+        "last_update": "2026-08-24",
+        "version": "1.4.3",
         "category": "Utilidades y Herramientas",
-        "checksum": "54755ce62d99be610afe364e26de05eaa9e2d92192cda525790a563c6296261f"
+        "checksum": "11b261457dbb7fee013028a667699ba3c673e4a8ae376a377efb51d2f6b6b257"
     }
 ]
