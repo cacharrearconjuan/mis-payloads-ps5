@@ -154,5 +154,17 @@
         "version": "1.4.3",
         "category": "Utilidades y Herramientas",
         "checksum": "11b261457dbb7fee013028a667699ba3c673e4a8ae376a377efb51d2f6b6b257"
+    },
+    {
+        "name": "Common-FPS-for-PS5",
+        "filename": "Common_FPS_PS5_v1.0.0.elf",
+        "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.0.0/Common_FPS_PS5_v1.0.0.elf",
+        "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
+        "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.0.0/Common_FPS_PS5_v1.0.0.elf",
+        "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5.",
+        "last_update": "2026-08-24",
+        "version": "v1.0.0",
+        "category": "Utilidades y Herramientas",
+        "checksum": "6a66da88a99fa8757bf5c649e388d777a10768cd444d9f4cf82649e4592e292c"
     }
 ]
