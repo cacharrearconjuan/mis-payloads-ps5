@@ -107,10 +107,17 @@ APPS = [
         "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
         "category": "Utilidades y Herramientas",
         "description": "Librería y utilidades Spectrum para PS5."
+    },
+    {
+        "id": "Common-FPS-for-PS5", 
+        "author": "porhe911", 
+        "api": "https://api.github.com/repos/porhe911/Common-FPS-for-PS5/releases",
+        "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5."
     }
 ]
 
-# Unicamente archivos ejecutables directos (.zip descartado)
 EXEC_EXTENSIONS = ('.elf', '.bin')
 
 def obtener_datos_api(app):
@@ -129,7 +136,7 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            # Selecciona únicamente la última versión ESTABLE (Ignora borradores y pre-releases/alphas)
+            # Selecciona únicamente la última versión ESTABLE (Ignora borradores y pre-releases/alphas/betas)
             latest_release = next(
                 (r for r in releases if not r.get("draft", False) and not r.get("prerelease", False)), 
                 None
@@ -216,3 +223,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
