@@ -122,14 +122,14 @@
     {
         "name": "pegasus-dl",
         "filename": "pegasus_dl.elf",
-        "url": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.7.0/pegasus_dl.elf",
+        "url": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.8.0/pegasus_dl.elf",
         "source": "https://github.com/pegasus-ps5/pegasus-dl/releases",
-        "source_direct": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.7.0/pegasus_dl.elf",
+        "source_direct": "https://github.com/pegasus-ps5/pegasus-dl/releases/download/v1.8.0/pegasus_dl.elf",
         "description": "Herramienta de descarga pegasus-dl para PS5.",
-        "last_update": "2026-06-24",
-        "version": "v1.7.0",
+        "last_update": "2026-09-09",
+        "version": "v1.8.0",
         "category": "Utilidades y Herramientas",
-        "checksum": "cb2a4b3c248323f2432ce118cb1bf4975146035239ce9b571a9bdb51b3fee226"
+        "checksum": "3665fa275a185e597ef364379a7f7ad5a9d58f30fda2af6bd04e43299ff2e669"
     },
     {
         "name": "ps5-webkit-autoloader",
