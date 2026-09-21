@@ -121,34 +121,6 @@ APPS = [
 
 EXEC_EXTENSIONS = ('.elf', '.bin')
 
-def es_version_valida(tag_name):
-    # REGLA: Bloquear todas las versiones Alpha automáticamente
-    return "alpha" not in tag_name.lower()
-
-def extraer_ejecutables_validos(release):
-    if release.get("draft", False):
-        return []
-    
-    tag_name = release.get("tag_name", "")
-    if not es_version_valida(tag_name):
-        return []
-        
-    ejecutables = []
-    for asset in release.get("assets", []):
-        nombre = asset.get("name", "")
-        nombre_lower = nombre.lower()
-
-        if not nombre_lower.endswith(EXEC_EXTENSIONS): 
-            continue
-        if "install" in nombre_lower and "installer_" not in nombre_lower: 
-            continue
-        
-        ejecutables.append({
-            "nombre": nombre,
-            "url": asset.get("browser_download_url", "")
-        })
-    return ejecutables
-
 def obtener_datos_api(app):
     url = app['api']
     try:
@@ -157,17 +129,6 @@ def obtener_datos_api(app):
         if token and "github.com" in url:
             headers['Authorization'] = f'Bearer {token}'
 
-        latest_tag = None
-        if "github.com" in url:
-            try:
-                url_latest = url.rstrip('/') + "/latest"
-                req_latest = urllib.request.Request(url_latest, headers=headers)
-                with urllib.request.urlopen(req_latest) as res_latest:
-                    latest_data = json.loads(res_latest.read().decode())
-                    latest_tag = latest_data.get("tag_name")
-            except urllib.error.HTTPError:
-                pass 
-
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
@@ -175,76 +136,65 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            target_release = None
-            ejecutables_finales = []
+            # Recorrer versiones de la más reciente a la más antigua
+            for r in releases:
+                if r.get("draft", False):
+                    continue
+                
+                version = r.get("tag_name", "Desconocida")
+                
+                # NUNCA ALPHAS
+                if "alpha" in version.lower():
+                    continue
 
-            # PRIORIDAD 1: Etiqueta "Latest" oficial (Siempre que NO sea Alpha)
-            if latest_tag:
-                for r in releases:
-                    if r.get("tag_name") == latest_tag:
-                        exe = extraer_ejecutables_validos(r)
-                        if exe:
-                            target_release = r
-                            ejecutables_finales = exe
-                        break
+                ejecutables_finales = []
+                for asset in r.get("assets", []):
+                    nombre = asset.get("name", "")
+                    nombre_lower = nombre.lower()
 
-            # PRIORIDAD 2: Versión Estable más reciente (Sin prerelease)
-            if not target_release:
-                for r in releases:
-                    if r.get("prerelease", False):
+                    if not nombre_lower.endswith(EXEC_EXTENSIONS): 
                         continue
-                    exe = extraer_ejecutables_validos(r)
-                    if exe:
-                        target_release = r
-                        ejecutables_finales = exe
-                        break
-
-            # PRIORIDAD 3: Fallback (Ej. Common-FPS, coge la beta/pre-release más reciente que NO sea Alpha)
-            if not target_release:
-                for r in releases:
-                    exe = extraer_ejecutables_validos(r)
-                    if exe:
-                        target_release = r
-                        ejecutables_finales = exe
-                        break
-
-            if not target_release:
-                return None, None, None, None, None
-
-            version = target_release.get("tag_name", "Desconocida")
-            last_update = target_release.get("published_at", "2026-01-01T")[:10] 
-            
-            # --- TU LÓGICA DE SELECCIÓN DE ARCHIVO EXACTA ---
-            elegido = None
-            
-            # 1. Buscar archivo que contenga "ps5"
-            for exe in ejecutables_finales:
-                if "ps5" in exe["nombre"].lower():
-                    elegido = exe
-                    break
+                    if "install" in nombre_lower and "installer_" not in nombre_lower: 
+                        continue
                     
-            # 2. Si no hay "ps5", buscar archivo que NO contenga "ps4" (genérico)
-            if not elegido:
-                for exe in ejecutables_finales:
-                    if "ps4" not in exe["nombre"].lower():
-                        elegido = exe
-                        break
-                        
-            # 3. Si por algún motivo extremo no encontró nada en los pasos previos, coge el primero
-            if not elegido:
-                elegido = ejecutables_finales[0]
-            # -------------------------------------------------
-
-            checksum = ""
-            try:
-                req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
-                with urllib.request.urlopen(req_file) as r_file:
-                    checksum = hashlib.sha256(r_file.read()).hexdigest()
-            except Exception as e:
-                print(f"  [!] Error calculando checksum: {e}")
-                checksum = ""
+                    ejecutables_finales.append({
+                        "nombre": nombre,
+                        "url": asset.get("browser_download_url", "")
+                    })
+                
+                if ejecutables_finales:
+                    elegido = None
                     
-            return version, elegido["nombre"], elegido["url"], last_update, checksum
+                    # 1. Filtro: Coger el que contenga "ps5"
+                    for exe in ejecutables_finales:
+                        if "ps5" in exe["nombre"].lower():
+                            elegido = exe
+                            break
+                            
+                    # 2. Filtro: Si no hay de ps5 explícito, coger el que NO sea de ps4
+                    if not elegido:
+                        for exe in ejecutables_finales:
+                            if "ps4" not in exe["nombre"].lower():
+                                elegido = exe
+                                break
+                                
+                    # 3. Fallback: Coger el primero
+                    if not elegido:
+                        elegido = ejecutables_finales[0]
+
+                    last_update = r.get("published_at", "2026-01-01T")[:10] 
+                    checksum = ""
+                    try:
+                        req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
+                        with urllib.request.urlopen(req_file) as r_file:
+                            checksum = hashlib.sha256(r_file.read()).hexdigest()
+                    except Exception as e:
+                        print(f"  [!] Error calculando checksum: {e}")
+                        checksum = ""
+                            
+                    return version, elegido["nombre"], elegido["url"], last_update, checksum
+                    
+            return None, None, None, None, None
             
     except urllib.error.HTTPError as e:
         print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
