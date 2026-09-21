@@ -1,5 +1,6 @@
 import json
 import urllib.request
+import urllib.error
 import hashlib
 import os
 
@@ -138,8 +139,8 @@ def obtener_datos_api(app):
                 with urllib.request.urlopen(req_latest) as res_latest:
                     latest_data = json.loads(res_latest.read().decode())
                     latest_tag = latest_data.get("tag_name")
-            except:
-                pass # Si no hay un Latest oficial explícito, seguimos normales
+            except urllib.error.HTTPError:
+                pass # Ignoramos si no hay una release marcada explícitamente como "Latest"
 
         # 2. Obtener toda la lista de releases
         req = urllib.request.Request(url, headers=headers)
@@ -165,9 +166,12 @@ def obtener_datos_api(app):
                 tiene_ejecutables = False
                 for asset in r.get("assets", []):
                     nombre_lower = asset.get("name", "").lower()
-                    if not nombre_lower.endswith(EXEC_EXTENSIONS): continue
-                    if "ps4" in nombre_lower: continue
-                    if "install" in nombre_lower and "installer_" not in nombre_lower: continue
+                    if not nombre_lower.endswith(EXEC_EXTENSIONS): 
+                        continue
+                    if "ps4" in nombre_lower: 
+                        continue
+                    if "install" in nombre_lower and "installer_" not in nombre_lower: 
+                        continue
                     
                     tiene_ejecutables = True
                     break
@@ -190,10 +194,8 @@ def obtener_datos_api(app):
 
                 if not nombre_lower.endswith(EXEC_EXTENSIONS):
                     continue
-
                 if "ps4" in nombre_lower:
                     continue
-
                 if "install" in nombre_lower and "installer_" not in nombre_lower:
                     continue
                     
@@ -217,8 +219,12 @@ def obtener_datos_api(app):
                 return version, elegido["nombre"], elegido["url"], last_update, checksum
                 
             return None, None, None, None, None
+            
+    except urllib.error.HTTPError as e:
+        print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
+        return None, None, None, None, None
     except Exception as e:
-        print(f"Error consultando {url}: {e}")
+        print(f"  [!] Error general consultando {url}: {e}")
         return None, None, None, None, None
 
 def main():
@@ -245,7 +251,7 @@ def main():
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se encontró versión válida.")
+            print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
 
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
