@@ -22,7 +22,7 @@ jobs:
 
       - name: Ejecutar el script buscador
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # <-- Le pasa el token al script
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python actualizador.py
 
       - name: Guardar los cambios (Commit)
@@ -33,7 +33,8 @@ jobs:
           git add payloads.json
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizados payloads [skip ci]"
+            # AQUÍ SE HA ELIMINADO EL [skip ci] PARA QUE LA WEB SE ACTUALICE
+            git commit -m "Actualizados payloads"
             git push
           else
             echo "No hay actualizaciones nuevas, no hace falta guardar nada."
