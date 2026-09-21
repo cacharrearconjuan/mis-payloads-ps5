@@ -14,14 +14,14 @@
     {
         "name": "ShadowMountPlus",
         "filename": "shadowmountplus.elf",
-        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha8/shadowmountplus.elf",
+        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7alpha8/shadowmountplus.elf",
+        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
         "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
-        "last_update": "2026-08-19",
-        "version": "1.7alpha8",
+        "last_update": "2026-06-28",
+        "version": "1.6beta16",
         "category": "Utilidades y Herramientas",
-        "checksum": "f15653fe90d81e5f82841ca693c0599d307c384d6454c1b0cc18190ae1ef4812"
+        "checksum": "a35246fb3bb6042b25653b51cdcbc33254b40339342bf1d2dd0d2eceee2ca526"
     },
     {
         "name": "ftpsrv",
