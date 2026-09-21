@@ -136,33 +136,31 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            # Selecciona únicamente la última versión ESTABLE (Ignora borradores y pre-releases/alphas/betas)
-            latest_release = next(
-                (r for r in releases if not r.get("draft", False) and not r.get("prerelease", False)), 
+            # Seleccionar simplemente la publicación más reciente que no sea un borrador privado
+            target_release = next(
+                (r for r in releases if not r.get("draft", False)), 
                 None
             )
 
-            if not latest_release:
+            if not target_release:
+                print(f"  [!] {app['id']}: No se encontraron releases válidos.")
                 return None, None, None, None, None
 
-            version = latest_release.get("tag_name", "Desconocida")
-            last_update = latest_release.get("published_at", "2026-01-01T")[:10] 
-            assets = latest_release.get("assets", [])
+            version = target_release.get("tag_name", "Desconocida")
+            last_update = target_release.get("published_at", "2026-01-01T")[:10] 
+            assets = target_release.get("assets", [])
 
             ejecutables = []
             for asset in assets:
                 nombre = asset.get("name", "")
                 nombre_lower = nombre.lower()
 
-                # Filtro 1: Extensiones permitidas (.elf, .bin)
                 if not nombre_lower.endswith(EXEC_EXTENSIONS):
                     continue
 
-                # Filtro 2: Omitir archivos para PS4
                 if "ps4" in nombre_lower:
                     continue
 
-                # Filtro 3: Omitir "install", salvo que contenga "installer_"
                 if "install" in nombre_lower and "installer_" not in nombre_lower:
                     continue
                     
@@ -172,7 +170,6 @@ def obtener_datos_api(app):
                 })
             
             if ejecutables:
-                # Priorizar el archivo que contenga "ps5" en el nombre; de lo contrario toma el primero
                 elegido = next((exe for exe in ejecutables if "ps5" in exe["nombre"].lower()), ejecutables[0])
 
                 checksum = ""
@@ -181,14 +178,16 @@ def obtener_datos_api(app):
                     with urllib.request.urlopen(req_file) as r:
                         checksum = hashlib.sha256(r.read()).hexdigest()
                 except Exception as e:
-                    print(f"  [!] Error calculando checksum: {e}")
+                    print(f"  [!] Error calculando checksum para {elegido['nombre']}: {e}")
                     checksum = ""
                         
                 return version, elegido["nombre"], elegido["url"], last_update, checksum
+            else:
+                print(f"  [!] {app['id']}: El release '{version}' no contiene ningún binario .elf o .bin válido.")
                 
             return None, None, None, None, None
     except Exception as e:
-        print(f"Error consultando {url}: {e}")
+        print(f"  [!] Error en petición API para {app['id']}: {e}")
         return None, None, None, None, None
 
 def main():
@@ -215,7 +214,7 @@ def main():
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se encontró versión válida.")
+            print(f" -> ERROR: No se pudo procesar {app['id']}.")
 
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
@@ -223,4 +222,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
