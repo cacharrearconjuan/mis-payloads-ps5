@@ -21,7 +21,8 @@ APPS = [
         "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
         "category": "Utilidades y Herramientas",
-        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak."
+        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
+        "extract_file": "shadowmountplus.elf"
     },
     {
         "id": "ftpsrv", 
@@ -124,6 +125,33 @@ APPS = [
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 HOSTED_FOLDER = "hosted"
 
+def es_version_valida(tag_name):
+    return "alpha" not in tag_name.lower()
+
+def extraer_ejecutables_validos(release):
+    if release.get("draft", False):
+        return []
+    
+    tag_name = release.get("tag_name", "")
+    if not es_version_valida(tag_name):
+        return []
+        
+    ejecutables = []
+    for asset in release.get("assets", []):
+        nombre = asset.get("name", "")
+        nombre_lower = nombre.lower()
+
+        if not nombre_lower.endswith(EXEC_EXTENSIONS): 
+            continue
+        if "install" in nombre_lower and "installer_" not in nombre_lower: 
+            continue
+        
+        ejecutables.append({
+            "nombre": nombre,
+            "url": asset.get("browser_download_url", "")
+        })
+    return ejecutables
+
 def obtener_datos_api(app):
     url = app['api']
     try:
@@ -132,6 +160,17 @@ def obtener_datos_api(app):
         if token and "github.com" in url:
             headers['Authorization'] = f'Bearer {token}'
 
+        latest_tag = None
+        if "github.com" in url:
+            try:
+                url_latest = url.rstrip('/') + "/latest"
+                req_latest = urllib.request.Request(url_latest, headers=headers)
+                with urllib.request.urlopen(req_latest) as res_latest:
+                    latest_data = json.loads(res_latest.read().decode())
+                    latest_tag = latest_data.get("tag_name")
+            except urllib.error.HTTPError:
+                pass 
+
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
@@ -139,104 +178,101 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            for r in releases:
-                if r.get("draft", False):
-                    continue
-                
-                version = r.get("tag_name", "Desconocida")
-                if "alpha" in version.lower():
-                    continue
+            target_release = None
+            ejecutables_finales = []
 
-                ejecutables_finales = []
-                for asset in r.get("assets", []):
-                    nombre = asset.get("name", "")
-                    nombre_lower = nombre.lower()
+            if latest_tag:
+                for r in releases:
+                    if r.get("tag_name") == latest_tag:
+                        exe = extraer_ejecutables_validos(r)
+                        if exe:
+                            target_release = r
+                            ejecutables_finales = exe
+                        break
 
-                    if not nombre_lower.endswith(EXEC_EXTENSIONS): 
+            if not target_release:
+                for r in releases:
+                    if r.get("prerelease", False):
                         continue
-                    if "install" in nombre_lower and "installer_" not in nombre_lower: 
-                        continue
-                    
-                    ejecutables_finales.append({
-                        "nombre": nombre,
-                        "url": asset.get("browser_download_url", "")
-                    })
+                    exe = extraer_ejecutables_validos(r)
+                    if exe:
+                        target_release = r
+                        ejecutables_finales = exe
+                        break
+
+            if not target_release:
+                for r in releases:
+                    exe = extraer_ejecutables_validos(r)
+                    if exe:
+                        target_release = r
+                        ejecutables_finales = exe
+                        break
+
+            if not target_release:
+                return None, None, None, None, None
+
+            version = target_release.get("tag_name", "Desconocida")
+            last_update = target_release.get("published_at", "2026-01-01T")[:10] 
+            
+            elegido = None
+            for exe in ejecutables_finales:
+                if "ps5" in exe["nombre"].lower():
+                    elegido = exe
+                    break
+            if not elegido:
+                for exe in ejecutables_finales:
+                    if "ps4" not in exe["nombre"].lower():
+                        elegido = exe
+                        break
+            if not elegido:
+                elegido = ejecutables_finales[0]
+
+            nombre_archivo = elegido["nombre"]
+            url_descarga = elegido["url"]
+            checksum = ""
+
+            if nombre_archivo.lower().endswith('.zip'):
+                print(f"  [+] ZIP detectado. Descargando y procesando en memoria...")
+                os.makedirs(HOSTED_FOLDER, exist_ok=True)
+                zip_path = "temp.zip"
                 
-                if ejecutables_finales:
-                    elegido = None
-                    for exe in ejecutables_finales:
-                        if "ps5" in exe["nombre"].lower():
-                            elegido = exe
-                            break
-                    if not elegido:
-                        for exe in ejecutables_finales:
-                            if "ps4" not in exe["nombre"].lower():
-                                elegido = exe
-                                break
-                    if not elegido:
-                        elegido = ejecutables_finales[0]
-
-                    last_update = r.get("published_at", "2026-01-01T")[:10] 
-                    nombre_archivo = elegido["nombre"]
-                    url_descarga = elegido["url"]
-                    checksum = ""
-
-                    # LOGICA DE EXTRACCION DE ZIP
-                    if nombre_archivo.lower().endswith('.zip'):
-                        print(f"  [+] Detectado ZIP. Descargando y extrayendo {nombre_archivo}...")
-                        os.makedirs(HOSTED_FOLDER, exist_ok=True)
-                        zip_path = "temp.zip"
+                try:
+                    req_zip = urllib.request.Request(url_descarga, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req_zip) as resp_zip, open(zip_path, 'wb') as out_file:
+                        shutil.copyfileobj(resp_zip, out_file)
                         
-                        try:
-                            req_zip = urllib.request.Request(url_descarga, headers={'User-Agent': 'Mozilla/5.0'})
-                            with urllib.request.urlopen(req_zip) as resp_zip, open(zip_path, 'wb') as out_file:
-                                shutil.copyfileobj(resp_zip, out_file)
+                    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                        elf_in_zip = next((f for f in zip_ref.namelist() if f.lower().endswith(('.elf', '.bin'))), None)
+                        
+                        if elf_in_zip:
+                            nuevo_nombre = os.path.basename(elf_in_zip)
+                            ruta_final = os.path.join(HOSTED_FOLDER, nuevo_nombre)
+                            
+                            with zip_ref.open(elf_in_zip) as source, open(ruta_final, 'wb') as target:
+                                shutil.copyfileobj(source, target)
                                 
-                            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                                elf_in_zip = next((f for f in zip_ref.namelist() if f.lower().endswith(('.elf', '.bin'))), None)
+                            nombre_archivo = nuevo_nombre
+                            url_descarga = f"https://cacharrearconjuan.github.io/mis-payloads-ps5/{HOSTED_FOLDER}/{nuevo_nombre}"
+                            
+                            with open(ruta_final, 'rb') as f_elf:
+                                checksum = hashlib.sha256(f_elf.read()).hexdigest()
                                 
-                                if elf_in_zip:
-                                    zip_ref.extract(elf_in_zip, HOSTED_FOLDER)
-                                    # Limpiar la ruta por si estaba dentro de una subcarpeta
-                                    ruta_extraida = os.path.join(HOSTED_FOLDER, elf_in_zip)
-                                    nuevo_nombre = os.path.basename(elf_in_zip)
-                                    ruta_final = os.path.join(HOSTED_FOLDER, nuevo_nombre)
-                                    
-                                    if ruta_extraida != ruta_final:
-                                        os.rename(ruta_extraida, ruta_final)
-                                        # Eliminar directorios vacios dejados por el ZIP
-                                        dir_to_clean = os.path.dirname(ruta_extraida)
-                                        if dir_to_clean != HOSTED_FOLDER:
-                                            shutil.rmtree(dir_to_clean, ignore_errors=True)
-                                            
-                                    # Reasignar variables para el JSON apuntando a tu repositorio
-                                    nombre_archivo = nuevo_nombre
-                                    url_descarga = f"https://cacharrearconjuan.github.io/mis-payloads-ps5/{HOSTED_FOLDER}/{nuevo_nombre}"
-                                    
-                                    # Calcular checksum del ELF extraído, no del ZIP
-                                    with open(ruta_final, 'rb') as f_elf:
-                                        checksum = hashlib.sha256(f_elf.read()).hexdigest()
-                                        
-                                    print(f"  [+] Extraído con éxito: {nuevo_nombre}")
-                            
-                            os.remove(zip_path) # Borrar el ZIP temporal
-                            
-                        except Exception as e:
-                            print(f"  [!] Error procesando el ZIP: {e}")
-                            if os.path.exists(zip_path):
-                                os.remove(zip_path)
-                    else:
-                        # Si es un .elf normal, calculamos checksum directamente de internet
-                        try:
-                            req_file = urllib.request.Request(url_descarga, headers={'User-Agent': 'Mozilla/5.0'})
-                            with urllib.request.urlopen(req_file) as r_file:
-                                checksum = hashlib.sha256(r_file.read()).hexdigest()
-                        except Exception as e:
-                            print(f"  [!] Error calculando checksum: {e}")
-                            
-                    return version, nombre_archivo, url_descarga, last_update, checksum
+                    if os.path.exists(zip_path):
+                        os.remove(zip_path)
+                        
+                except Exception as e:
+                    print(f"  [!] Error crítico procesando el ZIP: {e}")
+                    if os.path.exists(zip_path):
+                        os.remove(zip_path)
+            else:
+                try:
+                    req_file = urllib.request.Request(url_descarga, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req_file) as r_file:
+                        checksum = hashlib.sha256(r_file.read()).hexdigest()
+                except Exception as e:
+                    print(f"  [!] Error calculando checksum estándar: {e}")
                     
-            return None, None, None, None, None
+            return version, nombre_archivo, url_descarga, last_update, checksum
             
     except urllib.error.HTTPError as e:
         print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
@@ -265,10 +301,14 @@ def main():
                 "category": app.get('category', 'Utilidades y Herramientas'),
                 "checksum": checksum
             }
+            
+            if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
+                payload["extract_file"] = app['extract_file']
+
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se encontró versión válida.")
+            print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
 
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
