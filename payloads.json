@@ -12,18 +12,6 @@
         "checksum": "05617c69ea145d1c11b8f7a6b7d3bd9e6df3831afd25d71a4ac85d63fb8e28aa"
     },
     {
-        "name": "ShadowMountPlus",
-        "filename": "shadowmountplus.elf",
-        "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
-        "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-        "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.6beta16/shadowmountplus.elf",
-        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
-        "last_update": "2026-06-28",
-        "version": "1.6beta16",
-        "category": "Utilidades y Herramientas",
-        "checksum": "a35246fb3bb6042b25653b51cdcbc33254b40339342bf1d2dd0d2eceee2ca526"
-    },
-    {
         "name": "ftpsrv",
         "filename": "ftpsrv-ps5.elf",
         "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.21.1/ftpsrv-ps5.elf",
@@ -38,14 +26,14 @@
     {
         "name": "kstuff-lite",
         "filename": "kstuff.elf",
-        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.10/kstuff.elf",
+        "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
         "source": "https://github.com/EchoStretch/kstuff-lite/releases",
-        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.10/kstuff.elf",
+        "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
         "description": "Versión ligera (Lite) de kstuff.",
-        "last_update": "2026-08-12",
-        "version": "v1.10",
+        "last_update": "2026-09-20",
+        "version": "v1.11",
         "category": "Sistema y Jailbreak",
-        "checksum": "82cbb1e70f8a562317d6b65269cf6aa0d7d94e22df4f1ac89a260ca0ec261252"
+        "checksum": "62d9bb6f16531e1c10fd522cb918431eaa3319dcd37405af5cc0b2240d7b2ee5"
     },
     {
         "name": "elf-arsenal",
@@ -105,7 +93,7 @@
         "last_update": "2026-08-04",
         "version": "0.4",
         "category": "Redes y Servidores",
-        "checksum": "dcb845f3570771275b22b37534bf924a7f8ae219fb91ef00c6bccab85d1c2420"
+        "checksum": "fcfb7d47c3b295560ea1603dc015f7c4950353ef0faca16428bd425680ef1fc5"
     },
     {
         "name": "PS5-AutoupdaterPM",
