@@ -30,11 +30,12 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
+          # Agregamos tanto el JSON como cualquier ejecutable nuevo extraído en la carpeta /hosted
           git add payloads.json
+          git add hosted/ || true
           
           if ! git diff --cached --quiet; then
-            # AQUÍ SE HA ELIMINADO EL [skip ci] PARA QUE LA WEB SE ACTUALICE
-            git commit -m "Actualizados payloads"
+            git commit -m "Actualizados payloads y binarios extraídos"
             git push
           else
             echo "No hay actualizaciones nuevas, no hace falta guardar nada."
