@@ -125,24 +125,10 @@ def obtener_datos_api(app):
     url = app['api']
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
-        
         token = os.environ.get('GITHUB_TOKEN')
         if token and "github.com" in url:
             headers['Authorization'] = f'Bearer {token}'
 
-        # 1. Averiguar qué versión tiene exactamente la etiqueta verde "Latest"
-        latest_tag = None
-        if "github.com" in url:
-            try:
-                url_latest = url.rstrip('/') + "/latest"
-                req_latest = urllib.request.Request(url_latest, headers=headers)
-                with urllib.request.urlopen(req_latest) as res_latest:
-                    latest_data = json.loads(res_latest.read().decode())
-                    latest_tag = latest_data.get("tag_name")
-            except urllib.error.HTTPError:
-                pass # Ignoramos si no hay una release marcada explícitamente como "Latest"
-
-        # 2. Obtener toda la lista de releases
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
@@ -155,14 +141,7 @@ def obtener_datos_api(app):
                 if r.get("draft", False):
                     continue
                 
-                is_latest_badge = (r.get("tag_name") == latest_tag)
-                
-                # MANTENEMOS LOS FILTROS IGUALES: Omitimos prereleases...
-                # PERO hacemos la excepción si el autor le puso la etiqueta "Latest"
-                if r.get("prerelease", False) and not is_latest_badge:
-                    continue
-
-                # Validar que esta versión tenga ejecutables que nos interesan
+                # Buscamos la primera versión cronológica que cumpla con los filtros de archivo
                 tiene_ejecutables = False
                 for asset in r.get("assets", []):
                     nombre_lower = asset.get("name", "").lower()
