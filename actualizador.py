@@ -129,6 +129,19 @@ def obtener_datos_api(app):
         if token and "github.com" in url:
             headers['Authorization'] = f'Bearer {token}'
 
+        # 1. Averiguar qué versión tiene exactamente la etiqueta verde "Latest"
+        latest_tag = None
+        if "github.com" in url:
+            try:
+                url_latest = url.rstrip('/') + "/latest"
+                req_latest = urllib.request.Request(url_latest, headers=headers)
+                with urllib.request.urlopen(req_latest) as res_latest:
+                    latest_data = json.loads(res_latest.read().decode())
+                    latest_tag = latest_data.get("tag_name")
+            except:
+                pass # Si no hay un Latest oficial explícito, seguimos normales
+
+        # 2. Obtener toda la lista de releases
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
@@ -136,14 +149,34 @@ def obtener_datos_api(app):
             if not isinstance(releases, list):
                 releases = [releases]
 
-            # Seleccionar simplemente la publicación más reciente que no sea un borrador privado
-            target_release = next(
-                (r for r in releases if not r.get("draft", False)), 
-                None
-            )
+            target_release = None
+            for r in releases:
+                if r.get("draft", False):
+                    continue
+                
+                is_latest_badge = (r.get("tag_name") == latest_tag)
+                
+                # MANTENEMOS LOS FILTROS IGUALES: Omitimos prereleases...
+                # PERO hacemos la excepción si el autor le puso la etiqueta "Latest"
+                if r.get("prerelease", False) and not is_latest_badge:
+                    continue
+
+                # Validar que esta versión tenga ejecutables que nos interesan
+                tiene_ejecutables = False
+                for asset in r.get("assets", []):
+                    nombre_lower = asset.get("name", "").lower()
+                    if not nombre_lower.endswith(EXEC_EXTENSIONS): continue
+                    if "ps4" in nombre_lower: continue
+                    if "install" in nombre_lower and "installer_" not in nombre_lower: continue
+                    
+                    tiene_ejecutables = True
+                    break
+                
+                if tiene_ejecutables:
+                    target_release = r
+                    break
 
             if not target_release:
-                print(f"  [!] {app['id']}: No se encontraron releases válidos.")
                 return None, None, None, None, None
 
             version = target_release.get("tag_name", "Desconocida")
@@ -175,19 +208,17 @@ def obtener_datos_api(app):
                 checksum = ""
                 try:
                     req_file = urllib.request.Request(elegido["url"], headers={'User-Agent': 'Mozilla/5.0'})
-                    with urllib.request.urlopen(req_file) as r:
-                        checksum = hashlib.sha256(r.read()).hexdigest()
+                    with urllib.request.urlopen(req_file) as r_file:
+                        checksum = hashlib.sha256(r_file.read()).hexdigest()
                 except Exception as e:
-                    print(f"  [!] Error calculando checksum para {elegido['nombre']}: {e}")
+                    print(f"  [!] Error calculando checksum: {e}")
                     checksum = ""
                         
                 return version, elegido["nombre"], elegido["url"], last_update, checksum
-            else:
-                print(f"  [!] {app['id']}: El release '{version}' no contiene ningún binario .elf o .bin válido.")
                 
             return None, None, None, None, None
     except Exception as e:
-        print(f"  [!] Error en petición API para {app['id']}: {e}")
+        print(f"Error consultando {url}: {e}")
         return None, None, None, None, None
 
 def main():
@@ -214,7 +245,7 @@ def main():
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(f" -> ERROR: No se pudo procesar {app['id']}.")
+            print(f" -> ERROR: No se encontró versión válida.")
 
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
