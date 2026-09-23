@@ -50,14 +50,14 @@
     {
         "name": "elf-arsenal",
         "filename": "elf-arsenal.elf",
-        "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
         "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
-        "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.22/elf-arsenal.elf",
+        "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
         "description": "Varios payloads ELF empaquetados juntos.",
-        "last_update": "2026-07-03",
-        "version": "v1.6.22",
+        "last_update": "2026-09-23",
+        "version": "v1.6.23",
         "category": "Utilidades y Herramientas",
-        "checksum": "ee8f47e4d6a5fd85cef113341aa1eb74d68e373a58fcb1fb5a9274acd2b83bd2"
+        "checksum": "20cdb0979ce627aff8e684a4506e18390a72492d5e3aa15ecef0bfe1bca08bb5"
     },
     {
         "name": "garlic-savemgr",
