@@ -119,6 +119,14 @@ APPS = [
         "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
         "category": "Utilidades y Herramientas",
         "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5."
+    },
+    {
+        "id": "onionHEN", 
+        "author": "aydencharles", 
+        "api": "https://api.github.com/repos/aydencharles/onionHEN/releases",
+        "source": "https://github.com/aydencharles/onionHEN/releases",
+        "category": "Sistema y Jailbreak",
+        "description": "Homebrew Enabler (onionHEN) para PlayStation 5."
     }
 ]
 
