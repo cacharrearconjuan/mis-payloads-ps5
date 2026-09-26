@@ -156,6 +156,18 @@
         "checksum": "73dd3f3938867ac970207ae8e4093e2d0c5b005bcad1ff9ff2aeb5d34294a161"
     },
     {
+        "name": "Common-FPS-for-PS5",
+        "filename": "Common_FPS_PS5_v1.1.0.elf",
+        "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.1.0/Common_FPS_PS5_v1.1.0.elf",
+        "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
+        "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.1.0/Common_FPS_PS5_v1.1.0.elf",
+        "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5.",
+        "last_update": "2026-09-05",
+        "version": "v1.1.0",
+        "category": "Utilidades y Herramientas",
+        "checksum": "4f544fa00f7a430e64c4c8d0ed42d0463d2370c81dabd9141599c27c4f3f99d6"
+    },
+    {
         "name": "onionHEN",
         "filename": "OnionHEN.elf",
         "url": "https://github.com/aydencharles/onionHEN/releases/download/v0.0.13/OnionHEN.elf",
