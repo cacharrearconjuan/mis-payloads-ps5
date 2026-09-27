@@ -145,15 +145,15 @@
     },
     {
         "name": "Spectrum-Library",
-        "filename": "SpectrumLibrary_1.4.6.elf",
-        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.6/SpectrumLibrary_1.4.6.elf",
+        "filename": "LegacyJB_1.1.bin",
+        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.7/LegacyJB_1.1.bin",
         "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
-        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.6/SpectrumLibrary_1.4.6.elf",
+        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.7/LegacyJB_1.1.bin",
         "description": "Librería y utilidades Spectrum para PS5.",
-        "last_update": "2026-09-19",
-        "version": "1.4.6",
+        "last_update": "2026-09-27",
+        "version": "1.4.7",
         "category": "Utilidades y Herramientas",
-        "checksum": "73dd3f3938867ac970207ae8e4093e2d0c5b005bcad1ff9ff2aeb5d34294a161"
+        "checksum": "9c7b60380153cda2eb4a6f20ddc46774a621706388714d0fd97b492a6152f751"
     },
     {
         "name": "Common-FPS-for-PS5",
