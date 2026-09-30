@@ -127,6 +127,14 @@ APPS = [
         "source": "https://github.com/aydencharles/onionHEN/releases",
         "category": "Sistema y Jailbreak",
         "description": "Homebrew Enabler (onionHEN) para PlayStation 5."
+    },
+    {
+        "id": "elfldr", 
+        "author": "ps5-payload-dev", 
+        "api": "https://api.github.com/repos/ps5-payload-dev/elfldr/releases",
+        "source": "https://github.com/ps5-payload-dev/elfldr/releases",
+        "category": "Sistema y Jailbreak",
+        "description": "Cargador de payloads para PS5 a través del puerto 9021."
     }
 ]
 
