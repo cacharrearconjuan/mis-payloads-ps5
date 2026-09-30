@@ -133,27 +133,27 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.5.0.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.0/webkit-autoloader-installer_v0.5.0.elf",
+        "filename": "webkit-autoloader-installer_v0.5.1.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.1/webkit-autoloader-installer_v0.5.1.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.0/webkit-autoloader-installer_v0.5.0.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.1/webkit-autoloader-installer_v0.5.1.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-        "last_update": "2026-09-29",
-        "version": "v0.5.0",
+        "last_update": "2026-09-30",
+        "version": "v0.5.1",
         "category": "Sistema y Jailbreak",
-        "checksum": "83c2128520267515fe2f197db35427bb95b7273934e52ad3c6bf668a4ef27b7f"
+        "checksum": "80083f76383944e1f87c2d4126e4e067cd70bd8013feb538575bc2cb08258a78"
     },
     {
         "name": "Common-FPS-for-PS5",
-        "filename": "Common_FPS_PS5_v1.2.0.elf",
-        "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.0/Common_FPS_PS5_v1.2.0.elf",
+        "filename": "Common_FPS_PS5_v1.2.1.elf",
+        "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.1/Common_FPS_PS5_v1.2.1.elf",
         "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
-        "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.0/Common_FPS_PS5_v1.2.0.elf",
+        "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.1/Common_FPS_PS5_v1.2.1.elf",
         "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5.",
-        "last_update": "2026-09-28",
-        "version": "v1.2.0",
+        "last_update": "2026-09-29",
+        "version": "v1.2.1",
         "category": "Utilidades y Herramientas",
-        "checksum": "6cab6df150bb0d77a954e7cf812992b291fc74d8b2aaf31c8316210aabb360b2"
+        "checksum": "6be733b7b3a15ed03b67adcd34ca02628427210775c330f2fbe9f000bc7b27ff"
     },
     {
         "name": "onionHEN",
