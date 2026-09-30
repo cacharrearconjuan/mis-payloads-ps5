@@ -133,15 +133,15 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.5.1.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.1/webkit-autoloader-installer_v0.5.1.elf",
+        "filename": "webkit-autoloader-installer_v0.5.2.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.2/webkit-autoloader-installer_v0.5.2.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.1/webkit-autoloader-installer_v0.5.1.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.5.2/webkit-autoloader-installer_v0.5.2.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
         "last_update": "2026-09-30",
-        "version": "v0.5.1",
+        "version": "v0.5.2",
         "category": "Sistema y Jailbreak",
-        "checksum": "80083f76383944e1f87c2d4126e4e067cd70bd8013feb538575bc2cb08258a78"
+        "checksum": "f990e48e8330231d2066a7b8ab6dc25fda83b2cc36cb426c472b35b33767451a"
     },
     {
         "name": "Common-FPS-for-PS5",
