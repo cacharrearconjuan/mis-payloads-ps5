@@ -144,6 +144,18 @@
         "checksum": "f990e48e8330231d2066a7b8ab6dc25fda83b2cc36cb426c472b35b33767451a"
     },
     {
+        "name": "Spectrum-Library",
+        "filename": "SpectrumLibrary_1.4.8.elf",
+        "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.8/SpectrumLibrary_1.4.8.elf",
+        "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
+        "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.8/SpectrumLibrary_1.4.8.elf",
+        "description": "Librería y utilidades Spectrum para PS5.",
+        "last_update": "2026-10-01",
+        "version": "1.4.8",
+        "category": "Utilidades y Herramientas",
+        "checksum": "5d1372d48f76167e3f9e24b335cf571ea6e4b3960e6b7202d2802b0f78c3a519"
+    },
+    {
         "name": "Common-FPS-for-PS5",
         "filename": "Common_FPS_PS5_v1.2.1.elf",
         "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.1/Common_FPS_PS5_v1.2.1.elf",
