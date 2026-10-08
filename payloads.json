@@ -133,15 +133,15 @@
     },
     {
         "name": "ps5-webkit-autoloader",
-        "filename": "webkit-autoloader-installer_v0.6.0.elf",
-        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.0/webkit-autoloader-installer_v0.6.0.elf",
+        "filename": "webkit-autoloader-installer_v0.6.1.elf",
+        "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.1/webkit-autoloader-installer_v0.6.1.elf",
         "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.0/webkit-autoloader-installer_v0.6.0.elf",
+        "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.1/webkit-autoloader-installer_v0.6.1.elf",
         "description": "Cargador automático para PS5 basado en el exploit WebKit.",
         "last_update": "2026-10-08",
-        "version": "v0.6.0",
+        "version": "v0.6.1",
         "category": "Sistema y Jailbreak",
-        "checksum": "b4dc090ea7f22529d507e684909ab4524a21a6a26777a425bf787dbffc5b419c"
+        "checksum": "f662c75a502e4f1bc41b055dcb490625f8222c499ce437dc80f439a3a279e93f"
     },
     {
         "name": "Spectrum-Library",
