@@ -135,6 +135,14 @@ APPS = [
         "source": "https://github.com/ps5-payload-dev/elfldr/releases",
         "category": "Sistema y Jailbreak",
         "description": "Cargador de payloads para PS5 a través del puerto 9021."
+    },
+    {
+        "id": "ps5-pkg-manager", 
+        "author": "itsPLK", 
+        "api": "https://api.github.com/repos/itsPLK/ps5-pkg-manager/releases",
+        "source": "https://github.com/itsPLK/ps5-pkg-manager/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Gestor de paquetes (PKG) para PlayStation 5."
     }
 ]
 
@@ -332,3 +340,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
