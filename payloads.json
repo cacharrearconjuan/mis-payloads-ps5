@@ -190,5 +190,17 @@
         "version": "v0.26",
         "category": "Sistema y Jailbreak",
         "checksum": "ed6d587a057c09d6a95b2176e336d9ffc605e547ac56462128b029e47b8ccea1"
+    },
+    {
+        "name": "ps5-pkg-manager",
+        "filename": "pkg-manager_v1.5.1.elf",
+        "url": "https://github.com/itsPLK/ps5-pkg-manager/releases/download/v1.5.1/pkg-manager_v1.5.1.elf",
+        "source": "https://github.com/itsPLK/ps5-pkg-manager/releases",
+        "source_direct": "https://github.com/itsPLK/ps5-pkg-manager/releases/download/v1.5.1/pkg-manager_v1.5.1.elf",
+        "description": "Gestor de paquetes (PKG) para PlayStation 5.",
+        "last_update": "2026-10-10",
+        "version": "v1.5.1",
+        "category": "Utilidades y Herramientas",
+        "checksum": "82e3548edcc41419b644482cccaef65689334fc0315dc20247f48b90bf182dca"
     }
 ]
