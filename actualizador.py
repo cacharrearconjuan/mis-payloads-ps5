@@ -1,13 +1,12 @@
 import json
 import urllib.request
 import urllib.error
-import urllib.parse
 import hashlib
 import os
 import re
-import base64
 import zipfile
 import shutil
+from datetime import datetime, timezone
 
 APPS = [
     {
@@ -152,15 +151,8 @@ APPS = [
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 HOSTED_FOLDER = "hosted"
 
-# Palabras clave para descartar badges, botones de donación o banners que no son logos
-BADGE_KEYWORDS = (
-    'shields.io', 'badge', 'workflows', 'actions/workflows', 'ko-fi', 
-    'buymeacoffee', 'paypal', 'discord', 'star-history', 'contrib.rocks',
-    ' patrocinar', 'sponsor', 'banner', 'screenshot'
-)
-
 def cargar_iconos_locales():
-    """Si tienes un archivo icons.json propio en tu repositorio, lo carga como prioridad."""
+    """Carga un archivo icons.json propio si existe en tu repositorio."""
     if os.path.exists("icons.json"):
         try:
             with open("icons.json", "r", encoding="utf-8") as f:
@@ -169,71 +161,16 @@ def cargar_iconos_locales():
             pass
     return {}
 
-def extraer_logo_de_readme(repo_api_url, headers):
-    """Busca si el desarrollador puso un logotipo en el README.md de su repositorio."""
-    readme_url = f"{repo_api_url}/readme"
-    try:
-        req = urllib.request.Request(readme_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as res:
-            data = json.loads(res.read().decode())
-            contenido_b64 = data.get("content", "")
-            download_url = data.get("download_url", "")
-            if not contenido_b64 or not download_url:
-                return None
-
-            texto_readme = base64.b64decode(contenido_b64).decode('utf-8', errors='ignore')
-            base_raw_url = download_url.rsplit('/', 1)[0] + '/'
-
-            # Buscar imágenes en HTML (<img src="...">) y Markdown (![...](...))
-            patrones = [
-                r'<img[^>]+src=["\']([^"\']+)["\']',
-                r'!\[[^\]]*\]\(([^)\s]+)'
-            ]
-
-            candidatos = []
-            for patron in patrones:
-                candidatos.extend(re.findall(patron, texto_readme, re.IGNORECASE))
-
-            for img_url in candidatos:
-                img_lower = img_url.lower()
-                
-                # Descartar badges, escudos y capturas grandes
-                if any(palabra in img_lower for palabra in BADGE_KEYWORDS):
-                    continue
-                
-                # Limpiar parámetros o anclas si es necesario verificar extensión
-                ruta_limpia = img_lower.split('?')[0].split('#')[0]
-                if not ruta_limpia.endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg')) and 'githubusercontent.com' not in img_lower:
-                    continue
-
-                # Convertir rutas relativas o enlaces 'blob' de GitHub en enlaces 'raw' directos
-                if img_url.startswith(('http://', 'https://')):
-                    if 'github.com/' in img_url and '/blob/' in img_url:
-                        img_url = img_url.replace('github.com/', 'raw.githubusercontent.com/').replace('/blob/', '/')
-                    return img_url
-                else:
-                    return urllib.parse.urljoin(base_raw_url, img_url.lstrip('/'))
-    except Exception:
-        pass
-    return None
-
 def obtener_icono_autonomo(app, headers, iconos_locales):
-    """Obtiene el icono directamente del repositorio del creador sin depender de terceros."""
-    # 1. Prioridad a icono manual configurado en APPS o en tu icons.json local
+    """Obtiene el icono directamente del perfil del autor en GitHub/Gitea o de tu configuración manual."""
     if app.get("icon"):
         return app["icon"]
     if app["id"] in iconos_locales:
         return iconos_locales[app["id"]]
 
-    # URL base de la API del repositorio (quitando '/releases')
     repo_api_url = re.sub(r'/releases$', '', app['api'].rstrip('/'))
 
-    # 2. Intentar extraer el logo oficial del README.md del proyecto
-    logo_readme = extraer_logo_de_readme(repo_api_url, headers)
-    if logo_readme:
-        return logo_readme
-
-    # 3. Consultar la API del repositorio para extraer el avatar oficial del propietario (owner.avatar_url)
+    # Consultar la API del repositorio para extraer el avatar oficial del propietario (GitHub y Gitea)
     try:
         req = urllib.request.Request(repo_api_url, headers=headers)
         with urllib.request.urlopen(req, timeout=10) as res:
@@ -244,7 +181,6 @@ def obtener_icono_autonomo(app, headers, iconos_locales):
     except Exception:
         pass
 
-    # 4. Fallback directo por URL si es GitHub
     if "github.com" in app.get("source", ""):
         return f"https://github.com/{app['author']}.png"
 
@@ -429,7 +365,8 @@ def main():
                 "version": version,
                 "category": app.get('category', 'Utilidades y Herramientas'),
                 "checksum": checksum,
-                "icon": icono
+                "icon": icono,
+                "icon_url": icono
             }
             
             if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
@@ -440,9 +377,20 @@ def main():
         else:
             print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
 
+    # Guardar formato v1 (payloads.json)
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
-    print("\nArchivo 'payloads.json' generado correctamente de forma 100% autónoma.")
+
+    # Guardar también formato v2 (payloads_v2.json)
+    ahora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    repo_v2 = {
+        "last_updated": ahora,
+        "payloads": repo_data
+    }
+    with open("payloads_v2.json", "w", encoding="utf-8") as f:
+        json.dump(repo_v2, f, indent=4, ensure_ascii=False)
+
+    print("\nArchivos 'payloads.json' y 'payloads_v2.json' generados correctamente.")
 
 if __name__ == "__main__":
     main()
