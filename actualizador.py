@@ -1,9 +1,11 @@
 import json
 import urllib.request
 import urllib.error
+import urllib.parse
 import hashlib
 import os
 import re
+import base64
 import zipfile
 import shutil
 from datetime import datetime, timezone
@@ -149,42 +151,191 @@ APPS = [
 ]
 
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
+IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg')
 HOSTED_FOLDER = "hosted"
 
-def cargar_iconos_locales():
-    """Carga un archivo icons.json propio si existe en tu repositorio."""
-    if os.path.exists("icons.json"):
-        try:
-            with open("icons.json", "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
+# Palabras a descartar para no confundir capturas o insignias con el icono del proyecto
+EXCLUDE_IMAGE_KEYWORDS = (
+    'shields.io', 'badge', 'workflows', 'actions/workflows', 'ko-fi',
+    'buymeacoffee', 'paypal', 'discord', 'star-history', 'contrib.rocks',
+    'sponsor', 'banner', 'screenshot', 'screen', 'preview', 'capture'
+)
 
-def obtener_icono_autonomo(app, headers, iconos_locales):
-    """Obtiene el icono directamente del perfil del autor en GitHub/Gitea o de tu configuración manual."""
+def construir_raw_url(repo_api_url, default_branch, file_path):
+    """Construye la URL directa al archivo imagen tanto para GitHub como para Gitea."""
+    file_path = file_path.lstrip('/')
+    if "api.github.com/repos/" in repo_api_url:
+        slug = repo_api_url.split("api.github.com/repos/")[1]
+        return f"https://raw.githubusercontent.com/{slug}/{default_branch}/{file_path}"
+    elif "/api/v1/repos/" in repo_api_url:
+        base_host, slug = repo_api_url.split("/api/v1/repos/")
+        return f"{base_host}/{slug}/raw/branch/{default_branch}/{file_path}"
+    return ""
+
+def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
+    """Busca archivos como assets/icon0.png, icon0.png, icon.png o logo.png en el árbol del repositorio."""
+    tree_url = f"{repo_api_url}/git/trees/{default_branch}?recursive=1"
+    try:
+        req = urllib.request.Request(tree_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as res:
+            data = json.loads(res.read().decode())
+            tree = data.get("tree", [])
+
+            prioridad_1 = []  # icon0.png (estándar PS5)
+            prioridad_2 = []  # icon.png / logo.png exactos
+            prioridad_3 = []  # cualquier imagen que contenga 'icon' o 'logo'
+
+            for item in tree:
+                if item.get("type") != "blob":
+                    continue
+                path = item.get("path", "")
+                path_lower = path.lower()
+                filename = os.path.basename(path_lower)
+
+                if not filename.endswith(IMAGE_EXTENSIONS):
+                    continue
+                if any(bad in path_lower for bad in EXCLUDE_IMAGE_KEYWORDS):
+                    continue
+
+                if filename in ("icon0.png", "icon0.jpg", "icon0.webp"):
+                    prioridad_1.append(path)
+                elif filename in ("icon.png", "logo.png", "icon.jpg", "logo.jpg", "icon.webp", "logo.webp"):
+                    prioridad_2.append(path)
+                elif "icon" in filename or "logo" in filename:
+                    prioridad_3.append(path)
+
+            for lista in (prioridad_1, prioridad_2, prioridad_3):
+                if lista:
+                    return construir_raw_url(repo_api_url, default_branch, lista[0])
+    except Exception:
+        pass
+    return None
+
+def extraer_logo_de_readme(repo_api_url, default_branch, headers):
+    """Analiza el README.md del proyecto para extraer su logotipo principal."""
+    readme_url = f"{repo_api_url}/readme"
+    try:
+        req = urllib.request.Request(readme_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as res:
+            data = json.loads(res.read().decode())
+            contenido_b64 = data.get("content", "")
+            if not contenido_b64:
+                return None
+
+            texto_readme = base64.b64decode(contenido_b64).decode('utf-8', errors='ignore')
+
+            patrones = [
+                r'<img[^>]+src=["\']([^"\']+)["\']',
+                r'!\[[^\]]*\]\(([^)\s]+)'
+            ]
+
+            candidatos = []
+            for patron in patrones:
+                candidatos.extend(re.findall(patron, texto_readme, re.IGNORECASE))
+
+            imagenes_validas = []
+            for img_url in candidatos:
+                img_url = img_url.strip()
+                img_lower = img_url.lower()
+
+                if any(palabra in img_lower for palabra in EXCLUDE_IMAGE_KEYWORDS):
+                    continue
+
+                ruta_limpia = img_lower.split('?')[0].split('#')[0]
+                if not ruta_limpia.endswith(IMAGE_EXTENSIONS) and 'githubusercontent.com' not in img_lower:
+                    continue
+
+                # Convertir ruta relativa o blob de GitHub en URL Raw directa
+                if img_url.startswith(('http://', 'https://')):
+                    if 'github.com/' in img_url and '/blob/' in img_url:
+                        img_url = img_url.replace('github.com/', 'raw.githubusercontent.com/').replace('/blob/', '/')
+                    url_final = img_url
+                else:
+                    ruta_relativa = re.sub(r'^\./', '', img_url).lstrip('/')
+                    url_final = construir_raw_url(repo_api_url, default_branch, ruta_relativa)
+
+                if url_final:
+                    imagenes_validas.append(url_final)
+
+            # Priorizar si alguna imagen del README se llama 'icon' o 'logo'
+            for url_img in imagenes_validas:
+                if 'icon' in url_img.lower() or 'logo' in url_img.lower():
+                    return url_img
+
+            if imagenes_validas:
+                return imagenes_validas[0]
+    except Exception:
+        pass
+    return None
+
+def obtener_icono_repositorio(app, headers):
+    """Obtiene el icono del proyecto (árbol de archivos -> README -> avatar del repo/autor)."""
     if app.get("icon"):
         return app["icon"]
-    if app["id"] in iconos_locales:
-        return iconos_locales[app["id"]]
 
     repo_api_url = re.sub(r'/releases$', '', app['api'].rstrip('/'))
+    default_branch = "main"
+    avatar_fallback = ""
 
-    # Consultar la API del repositorio para extraer el avatar oficial del propietario (GitHub y Gitea)
+    # 1. Consultar metadatos del repositorio (rama principal y avatares)
     try:
         req = urllib.request.Request(repo_api_url, headers=headers)
         with urllib.request.urlopen(req, timeout=10) as res:
             repo_data = json.loads(res.read().decode())
-            avatar_owner = (repo_data.get("owner") or {}).get("avatar_url", "")
-            if avatar_owner:
-                return avatar_owner
+            default_branch = repo_data.get("default_branch", "main")
+            # En Gitea el repositorio puede tener su propio avatar_url
+            avatar_fallback = repo_data.get("avatar_url") or (repo_data.get("owner") or {}).get("avatar_url", "")
     except Exception:
         pass
 
+    # 2. Buscar archivo de icono en el repositorio (ej. assets/icon0.png)
+    icono_arbol = buscar_icono_en_arbol(repo_api_url, default_branch, headers)
+    if icono_arbol:
+        return icono_arbol
+
+    # 3. Buscar logotipo en el README.md
+    icono_readme = extraer_logo_de_readme(repo_api_url, default_branch, headers)
+    if icono_readme:
+        return icono_readme
+
+    # 4. Último recurso: avatar cuando el repositorio no tiene ninguna imagen (ej. elfldr)
+    if avatar_fallback:
+        return avatar_fallback
     if "github.com" in app.get("source", ""):
         return f"https://github.com/{app['author']}.png"
 
     return ""
+
+def convertir_icono_a_base64(icon_url):
+    """Descarga el icono y lo convierte a Data URI Base64 para el archivo icons.json."""
+    if not icon_url:
+        return ""
+    if icon_url.startswith("data:image/"):
+        return icon_url
+    try:
+        req = urllib.request.Request(icon_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=15) as res:
+            raw_bytes = res.read()
+            content_type = res.headers.get_content_type()
+
+            if not content_type or not content_type.startswith("image/"):
+                url_lower = icon_url.lower().split('?')[0]
+                if url_lower.endswith(('.jpg', '.jpeg')):
+                    content_type = "image/jpeg"
+                elif url_lower.endswith('.webp'):
+                    content_type = "image/webp"
+                elif url_lower.endswith('.gif'):
+                    content_type = "image/gif"
+                elif url_lower.endswith('.svg'):
+                    content_type = "image/svg+xml"
+                else:
+                    content_type = "image/png"
+
+            b64_str = base64.b64encode(raw_bytes).decode('utf-8')
+            return f"data:{content_type};base64,{b64_str}"
+    except Exception as e:
+        print(f"  [!] No se pudo codificar en Base64 el icono {icon_url}: {e}")
+        return icon_url
 
 def es_version_valida(tag_name):
     return "alpha" not in tag_name.lower()
@@ -213,7 +364,7 @@ def extraer_ejecutables_validos(release):
         })
     return ejecutables
 
-def obtener_datos_api(app, iconos_locales):
+def obtener_datos_api(app):
     url = app['api']
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -333,9 +484,9 @@ def obtener_datos_api(app, iconos_locales):
                 except Exception as e:
                     print(f"  [!] Error calculando checksum estándar: {e}")
 
-            icono = obtener_icono_autonomo(app, headers, iconos_locales)
+            icono_url = obtener_icono_repositorio(app, headers)
                     
-            return version, nombre_archivo, url_descarga, last_update, checksum, icono
+            return version, nombre_archivo, url_descarga, last_update, checksum, icono_url
             
     except urllib.error.HTTPError as e:
         print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
@@ -346,13 +497,17 @@ def obtener_datos_api(app, iconos_locales):
 
 def main():
     repo_data = []
-    iconos_locales = cargar_iconos_locales()
+    icons_catalog = {}
 
     for app in APPS:
         print(f"Procesando {app['id']}...")
-        version, nombre_archivo, url_descarga, last_update, checksum, icono = obtener_datos_api(app, iconos_locales)
+        version, nombre_archivo, url_descarga, last_update, checksum, icono_url = obtener_datos_api(app)
         
         if version and url_descarga:
+            icono_b64 = convertir_icono_a_base64(icono_url)
+            if icono_b64:
+                icons_catalog[app['id']] = icono_b64
+
             payload = {
                 "name": app['id'],
                 "filename": nombre_archivo,
@@ -365,23 +520,22 @@ def main():
                 "version": version,
                 "category": app.get('category', 'Utilidades y Herramientas'),
                 "checksum": checksum,
-                "icon": icono,
-                "icon_url": icono
+                "icon": icono_url
             }
             
             if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo}) | Icono: {icono}")
+            print(f" -> OK: {version} ({nombre_archivo}) | Icono: {icono_url}")
         else:
             print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
 
-    # Guardar formato v1 (payloads.json)
+    # 1. Guardar payloads.json
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
 
-    # Guardar también formato v2 (payloads_v2.json)
+    # 2. Guardar payloads_v2.json
     ahora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     repo_v2 = {
         "last_updated": ahora,
@@ -390,7 +544,11 @@ def main():
     with open("payloads_v2.json", "w", encoding="utf-8") as f:
         json.dump(repo_v2, f, indent=4, ensure_ascii=False)
 
-    print("\nArchivos 'payloads.json' y 'payloads_v2.json' generados correctamente.")
+    # 3. Guardar icons.json (Catálogo separado de iconos para PS5 Payload Manager)
+    with open("icons.json", "w", encoding="utf-8") as f:
+        json.dump(icons_catalog, f, indent=4, ensure_ascii=False)
+
+    print("\nArchivos 'payloads.json', 'payloads_v2.json' e 'icons.json' generados correctamente.")
 
 if __name__ == "__main__":
     main()
