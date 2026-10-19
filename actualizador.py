@@ -8,6 +8,7 @@ import re
 import base64
 import zipfile
 import shutil
+import io
 from datetime import datetime, timezone
 
 APPS = [
@@ -25,7 +26,7 @@ APPS = [
         "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
         "category": "Utilidades y Herramientas",
-        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 dengan Jailbreak.",
+        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
         "extract_file": "shadowmountplus.elf"
     },
     {
@@ -150,155 +151,224 @@ APPS = [
     }
 ]
 
+# --- Formato de catálogo que entiende PS5 Payload Manager (ver CUSTOM_REPOSITORIES.md) ---
+NOMBRE_REPO = "Cacharrear con Juan"
+BASE_URL = "https://cacharrearconjuan.github.io/mis-payloads-ps5"
+# Límites del Payload Manager: data URI PNG/JPEG/SVG, máx. 12.288 caracteres, sin WebP ni URLs
+MAX_ICON_LEN = 12000
+
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg')
 HOSTED_FOLDER = "hosted"
 
+# Palabras que delatan que una imagen NO es el icono (badges, capturas, donaciones...)
 EXCLUDE_IMAGE_KEYWORDS = (
-    'shields.io', 'badge', 'workflows', 'actions/workflows', 'ko-fi',
-    'buymeacoffee', 'paypal', 'discord', 'star-history', 'contrib.rocks',
-    'sponsor', 'banner', 'screenshot', 'screen', 'preview', 'capture'
+    'shields.io', 'badge', 'workflows', 'ko-fi', 'buymeacoffee', 'paypal', 'discord',
+    'star-history', 'contrib.rocks', 'sponsor', 'banner', 'screenshot', 'screen',
+    'preview', 'capture', 'demo', 'donat', 'alipay', 'wechat', 'flag-', 'favicon',
+    'node_modules', 'mock', 'emoji', 'sprite'
 )
+# Carpetas habituales de iconos además de la raíz (el icono de un subproyecto no vale)
+CARPETAS_ICONO = ('assets', 'assets-app', 'asset', 'images', 'image', 'img', 'icons', 'icon',
+                  'res', 'resources', 'media', 'logo', 'art', 'sce_sys', '.github', 'docs')
+
+def _api_json(url, headers, timeout=15):
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=timeout) as res:
+        return json.loads(res.read().decode())
 
 def construir_raw_url(repo_api_url, default_branch, file_path):
-    file_path = file_path.lstrip('/')
+    file_path = urllib.parse.quote(file_path.lstrip('/'))
     if "api.github.com/repos/" in repo_api_url:
-        slug = repo_api_url.split("api.github.com/repos/")[1]
-        return f"https://raw.githubusercontent.com/{slug}/{default_branch}/{file_path}"
-    elif "/api/v1/repos/" in repo_api_url:
-        base_host, slug = repo_api_url.split("/api/v1/repos/")
-        return f"{base_host}/{slug}/raw/branch/{default_branch}/{file_path}"
+        slug_repo = repo_api_url.split("api.github.com/repos/")[1]
+        return f"https://raw.githubusercontent.com/{slug_repo}/{default_branch}/{file_path}"
+    elif "/api/v1/repos/" in repo_api_url:  # Gitea / Forgejo
+        base_host, slug_repo = repo_api_url.split("/api/v1/repos/")
+        return f"{base_host}/{slug_repo}/raw/branch/{default_branch}/{file_path}"
     return ""
 
-def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
-    tree_url = f"{repo_api_url}/git/trees/{default_branch}?recursive=1"
-    try:
-        req = urllib.request.Request(tree_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as res:
-            data = json.loads(res.read().decode())
-            tree = data.get("tree", [])
-
-            p1, p2, p3 = [], [], []
-            for item in tree:
-                if item.get("type") != "blob":
-                    continue
-                path = item.get("path", "")
-                path_lower = path.lower()
-                filename = os.path.basename(path_lower)
-
-                if not filename.endswith(IMAGE_EXTENSIONS):
-                    continue
-                if any(bad in path_lower for bad in EXCLUDE_IMAGE_KEYWORDS):
-                    continue
-
-                if filename in ("icon0.png", "icon0.jpg", "icon0.webp"):
-                    p1.append(path)
-                elif filename in ("icon.png", "logo.png", "icon.jpg", "logo.jpg", "icon.webp", "logo.webp"):
-                    p2.append(path)
-                elif "icon" in filename or "logo" in filename:
-                    p3.append(path)
-
-            for lista in (p1, p2, p3):
-                if lista:
-                    return construir_raw_url(repo_api_url, default_branch, lista[0])
-    except Exception:
-        pass
+def _prioridad_icono(path):
+    """0 = icon0 (estándar PS5), 1 = icon/logo, 2 = contiene icon/logo; None = no es icono."""
+    path_lower = path.lower()
+    nombre, ext = os.path.splitext(os.path.basename(path_lower))
+    if ext not in IMAGE_EXTENSIONS or any(k in path_lower for k in EXCLUDE_IMAGE_KEYWORDS):
+        return None
+    if nombre == "icon0":
+        return 0
+    if nombre in ("icon", "logo", "app_icon", "appicon", "app-icon"):
+        return 1
+    if "icon" in nombre or "logo" in nombre:
+        return 2
     return None
 
-def extraer_logo_de_readme(repo_api_url, default_branch, headers):
-    readme_url = f"{repo_api_url}/readme"
-    try:
-        req = urllib.request.Request(readme_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as res:
-            data = json.loads(res.read().decode())
-            contenido_b64 = data.get("content", "")
-            if not contenido_b64:
-                return None
+def listar_arbol(repo_api_url, default_branch, headers):
+    """Rutas de todos los ficheros del repo (GitHub o Gitea)."""
+    ref = default_branch
+    if "/api/v1/repos/" in repo_api_url:
+        # Gitea pide el SHA del commit, no el nombre de la rama
+        rama = _api_json(f"{repo_api_url}/branches/{urllib.parse.quote(default_branch)}", headers)
+        ref = rama["commit"]["id"]
+        url = f"{repo_api_url}/git/trees/{ref}?recursive=true&per_page=10000"
+    else:
+        url = f"{repo_api_url}/git/trees/{urllib.parse.quote(ref)}?recursive=1"
+    data = _api_json(url, headers)
+    return [i["path"] for i in data.get("tree", []) if i.get("type") == "blob"]
 
-            texto_readme = base64.b64decode(contenido_b64).decode('utf-8', errors='ignore')
-            patrones = [r'<img[^>]+src=["\']([^"\']+)["\']', r'!\[[^\]]*\]\(([^)\s]+)']
-            candidatos = []
-            for patron in patrones:
-                candidatos.extend(re.findall(patron, texto_readme, re.IGNORECASE))
+def iconos_del_arbol(rutas):
+    """Iconos del repo, mejor primero. Solo raíz o una carpeta típica (assets/, img/...):
+    así no se cuela el icono de un subproyecto (p. ej. elf-arsenal/ftpsrv-src/assets/icon0.png)."""
+    candidatos = []
+    for path in rutas:
+        prio = _prioridad_icono(path)
+        if prio is None:
+            continue
+        carpetas = path.lower().split("/")[:-1]
+        if len(carpetas) > 1 or (carpetas and carpetas[0] not in CARPETAS_ICONO):
+            continue
+        candidatos.append((prio, len(carpetas), path))
+    return [p for _, _, p in sorted(candidatos)]
 
-            imagenes_validas = []
-            for img_url in candidatos:
-                img_url = img_url.strip()
-                img_lower = img_url.lower()
-                if any(palabra in img_lower for palabra in EXCLUDE_IMAGE_KEYWORDS):
-                    continue
-                ruta_limpia = img_lower.split('?')[0].split('#')[0]
-                if not ruta_limpia.endswith(IMAGE_EXTENSIONS) and 'githubusercontent.com' not in img_lower:
-                    continue
+def imagenes_del_readme(texto, repo_api_url, default_branch):
+    """Imágenes del README: primero las que se llaman icon/logo, luego el resto (máx. 3).
+    Luego se exige que sean casi cuadradas, así una captura o un banner no cuela."""
+    etiquetas = re.findall(r'<img[^>]*>', texto, re.I) + re.findall(r'!\[[^\]]*\]\([^)\s]+[^)]*\)', texto)
+    con_nombre, resto = [], []
+    for tag in etiquetas:
+        m = re.search(r'src=["\']([^"\']+)', tag, re.I) or re.search(r'\]\(([^)\s]+)', tag)
+        if not m:
+            continue
+        url = m.group(1).strip()
+        url_lower = url.lower()
+        if any(k in url_lower for k in EXCLUDE_IMAGE_KEYWORDS) or url_lower.startswith("data:"):
+            continue
+        if url.startswith(("http://", "https://")):
+            if "github.com/" in url and "/blob/" in url:
+                url = url.replace("github.com/", "raw.githubusercontent.com/").replace("/blob/", "/")
+        else:
+            url = construir_raw_url(repo_api_url, default_branch, re.sub(r'^\./', '', url))
+        if not url:
+            continue
+        (con_nombre if re.search(r'icon|logo', tag, re.I) else resto).append(url)
+    vistos, salida = set(), []
+    for u in con_nombre + resto[:3]:
+        if u not in vistos:
+            vistos.add(u); salida.append(u)
+    return salida
 
-                if img_url.startswith(('http://', 'https://')):
-                    if 'github.com/' in img_url and '/blob/' in img_url:
-                        img_url = img_url.replace('github.com/', 'raw.githubusercontent.com/').replace('/blob/', '/')
-                    url_final = img_url
-                else:
-                    ruta_relativa = re.sub(r'^\./', '', img_url).lstrip('/')
-                    url_final = construir_raw_url(repo_api_url, default_branch, ruta_relativa)
-
-                if url_final:
-                    imagenes_validas.append(url_final)
-
-            for url_img in imagenes_validas:
-                if 'icon' in url_img.lower() or 'logo' in url_img.lower():
-                    return url_img
-            if imagenes_validas:
-                return imagenes_validas[0]
-    except Exception:
-        pass
-    return None
-
-def obtener_icono_repositorio(app, headers):
+def candidatos_icono(app, headers, release=None):
+    """Lista ordenada de (url, exigir_cuadrado). Orden:
+       0) "icon" manual en APPS  1) imagen icon0/icon/logo subida a la release
+       2) icono en el propio repo  3) logo del README  4) avatar del autor/organización."""
     if app.get("icon"):
-        return app["icon"]
+        return [(app["icon"], False)]
+    salida = []
+
+    for asset in (release or {}).get("assets", []):
+        if _prioridad_icono(asset.get("name", "")) is not None:
+            salida.append((asset.get("browser_download_url", ""), True))
 
     repo_api_url = re.sub(r'/releases$', '', app['api'].rstrip('/'))
-    default_branch = "main"
-    avatar_fallback = ""
-
+    default_branch, avatar = "main", ""
     try:
-        req = urllib.request.Request(repo_api_url, headers=headers)
-        with urllib.request.urlopen(req, timeout=10) as res:
-            repo_data = json.loads(res.read().decode())
-            default_branch = repo_data.get("default_branch", "main")
-            avatar_fallback = repo_data.get("avatar_url") or (repo_data.get("owner") or {}).get("avatar_url", "")
-    except Exception:
-        pass
+        repo_data = _api_json(repo_api_url, headers)
+        default_branch = repo_data.get("default_branch") or "main"
+        avatar = (repo_data.get("owner") or {}).get("avatar_url") or repo_data.get("avatar_url") or ""
+    except Exception as e:
+        print(f"    (sin datos del repo: {e})")
 
-    icono_arbol = buscar_icono_en_arbol(repo_api_url, default_branch, headers)
-    if icono_arbol:
-        return icono_arbol
+    rutas = []
+    try:
+        rutas = listar_arbol(repo_api_url, default_branch, headers)
+        salida += [(construir_raw_url(repo_api_url, default_branch, p), True) for p in iconos_del_arbol(rutas)]
+    except Exception as e:
+        print(f"    (no se pudo listar el repo: {e})")
 
-    icono_readme = extraer_logo_de_readme(repo_api_url, default_branch, headers)
-    if icono_readme:
-        return icono_readme
+    readme = next((p for p in rutas if "/" not in p and p.lower().startswith("readme")
+                   and p.lower().endswith((".md", ".markdown"))), None)
+    if readme:
+        try:
+            texto = _leer(construir_raw_url(repo_api_url, default_branch, readme))[0].decode("utf-8", "ignore")
+            salida += [(u, True) for u in imagenes_del_readme(texto, repo_api_url, default_branch)]
+        except Exception as e:
+            print(f"    (no se pudo leer el README: {e})")
 
-    if avatar_fallback:
-        return avatar_fallback
+    # Lo de siempre como último recurso: avatar (o identicon generado por GitHub/Gitea)
+    if avatar:
+        salida.append((avatar, False))
     if "github.com" in app.get("source", ""):
-        return f"https://github.com/{app['author']}.png"
+        salida.append((f"https://github.com/{app['author']}.png", False))
+    return salida
 
-    return ""
+def _leer(url_o_ruta, timeout=20):
+    if url_o_ruta.startswith(("http://", "https://")):
+        req = urllib.request.Request(url_o_ruta, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=timeout) as res:
+            return res.read(), res.headers.get("Content-Type", "")
+    with open(url_o_ruta, "rb") as f:
+        return f.read(), ""
 
-def convertir_icono_a_base64(icon_url):
+def _es_casi_cuadrada(ancho, alto):
+    return ancho > 0 and alto > 0 and 0.75 <= ancho / alto <= 1.33
+
+def convertir_icono_a_data_uri(icon_url, exigir_cuadrado=False):
+    """Descarga una imagen y la deja como data URI PNG/JPEG/SVG <= MAX_ICON_LEN (128 px máx)."""
     if not icon_url:
         return ""
-    if icon_url.startswith("data:image/"):
-        return icon_url
+    raw, mime = (base64.b64decode(icon_url.split(",", 1)[1]), icon_url.split(";")[0][5:]) \
+        if icon_url.startswith("data:image/") else _leer(icon_url)
+
+    # SVG: se deja tal cual si cabe (no se rasteriza)
+    cabeza = raw.lstrip()[:300]
+    if "svg" in mime.lower() or cabeza.startswith(b"<svg") or (cabeza.startswith(b"<?xml") and b"<svg" in cabeza):
+        texto = re.sub(r"\s+", " ", re.sub(r"<!--.*?-->", "", raw.decode("utf-8", "ignore"), flags=re.S)).strip()
+        vb = re.search(r'viewBox=["\'][\d.\-]+[\s,]+[\d.\-]+[\s,]+([\d.]+)[\s,]+([\d.]+)', texto)
+        if exigir_cuadrado and vb and not _es_casi_cuadrada(float(vb.group(1)), float(vb.group(2))):
+            raise ValueError("SVG no cuadrado (banner/captura)")
+        uri = "data:image/svg+xml;base64," + base64.b64encode(texto.encode()).decode()
+        if len(uri) <= MAX_ICON_LEN:
+            return uri
+        raise ValueError("SVG demasiado grande")
+
+    from PIL import Image, ImageOps  # pip install pillow
+    img = Image.open(io.BytesIO(raw))
+    img.seek(0)  # GIF/WebP animados: primer fotograma
+    if exigir_cuadrado and not _es_casi_cuadrada(*img.size):
+        raise ValueError(f"no es cuadrada {img.size} (banner/captura)")
     try:
-        req = urllib.request.Request(icon_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=15) as res:
-            raw_bytes = res.read()
-            content_type = res.headers.get_content_type()
-            if not content_type or not content_type.startswith("image/"):
-                content_type = "image/png"
-            b64_str = base64.b64encode(raw_bytes).decode('utf-8')
-            return f"data:{content_type};base64,{b64_str}"
+        img = ImageOps.exif_transpose(img)
     except Exception:
-        return icon_url
+        pass
+    img = img.convert("RGBA")
+    transparente = img.getchannel("A").getextrema()[0] < 250
+    if not transparente:
+        img = img.convert("RGB")
+
+    for lado in (128, 96, 80, 64, 48):
+        peque = img.copy()
+        peque.thumbnail((lado, lado), Image.Resampling.LANCZOS)
+        intentos = [("PNG", peque, {})]
+        intentos += [("PNG", peque.quantize(colors=c, method=Image.Quantize.FASTOCTREE), {}) for c in (128, 64, 32)]
+        if not transparente:
+            intentos += [("JPEG", peque, {"quality": q}) for q in (85, 75)]
+        for formato, im, extra in intentos:
+            buf = io.BytesIO()
+            im.save(buf, format=formato, optimize=True, **extra)
+            uri = f"data:image/{formato.lower()};base64," + base64.b64encode(buf.getvalue()).decode()
+            if len(uri) <= MAX_ICON_LEN:
+                return uri
+    raise ValueError("no cabe en el límite de tamaño")
+
+def slug(texto):
+    """Mismo algoritmo que slot_slug() del Payload Manager, para que el id no cambie."""
+    out, ultimo_guion = [], True
+    for c in texto:
+        if c.isascii() and c.isalnum():
+            out.append(c.lower()); ultimo_guion = False
+        elif c in "._" and out and out[-1] != ".":
+            out.append(c); ultimo_guion = False
+        elif not ultimo_guion:
+            out.append("-"); ultimo_guion = True
+    return "".join(out).rstrip("-")
 
 def es_version_valida(tag_name):
     return "alpha" not in tag_name.lower()
@@ -434,8 +504,8 @@ def obtener_datos_api(app):
                 except Exception as e:
                     pass
 
-            icono_url = obtener_icono_repositorio(app, headers)
-            return version, nombre_archivo, url_descarga, last_update, checksum, icono_url
+            icono_urls = candidatos_icono(app, headers, target_release)
+            return version, nombre_archivo, url_descarga, last_update, checksum, icono_urls
     except Exception:
         return None, None, None, None, None, None
 
@@ -445,16 +515,24 @@ def main():
 
     for app in APPS:
         print(f"Procesando {app['id']}...")
-        version, nombre_archivo, url_descarga, last_update, checksum, icono_url = obtener_datos_api(app)
-        
+        version, nombre_archivo, url_descarga, last_update, checksum, icono_urls = obtener_datos_api(app)
+
         if version and url_descarga:
-            # Convertir a Base64 para el archivo icons.json (necesario para PS5 Payload Manager)
-            icono_b64 = convertir_icono_a_base64(icono_url)
-            if icono_b64:
-                icons_catalog[app['id']] = icono_b64
-                icons_catalog[nombre_archivo] = icono_b64
+            # Icono sacado del propio repositorio del payload; si no hay, el avatar de siempre.
+            # Si todo falla, no se pone icon_key y el Payload Manager genera el suyo.
+            icono = ""
+            for cand, cuadrado in icono_urls:
+                if not cand:
+                    continue
+                try:
+                    icono = convertir_icono_a_data_uri(cand, exigir_cuadrado=cuadrado)
+                    print(f"    icono: {cand}")
+                    break
+                except Exception as e:
+                    print(f"    icono descartado ({cand}): {e}")
 
             payload = {
+                "id": slug(app['id']),
                 "name": app['id'],
                 "filename": nombre_archivo,
                 "url": url_descarga,
@@ -466,26 +544,37 @@ def main():
                 "version": version,
                 "category": app.get('category', 'Utilidades y Herramientas'),
                 "checksum": checksum,
-                "icon": icono_url
             }
-            
+            if icono:
+                clave = hashlib.sha256(icono.encode()).hexdigest()
+                icons_catalog[clave] = icono
+                payload["icon_key"] = clave
+
             if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo})")
+            print(f" -> OK: {version} ({nombre_archivo}) {'con icono' if icono else 'SIN ICONO'}")
         else:
             print(f" -> ERROR: No se encontró versión válida.")
 
-    # Guardar payloads.json exactamente como tus amigos esperan
-    with open("payloads.json", "w", encoding="utf-8") as f:
-        json.dump(repo_data, f, indent=4, ensure_ascii=False)
+    catalogo = {
+        "name": NOMBRE_REPO,
+        "icons_url": "icons.json",
+        "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
+        "payloads": repo_data,
+    }
+    # Los dos ficheros iguales: sirve cualquiera de las dos URLs en el Payload Manager.
+    # (Un array "pelado" no admite iconos: hace falta el objeto con icons_url.)
+    for fichero in ("payloads.json", "payloads_v2.json"):
+        with open(fichero, "w", encoding="utf-8") as f:
+            json.dump(catalogo, f, indent=4, ensure_ascii=False)
 
-    # Guardar icons.json para que Payload Manager cargue los iconos en la PS5
+    # icons.json con la forma {"icons": {clave: data URI}} que exige el Payload Manager
     with open("icons.json", "w", encoding="utf-8") as f:
-        json.dump(icons_catalog, f, indent=4, ensure_ascii=False)
+        json.dump({"icons": icons_catalog}, f, indent=1, ensure_ascii=False)
 
-    print("\nArchivos 'payloads.json' e 'icons.json' generados correctamente.")
+    print(f"\nGenerados payloads.json, payloads_v2.json e icons.json ({len(icons_catalog)} iconos).")
 
 if __name__ == "__main__":
     main()
