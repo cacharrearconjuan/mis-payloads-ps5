@@ -154,7 +154,6 @@ EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg')
 HOSTED_FOLDER = "hosted"
 
-# Palabras a descartar para no confundir capturas o insignias con el icono del proyecto
 EXCLUDE_IMAGE_KEYWORDS = (
     'shields.io', 'badge', 'workflows', 'actions/workflows', 'ko-fi',
     'buymeacoffee', 'paypal', 'discord', 'star-history', 'contrib.rocks',
@@ -162,7 +161,6 @@ EXCLUDE_IMAGE_KEYWORDS = (
 )
 
 def construir_raw_url(repo_api_url, default_branch, file_path):
-    """Construye la URL directa al archivo imagen tanto para GitHub como para Gitea."""
     file_path = file_path.lstrip('/')
     if "api.github.com/repos/" in repo_api_url:
         slug = repo_api_url.split("api.github.com/repos/")[1]
@@ -173,7 +171,6 @@ def construir_raw_url(repo_api_url, default_branch, file_path):
     return ""
 
 def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
-    """Busca archivos como assets/icon0.png, icon0.png, icon.png o logo.png en el árbol del repositorio."""
     tree_url = f"{repo_api_url}/git/trees/{default_branch}?recursive=1"
     try:
         req = urllib.request.Request(tree_url, headers=headers)
@@ -181,9 +178,9 @@ def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
             data = json.loads(res.read().decode())
             tree = data.get("tree", [])
 
-            prioridad_1 = []  # icon0.png (estándar PS5)
-            prioridad_2 = []  # icon.png / logo.png exactos
-            prioridad_3 = []  # cualquier imagen que contenga 'icon' o 'logo'
+            prioridad_1 = []
+            prioridad_2 = []
+            prioridad_3 = []
 
             for item in tree:
                 if item.get("type") != "blob":
@@ -212,7 +209,6 @@ def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
     return None
 
 def extraer_logo_de_readme(repo_api_url, default_branch, headers):
-    """Analiza el README.md del proyecto para extraer su logotipo principal."""
     readme_url = f"{repo_api_url}/readme"
     try:
         req = urllib.request.Request(readme_url, headers=headers)
@@ -245,7 +241,6 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
                 if not ruta_limpia.endswith(IMAGE_EXTENSIONS) and 'githubusercontent.com' not in img_lower:
                     continue
 
-                # Convertir ruta relativa o blob de GitHub en URL Raw directa
                 if img_url.startswith(('http://', 'https://')):
                     if 'github.com/' in img_url and '/blob/' in img_url:
                         img_url = img_url.replace('github.com/', 'raw.githubusercontent.com/').replace('/blob/', '/')
@@ -257,7 +252,6 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
                 if url_final:
                     imagenes_validas.append(url_final)
 
-            # Priorizar si alguna imagen del README se llama 'icon' o 'logo'
             for url_img in imagenes_validas:
                 if 'icon' in url_img.lower() or 'logo' in url_img.lower():
                     return url_img
@@ -269,7 +263,6 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
     return None
 
 def obtener_icono_repositorio(app, headers):
-    """Obtiene el icono del proyecto (árbol de archivos -> README -> avatar del repo/autor)."""
     if app.get("icon"):
         return app["icon"]
 
@@ -277,28 +270,23 @@ def obtener_icono_repositorio(app, headers):
     default_branch = "main"
     avatar_fallback = ""
 
-    # 1. Consultar metadatos del repositorio (rama principal y avatares)
     try:
         req = urllib.request.Request(repo_api_url, headers=headers)
         with urllib.request.urlopen(req, timeout=10) as res:
             repo_data = json.loads(res.read().decode())
             default_branch = repo_data.get("default_branch", "main")
-            # En Gitea el repositorio puede tener su propio avatar_url
             avatar_fallback = repo_data.get("avatar_url") or (repo_data.get("owner") or {}).get("avatar_url", "")
     except Exception:
         pass
 
-    # 2. Buscar archivo de icono en el repositorio (ej. assets/icon0.png)
     icono_arbol = buscar_icono_en_arbol(repo_api_url, default_branch, headers)
     if icono_arbol:
         return icono_arbol
 
-    # 3. Buscar logotipo en el README.md
     icono_readme = extraer_logo_de_readme(repo_api_url, default_branch, headers)
     if icono_readme:
         return icono_readme
 
-    # 4. Último recurso: avatar cuando el repositorio no tiene ninguna imagen (ej. elfldr)
     if avatar_fallback:
         return avatar_fallback
     if "github.com" in app.get("source", ""):
@@ -307,7 +295,6 @@ def obtener_icono_repositorio(app, headers):
     return ""
 
 def convertir_icono_a_base64(icon_url):
-    """Descarga el icono y lo convierte a Data URI Base64 para el archivo icons.json."""
     if not icon_url:
         return ""
     if icon_url.startswith("data:image/"):
@@ -444,7 +431,7 @@ def obtener_datos_api(app):
             checksum = ""
 
             if nombre_archivo.lower().endswith('.zip'):
-                print(f"  [+] ZIP detectado. Descargando y procesando en memoria...")
+                print("  [+] ZIP detectado. Descargando y procesando en memoria...")
                 os.makedirs(HOSTED_FOLDER, exist_ok=True)
                 zip_path = "temp.zip"
                 
@@ -507,6 +494,7 @@ def main():
             icono_b64 = convertir_icono_a_base64(icono_url)
             if icono_b64:
                 icons_catalog[app['id']] = icono_b64
+                icons_catalog[nombre_archivo] = icono_b64
 
             payload = {
                 "name": app['id'],
@@ -529,13 +517,11 @@ def main():
             repo_data.append(payload)
             print(f" -> OK: {version} ({nombre_archivo}) | Icono: {icono_url}")
         else:
-            print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
+            print(" -> ERROR: No se encontró versión válida o falló la conexión.")
 
-    # 1. Guardar payloads.json
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
 
-    # 2. Guardar payloads_v2.json
     ahora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     repo_v2 = {
         "last_updated": ahora,
@@ -544,7 +530,6 @@ def main():
     with open("payloads_v2.json", "w", encoding="utf-8") as f:
         json.dump(repo_v2, f, indent=4, ensure_ascii=False)
 
-    # 3. Guardar icons.json (Catálogo separado de iconos para PS5 Payload Manager)
     with open("icons.json", "w", encoding="utf-8") as f:
         json.dump(icons_catalog, f, indent=4, ensure_ascii=False)
 
