@@ -1,8 +1,11 @@
 import json
 import urllib.request
 import urllib.error
+import urllib.parse
 import hashlib
 import os
+import re
+import base64
 import zipfile
 import shutil
 
@@ -149,6 +152,104 @@ APPS = [
 EXEC_EXTENSIONS = ('.elf', '.bin', '.zip')
 HOSTED_FOLDER = "hosted"
 
+# Palabras clave para descartar badges, botones de donación o banners que no son logos
+BADGE_KEYWORDS = (
+    'shields.io', 'badge', 'workflows', 'actions/workflows', 'ko-fi', 
+    'buymeacoffee', 'paypal', 'discord', 'star-history', 'contrib.rocks',
+    ' patrocinar', 'sponsor', 'banner', 'screenshot'
+)
+
+def cargar_iconos_locales():
+    """Si tienes un archivo icons.json propio en tu repositorio, lo carga como prioridad."""
+    if os.path.exists("icons.json"):
+        try:
+            with open("icons.json", "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def extraer_logo_de_readme(repo_api_url, headers):
+    """Busca si el desarrollador puso un logotipo en el README.md de su repositorio."""
+    readme_url = f"{repo_api_url}/readme"
+    try:
+        req = urllib.request.Request(readme_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as res:
+            data = json.loads(res.read().decode())
+            contenido_b64 = data.get("content", "")
+            download_url = data.get("download_url", "")
+            if not contenido_b64 or not download_url:
+                return None
+
+            texto_readme = base64.b64decode(contenido_b64).decode('utf-8', errors='ignore')
+            base_raw_url = download_url.rsplit('/', 1)[0] + '/'
+
+            # Buscar imágenes en HTML (<img src="...">) y Markdown (![...](...))
+            patrones = [
+                r'<img[^>]+src=["\']([^"\']+)["\']',
+                r'!\[[^\]]*\]\(([^)\s]+)'
+            ]
+
+            candidatos = []
+            for patron in patrones:
+                candidatos.extend(re.findall(patron, texto_readme, re.IGNORECASE))
+
+            for img_url in candidatos:
+                img_lower = img_url.lower()
+                
+                # Descartar badges, escudos y capturas grandes
+                if any(palabra in img_lower for palabra in BADGE_KEYWORDS):
+                    continue
+                
+                # Limpiar parámetros o anclas si es necesario verificar extensión
+                ruta_limpia = img_lower.split('?')[0].split('#')[0]
+                if not ruta_limpia.endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg')) and 'githubusercontent.com' not in img_lower:
+                    continue
+
+                # Convertir rutas relativas o enlaces 'blob' de GitHub en enlaces 'raw' directos
+                if img_url.startswith(('http://', 'https://')):
+                    if 'github.com/' in img_url and '/blob/' in img_url:
+                        img_url = img_url.replace('github.com/', 'raw.githubusercontent.com/').replace('/blob/', '/')
+                    return img_url
+                else:
+                    return urllib.parse.urljoin(base_raw_url, img_url.lstrip('/'))
+    except Exception:
+        pass
+    return None
+
+def obtener_icono_autonomo(app, headers, iconos_locales):
+    """Obtiene el icono directamente del repositorio del creador sin depender de terceros."""
+    # 1. Prioridad a icono manual configurado en APPS o en tu icons.json local
+    if app.get("icon"):
+        return app["icon"]
+    if app["id"] in iconos_locales:
+        return iconos_locales[app["id"]]
+
+    # URL base de la API del repositorio (quitando '/releases')
+    repo_api_url = re.sub(r'/releases$', '', app['api'].rstrip('/'))
+
+    # 2. Intentar extraer el logo oficial del README.md del proyecto
+    logo_readme = extraer_logo_de_readme(repo_api_url, headers)
+    if logo_readme:
+        return logo_readme
+
+    # 3. Consultar la API del repositorio para extraer el avatar oficial del propietario (owner.avatar_url)
+    try:
+        req = urllib.request.Request(repo_api_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as res:
+            repo_data = json.loads(res.read().decode())
+            avatar_owner = (repo_data.get("owner") or {}).get("avatar_url", "")
+            if avatar_owner:
+                return avatar_owner
+    except Exception:
+        pass
+
+    # 4. Fallback directo por URL si es GitHub
+    if "github.com" in app.get("source", ""):
+        return f"https://github.com/{app['author']}.png"
+
+    return ""
+
 def es_version_valida(tag_name):
     return "alpha" not in tag_name.lower()
 
@@ -176,7 +277,7 @@ def extraer_ejecutables_validos(release):
         })
     return ejecutables
 
-def obtener_datos_api(app):
+def obtener_datos_api(app, iconos_locales):
     url = app['api']
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -233,7 +334,7 @@ def obtener_datos_api(app):
                         break
 
             if not target_release:
-                return None, None, None, None, None
+                return None, None, None, None, None, None
 
             version = target_release.get("tag_name", "Desconocida")
             last_update = target_release.get("published_at", "2026-01-01T")[:10] 
@@ -295,22 +396,25 @@ def obtener_datos_api(app):
                         checksum = hashlib.sha256(r_file.read()).hexdigest()
                 except Exception as e:
                     print(f"  [!] Error calculando checksum estándar: {e}")
+
+            icono = obtener_icono_autonomo(app, headers, iconos_locales)
                     
-            return version, nombre_archivo, url_descarga, last_update, checksum
+            return version, nombre_archivo, url_descarga, last_update, checksum, icono
             
     except urllib.error.HTTPError as e:
         print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
-        return None, None, None, None, None
+        return None, None, None, None, None, None
     except Exception as e:
         print(f"  [!] Error general consultando {url}: {e}")
-        return None, None, None, None, None
+        return None, None, None, None, None, None
 
 def main():
     repo_data = []
+    iconos_locales = cargar_iconos_locales()
 
     for app in APPS:
         print(f"Procesando {app['id']}...")
-        version, nombre_archivo, url_descarga, last_update, checksum = obtener_datos_api(app)
+        version, nombre_archivo, url_descarga, last_update, checksum, icono = obtener_datos_api(app, iconos_locales)
         
         if version and url_descarga:
             payload = {
@@ -319,25 +423,26 @@ def main():
                 "url": url_descarga,
                 "source": app['source'],
                 "source_direct": url_descarga,
+                "author": app.get('author', ''),
                 "description": app.get('description', ''),
                 "last_update": last_update,
                 "version": version,
                 "category": app.get('category', 'Utilidades y Herramientas'),
-                "checksum": checksum
+                "checksum": checksum,
+                "icon": icono
             }
             
             if nombre_archivo.lower().endswith('.zip') and 'extract_file' in app:
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo})")
+            print(f" -> OK: {version} ({nombre_archivo}) | Icono: {icono}")
         else:
             print(f" -> ERROR: No se encontró versión válida o falló la conexión.")
 
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
-    print("\nArchivo 'payloads.json' generado correctamente.")
+    print("\nArchivo 'payloads.json' generado correctamente de forma 100% autónoma.")
 
 if __name__ == "__main__":
     main()
-    
