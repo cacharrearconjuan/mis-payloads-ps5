@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
+
     steps:
       - name: Descargar mi repositorio
         uses: actions/checkout@v4
@@ -29,16 +29,13 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
           git add payloads.json
           git add payloads_v2.json || true
           git add icons.json || true
           git add hosted/ || true
-          
           if ! git diff --cached --quiet; then
             git commit -m "Actualizados payloads e iconos"
             git push
           else
-            echo "No hay actualizaciones nuevas, no hace falta guardar nada."
-          fi actualizaciones nuevas, no hace falta guardar nada."
+            echo "Sin cambios nuevos."
           fi
