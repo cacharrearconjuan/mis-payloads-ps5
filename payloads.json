@@ -1,21 +1,21 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-10-19 11:01:07",
+    "last_updated": "2026-10-19 15:14:32",
     "payloads": [
         {
             "id": "pldmgr",
             "name": "pldmgr",
-            "filename": "pldmgr_v0.6.1.elf",
-            "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.6.1/pldmgr_v0.6.1.elf",
+            "filename": "pldmgr_v0.6.3.elf",
+            "url": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.6.3/pldmgr_v0.6.3.elf",
             "source": "https://github.com/itsPLK/ps5-payload-manager/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.6.1/pldmgr_v0.6.1.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-payload-manager/releases/download/v0.6.3/pldmgr_v0.6.3.elf",
             "author": "itsPLK",
             "description": "Un panel moderno basado en web para administrar, importar y cargar automáticamente payloads en tu PS5.",
-            "last_update": "2026-10-14",
-            "version": "v0.6.1",
+            "last_update": "2026-10-19",
+            "version": "v0.6.3",
             "category": "Utilidades y Herramientas",
-            "checksum": "5165cbe4c13360828bd0f5d558cdbb9e2d55b0660b1dc7f7a58d3f4ee9e23285",
+            "checksum": "2a42054fd9725e1d9595ff4add95abc30e5b49446fcdcb96c06775a376a841c4",
             "icon_key": "43856f4e4b1d4a8353b7b00f9bbbfa02202a055fcbbe15e3cb3e4801a7b8fe86"
         },
         {
