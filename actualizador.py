@@ -307,6 +307,17 @@ def _leer(url_o_ruta, timeout=20):
     with open(url_o_ruta, "rb") as f:
         return f.read(), ""
 
+def _pillow():
+    """Pillow hace falta para redimensionar PNG/JPEG/WebP. Si no está, se instala sola."""
+    try:
+        from PIL import Image, ImageOps
+    except ImportError:
+        import subprocess, sys
+        print("    Pillow no está instalado: instalándolo...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", "pillow"])
+        from PIL import Image, ImageOps
+    return Image, ImageOps
+
 def _es_casi_cuadrada(ancho, alto):
     return ancho > 0 and alto > 0 and 0.75 <= ancho / alto <= 1.33
 
@@ -329,7 +340,7 @@ def convertir_icono_a_data_uri(icon_url, exigir_cuadrado=False):
             return uri
         raise ValueError("SVG demasiado grande")
 
-    from PIL import Image, ImageOps  # pip install pillow
+    Image, ImageOps = _pillow()
     img = Image.open(io.BytesIO(raw))
     img.seek(0)  # GIF/WebP animados: primer fotograma
     if exigir_cuadrado and not _es_casi_cuadrada(*img.size):
@@ -564,17 +575,20 @@ def main():
         "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
         "payloads": repo_data,
     }
-    # Los dos ficheros iguales: sirve cualquiera de las dos URLs en el Payload Manager.
-    # (Un array "pelado" no admite iconos: hace falta el objeto con icons_url.)
-    for fichero in ("payloads.json", "payloads_v2.json"):
-        with open(fichero, "w", encoding="utf-8") as f:
-            json.dump(catalogo, f, indent=4, ensure_ascii=False)
+    with open("payloads.json", "w", encoding="utf-8") as f:
+        json.dump(catalogo, f, indent=4, ensure_ascii=False)
+    # payloads_v2.json ya no se usa: si queda alguno viejo, se borra
+    if os.path.exists("payloads_v2.json"):
+        os.remove("payloads_v2.json")
 
     # icons.json con la forma {"icons": {clave: data URI}} que exige el Payload Manager
     with open("icons.json", "w", encoding="utf-8") as f:
         json.dump({"icons": icons_catalog}, f, indent=1, ensure_ascii=False)
 
-    print(f"\nGenerados payloads.json, payloads_v2.json e icons.json ({len(icons_catalog)} iconos).")
+    sin_icono = [p["name"] for p in repo_data if "icon_key" not in p]
+    print(f"\nGenerados payloads.json e icons.json ({len(icons_catalog)} iconos).")
+    if sin_icono:
+        print(f"AVISO: {len(sin_icono)} payloads sin icono: {', '.join(sin_icono)}")
 
 if __name__ == "__main__":
     main()
