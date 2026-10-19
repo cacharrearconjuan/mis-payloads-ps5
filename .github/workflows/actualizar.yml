@@ -30,13 +30,15 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Agregamos tanto el JSON como cualquier ejecutable nuevo extraído en la carpeta /hosted
           git add payloads.json
+          git add payloads_v2.json || true
+          git add icons.json || true
           git add hosted/ || true
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizados payloads y binarios extraídos"
+            git commit -m "Actualizados payloads e iconos"
             git push
           else
             echo "No hay actualizaciones nuevas, no hace falta guardar nada."
+          fi actualizaciones nuevas, no hace falta guardar nada."
           fi
