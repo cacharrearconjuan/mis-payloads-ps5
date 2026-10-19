@@ -25,7 +25,7 @@ APPS = [
         "api": "https://api.github.com/repos/drakmor/ShadowMountPlus/releases",
         "source": "https://github.com/drakmor/ShadowMountPlus/releases",
         "category": "Utilidades y Herramientas",
-        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
+        "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 dengan Jailbreak.",
         "extract_file": "shadowmountplus.elf"
     },
     {
@@ -178,10 +178,7 @@ def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
             data = json.loads(res.read().decode())
             tree = data.get("tree", [])
 
-            prioridad_1 = []
-            prioridad_2 = []
-            prioridad_3 = []
-
+            p1, p2, p3 = [], [], []
             for item in tree:
                 if item.get("type") != "blob":
                     continue
@@ -195,13 +192,13 @@ def buscar_icono_en_arbol(repo_api_url, default_branch, headers):
                     continue
 
                 if filename in ("icon0.png", "icon0.jpg", "icon0.webp"):
-                    prioridad_1.append(path)
+                    p1.append(path)
                 elif filename in ("icon.png", "logo.png", "icon.jpg", "logo.jpg", "icon.webp", "logo.webp"):
-                    prioridad_2.append(path)
+                    p2.append(path)
                 elif "icon" in filename or "logo" in filename:
-                    prioridad_3.append(path)
+                    p3.append(path)
 
-            for lista in (prioridad_1, prioridad_2, prioridad_3):
+            for lista in (p1, p2, p3):
                 if lista:
                     return construir_raw_url(repo_api_url, default_branch, lista[0])
     except Exception:
@@ -219,12 +216,7 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
                 return None
 
             texto_readme = base64.b64decode(contenido_b64).decode('utf-8', errors='ignore')
-
-            patrones = [
-                r'<img[^>]+src=["\']([^"\']+)["\']',
-                r'!\[[^\]]*\]\(([^)\s]+)'
-            ]
-
+            patrones = [r'<img[^>]+src=["\']([^"\']+)["\']', r'!\[[^\]]*\]\(([^)\s]+)']
             candidatos = []
             for patron in patrones:
                 candidatos.extend(re.findall(patron, texto_readme, re.IGNORECASE))
@@ -233,10 +225,8 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
             for img_url in candidatos:
                 img_url = img_url.strip()
                 img_lower = img_url.lower()
-
                 if any(palabra in img_lower for palabra in EXCLUDE_IMAGE_KEYWORDS):
                     continue
-
                 ruta_limpia = img_lower.split('?')[0].split('#')[0]
                 if not ruta_limpia.endswith(IMAGE_EXTENSIONS) and 'githubusercontent.com' not in img_lower:
                     continue
@@ -255,7 +245,6 @@ def extraer_logo_de_readme(repo_api_url, default_branch, headers):
             for url_img in imagenes_validas:
                 if 'icon' in url_img.lower() or 'logo' in url_img.lower():
                     return url_img
-
             if imagenes_validas:
                 return imagenes_validas[0]
     except Exception:
@@ -304,24 +293,11 @@ def convertir_icono_a_base64(icon_url):
         with urllib.request.urlopen(req, timeout=15) as res:
             raw_bytes = res.read()
             content_type = res.headers.get_content_type()
-
             if not content_type or not content_type.startswith("image/"):
-                url_lower = icon_url.lower().split('?')[0]
-                if url_lower.endswith(('.jpg', '.jpeg')):
-                    content_type = "image/jpeg"
-                elif url_lower.endswith('.webp'):
-                    content_type = "image/webp"
-                elif url_lower.endswith('.gif'):
-                    content_type = "image/gif"
-                elif url_lower.endswith('.svg'):
-                    content_type = "image/svg+xml"
-                else:
-                    content_type = "image/png"
-
+                content_type = "image/png"
             b64_str = base64.b64encode(raw_bytes).decode('utf-8')
             return f"data:{content_type};base64,{b64_str}"
-    except Exception as e:
-        print(f"  [!] No se pudo codificar en Base64 el icono {icon_url}: {e}")
+    except Exception:
         return icon_url
 
 def es_version_valida(tag_name):
@@ -330,7 +306,6 @@ def es_version_valida(tag_name):
 def extraer_ejecutables_validos(release):
     if release.get("draft", False):
         return []
-    
     tag_name = release.get("tag_name", "")
     if not es_version_valida(tag_name):
         return []
@@ -339,12 +314,10 @@ def extraer_ejecutables_validos(release):
     for asset in release.get("assets", []):
         nombre = asset.get("name", "")
         nombre_lower = nombre.lower()
-
         if not nombre_lower.endswith(EXEC_EXTENSIONS): 
             continue
         if "install" in nombre_lower and "installer_" not in nombre_lower: 
             continue
-        
         ejecutables.append({
             "nombre": nombre,
             "url": asset.get("browser_download_url", "")
@@ -373,7 +346,6 @@ def obtener_datos_api(app):
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
             releases = json.loads(response.read().decode())
-            
             if not isinstance(releases, list):
                 releases = [releases]
 
@@ -431,10 +403,8 @@ def obtener_datos_api(app):
             checksum = ""
 
             if nombre_archivo.lower().endswith('.zip'):
-                print("  [+] ZIP detectado. Descargando y procesando en memoria...")
                 os.makedirs(HOSTED_FOLDER, exist_ok=True)
                 zip_path = "temp.zip"
-                
                 try:
                     req_zip = urllib.request.Request(url_descarga, headers={'User-Agent': 'Mozilla/5.0'})
                     with urllib.request.urlopen(req_zip) as resp_zip, open(zip_path, 'wb') as out_file:
@@ -442,25 +412,18 @@ def obtener_datos_api(app):
                         
                     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                         elf_in_zip = next((f for f in zip_ref.namelist() if f.lower().endswith(('.elf', '.bin'))), None)
-                        
                         if elf_in_zip:
                             nuevo_nombre = os.path.basename(elf_in_zip)
                             ruta_final = os.path.join(HOSTED_FOLDER, nuevo_nombre)
-                            
                             with zip_ref.open(elf_in_zip) as source, open(ruta_final, 'wb') as target:
                                 shutil.copyfileobj(source, target)
-                                
                             nombre_archivo = nuevo_nombre
                             url_descarga = f"https://cacharrearconjuan.github.io/mis-payloads-ps5/{HOSTED_FOLDER}/{nuevo_nombre}"
-                            
                             with open(ruta_final, 'rb') as f_elf:
                                 checksum = hashlib.sha256(f_elf.read()).hexdigest()
-                                
                     if os.path.exists(zip_path):
                         os.remove(zip_path)
-                        
                 except Exception as e:
-                    print(f"  [!] Error crítico procesando el ZIP: {e}")
                     if os.path.exists(zip_path):
                         os.remove(zip_path)
             else:
@@ -469,17 +432,11 @@ def obtener_datos_api(app):
                     with urllib.request.urlopen(req_file) as r_file:
                         checksum = hashlib.sha256(r_file.read()).hexdigest()
                 except Exception as e:
-                    print(f"  [!] Error calculando checksum estándar: {e}")
+                    pass
 
             icono_url = obtener_icono_repositorio(app, headers)
-                    
             return version, nombre_archivo, url_descarga, last_update, checksum, icono_url
-            
-    except urllib.error.HTTPError as e:
-        print(f"  [!] Error HTTP {e.code} consultando {url}: {e.reason}")
-        return None, None, None, None, None, None
-    except Exception as e:
-        print(f"  [!] Error general consultando {url}: {e}")
+    except Exception:
         return None, None, None, None, None, None
 
 def main():
@@ -491,6 +448,7 @@ def main():
         version, nombre_archivo, url_descarga, last_update, checksum, icono_url = obtener_datos_api(app)
         
         if version and url_descarga:
+            # Convertir a Base64 para el archivo icons.json (necesario para PS5 Payload Manager)
             icono_b64 = convertir_icono_a_base64(icono_url)
             if icono_b64:
                 icons_catalog[app['id']] = icono_b64
@@ -515,25 +473,19 @@ def main():
                 payload["extract_file"] = app['extract_file']
 
             repo_data.append(payload)
-            print(f" -> OK: {version} ({nombre_archivo}) | Icono: {icono_url}")
+            print(f" -> OK: {version} ({nombre_archivo})")
         else:
-            print(" -> ERROR: No se encontró versión válida o falló la conexión.")
+            print(f" -> ERROR: No se encontró versión válida.")
 
+    # Guardar payloads.json exactamente como tus amigos esperan
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(repo_data, f, indent=4, ensure_ascii=False)
 
-    ahora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-    repo_v2 = {
-        "last_updated": ahora,
-        "payloads": repo_data
-    }
-    with open("payloads_v2.json", "w", encoding="utf-8") as f:
-        json.dump(repo_v2, f, indent=4, ensure_ascii=False)
-
+    # Guardar icons.json para que Payload Manager cargue los iconos en la PS5
     with open("icons.json", "w", encoding="utf-8") as f:
         json.dump(icons_catalog, f, indent=4, ensure_ascii=False)
 
-    print("\nArchivos 'payloads.json', 'payloads_v2.json' e 'icons.json' generados correctamente.")
+    print("\nArchivos 'payloads.json' e 'icons.json' generados correctamente.")
 
 if __name__ == "__main__":
     main()
