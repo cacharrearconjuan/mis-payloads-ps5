@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-10-21 07:46:25",
+    "last_updated": "2026-10-21 13:23:24",
     "payloads": [
         {
             "id": "pldmgr",
@@ -22,15 +22,15 @@
             "id": "shadowmountplus",
             "name": "ShadowMountPlus",
             "filename": "shadowmountplus.elf",
-            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7-beta5fix1/shadowmountplus.elf",
+            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta7/shadowmountplus.elf",
             "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-            "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7-beta5fix1/shadowmountplus.elf",
+            "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta7/shadowmountplus.elf",
             "author": "drakmor",
             "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
-            "last_update": "2026-10-10",
-            "version": "1.7-beta5fix1",
+            "last_update": "2026-10-21",
+            "version": "1.7beta7",
             "category": "Utilidades y Herramientas",
-            "checksum": "e85fd63b705498488f39c09c9aea6f9fa22e0df2e932865de49a8cedf25172d5",
+            "checksum": "a8f9d7f76e8749912508ade0cd5c78076b5bbf1271813c78c80c3d3d9d4777ee",
             "icon_key": "5875825019cd6c32a1ec7cf83376d2a70570aa7016dda4d709a205d0209ed75b"
         },
         {
@@ -82,15 +82,15 @@
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.14.0/garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.14/garlic-savemgr.elf",
             "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.14.0/garlic-savemgr.elf",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.14/garlic-savemgr.elf",
             "author": "earthonion",
             "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
-            "last_update": "2026-10-18",
-            "version": "v1.14.0",
+            "last_update": "2026-10-21",
+            "version": "v1.14",
             "category": "Utilidades y Herramientas",
-            "checksum": "0b96822e3f554666b7fa4ead673c60ef602e5534a9f01a45e94d0580bd6e9edd",
+            "checksum": "57763da9d36ae1cb0c744e90a59a06cb54e4eae0c9a8dec62ce774f892c624b9",
             "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
