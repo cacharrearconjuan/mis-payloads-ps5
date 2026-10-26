@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-10-26 09:18:28",
+    "last_updated": "2026-10-26 09:28:26",
     "payloads": [
         {
             "id": "pldmgr",
@@ -142,15 +142,15 @@
             "id": "ps5-autoupdaterpm",
             "name": "PS5-AutoupdaterPM",
             "filename": "PS5-AutoupdaterPM.elf",
-            "url": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases/download/v2.0.2/PS5-AutoupdaterPM.elf",
+            "url": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases/download/v2.1.0/PS5-AutoupdaterPM.elf",
             "source": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases",
-            "source_direct": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases/download/v2.0.2/PS5-AutoupdaterPM.elf",
+            "source_direct": "https://github.com/cacharrearconjuan/PS5-AutoupdaterPM/releases/download/v2.1.0/PS5-AutoupdaterPM.elf",
             "author": "cacharrearconjuan",
             "description": "Payload para la descarga y actualización automática del Payload Manager en PS5.",
             "last_update": "2026-10-26",
-            "version": "v2.0.2",
+            "version": "v2.1.0",
             "category": "Utilidades y Herramientas",
-            "checksum": "9a068f51a75bf8a0859320594ac534f38d0ab769e37d94a06e4a7e6db3505198",
+            "checksum": "e3a85ccffc1fe1dbdd95949806a559adc9cc404a56e3fab7b611a3dc6467c561",
             "icon_key": "eb8dc91d111f619aaf027749560f1bd31cf3d87cd9e78d284e733e17824db5a7"
         },
         {
