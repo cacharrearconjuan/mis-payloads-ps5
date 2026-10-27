@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-10-27 13:53:56",
+    "last_updated": "2026-10-27 20:25:16",
     "payloads": [
         {
             "id": "pldmgr",
@@ -22,15 +22,15 @@
             "id": "shadowmountplus",
             "name": "ShadowMountPlus",
             "filename": "shadowmountplus.elf",
-            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta7/shadowmountplus.elf",
+            "url": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta9/shadowmountplus.elf",
             "source": "https://github.com/drakmor/ShadowMountPlus/releases",
-            "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta7/shadowmountplus.elf",
+            "source_direct": "https://github.com/drakmor/ShadowMountPlus/releases/download/1.7beta9/shadowmountplus.elf",
             "author": "drakmor",
             "description": "Un payload de 'Auto-Montaje' en segundo plano y totalmente automatizado para consolas PlayStation 5 con Jailbreak.",
-            "last_update": "2026-10-21",
-            "version": "1.7beta7",
+            "last_update": "2026-10-27",
+            "version": "1.7beta9",
             "category": "Utilidades y Herramientas",
-            "checksum": "a8f9d7f76e8749912508ade0cd5c78076b5bbf1271813c78c80c3d3d9d4777ee",
+            "checksum": "928a5a7e33d2801c1c14a5ed8ad83fcab07957ba3a5daccd382dba67d408b3e2",
             "icon_key": "5875825019cd6c32a1ec7cf83376d2a70570aa7016dda4d709a205d0209ed75b"
         },
         {
