@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-10-27 20:25:16",
+    "last_updated": "2026-10-28 03:47:00",
     "payloads": [
         {
             "id": "pldmgr",
@@ -171,16 +171,16 @@
         {
             "id": "ps5-webkit-autoloader",
             "name": "ps5-webkit-autoloader",
-            "filename": "webkit-autoloader-installer_v0.6.1.elf",
-            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.1/webkit-autoloader-installer_v0.6.1.elf",
+            "filename": "webkit-autoloader-installer_v0.6.2.elf",
+            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.2/webkit-autoloader-installer_v0.6.2.elf",
             "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.1/webkit-autoloader-installer_v0.6.1.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.2/webkit-autoloader-installer_v0.6.2.elf",
             "author": "itsPLK",
             "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-            "last_update": "2026-10-08",
-            "version": "v0.6.1",
+            "last_update": "2026-10-28",
+            "version": "v0.6.2",
             "category": "Sistema y Jailbreak",
-            "checksum": "f662c75a502e4f1bc41b055dcb490625f8222c499ce437dc80f439a3a279e93f",
+            "checksum": "27fd335764270716972faea399a5cc7810b9e49a21abf4966d9759580756cb19",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
         },
         {
