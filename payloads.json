@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-04 04:39:49",
+    "last_updated": "2026-11-04 11:25:33",
     "payloads": [
         {
             "id": "pldmgr",
@@ -257,6 +257,66 @@
             "category": "Utilidades y Herramientas",
             "checksum": "82e3548edcc41419b644482cccaef65689334fc0315dc20247f48b90bf182dca",
             "icon_key": "85c92b313ec0c388ba388ec2519193db80e0410a8f69f362d4fb1137e95fb2ab"
+        },
+        {
+            "id": "web-file-mgr",
+            "name": "web-file-mgr",
+            "filename": "web-file-mgr-v1.13-rc2.elf",
+            "url": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.13-rc2/web-file-mgr-v1.13-rc2.elf",
+            "source": "https://github.com/owendswang/ps5-web-file-manager/releases",
+            "source_direct": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.13-rc2/web-file-mgr-v1.13-rc2.elf",
+            "author": "owendswang",
+            "description": "Gestor de archivos para PS5 con interfaz web.",
+            "last_update": "2026-10-29",
+            "version": "v1.13-rc2",
+            "category": "Utilidades y Herramientas",
+            "checksum": "91f8e7f52183ce624651b779016bb48cbe7adaad278833a1191ad2e8fc6fbfe3",
+            "icon_key": "46e33ca099f395a8581b00a6585703bc6ca8d6c01829d949c21b93f37cb39f13"
+        },
+        {
+            "id": "ps4mount",
+            "name": "ps4mount",
+            "filename": "ps4mount.elf",
+            "url": "https://github.com/gasb07/ps4mount/releases/download/v0.7.2/ps4mount.elf",
+            "source": "https://github.com/gasb07/ps4mount/releases",
+            "source_direct": "https://github.com/gasb07/ps4mount/releases/download/v0.7.2/ps4mount.elf",
+            "author": "gasb07",
+            "description": "Monta y carga juegos de PS4 en la PS5.",
+            "last_update": "2026-10-29",
+            "version": "v0.7.2",
+            "category": "Utilidades y Herramientas",
+            "checksum": "30627513e950f6b7b6b0e5ca43c30e954cdd873a646b8beefe0a4a925ac28479",
+            "icon_key": "1037539e490b52b486f994389c9030548b58eec0fa380bb1ecdaa6b71ae99154"
+        },
+        {
+            "id": "lz4-game-compressor",
+            "name": "LZ4-Game-Compressor",
+            "filename": "LZ4-Game-Compressor.elf",
+            "url": "https://github.com/gameboy829/PS5-LZ4-Game-Compressor/releases/download/beta.7/LZ4-Game-Compressor.elf",
+            "source": "https://github.com/gameboy829/PS5-LZ4-Game-Compressor/releases",
+            "source_direct": "https://github.com/gameboy829/PS5-LZ4-Game-Compressor/releases/download/beta.7/LZ4-Game-Compressor.elf",
+            "author": "gameboy829",
+            "description": "Compresor de juegos de PS5 con LZ4.",
+            "last_update": "2026-10-11",
+            "version": "beta.7",
+            "category": "Utilidades y Herramientas",
+            "checksum": "e29d2c8c3c1f8718af8706db09b845d3732cef22058931a8b5d590f530382cde",
+            "icon_key": "df0158cbdf8e4b1ca61362879b42f0d2b883459d51795aa2ac31b691c4ac32b5"
+        },
+        {
+            "id": "kstuff-fpkg",
+            "name": "kstuff (FPKG)",
+            "filename": "kstuff1.13-fpkg-dr-test8-rest.elf",
+            "url": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
+            "source": "https://cacharrearconjuan.github.io/mis-payloads-ps5",
+            "source_direct": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
+            "author": "comunidad",
+            "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
+            "last_update": "2026-11-04",
+            "version": "1.13-fpkg-dr-test8-rest",
+            "category": "Sistema y Jailbreak",
+            "checksum": "127332652374157b8ee0f5eb1128976f9055b88df5da89c0c54183e9c326fc7f",
+            "icon_key": "4ac5a20fc450abf356fe96f1086d2cca1ea0dad94b452085c2c539d7044717e7"
         }
     ]
 }
