@@ -148,7 +148,58 @@ APPS = [
         "source": "https://github.com/itsPLK/ps5-pkg-manager/releases",
         "category": "Utilidades y Herramientas",
         "description": "Gestor de paquetes (PKG) para PlayStation 5."
+    },
+    {
+        "id": "web-file-mgr",
+        "author": "owendswang",
+        "api": "https://api.github.com/repos/owendswang/ps5-web-file-manager/releases",
+        "source": "https://github.com/owendswang/ps5-web-file-manager/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Gestor de archivos para PS5 con interfaz web.",
+        # La release trae 2 .elf (web-file-mgr-*.elf y el helper wfm-7zip-helper.elf);
+        # cogemos siempre el que empieza por 'web-file-mgr'.
+        "asset_prefix": "web-file-mgr"
+    },
+    {
+        "id": "ps4mount",
+        "author": "gasb07",
+        "api": "https://api.github.com/repos/gasb07/ps4mount/releases",
+        "source": "https://github.com/gasb07/ps4mount/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Monta y carga juegos de PS4 en la PS5.",
+        # El único payload se llama 'ps4mount.elf'. Con asset_prefix saltamos la regla
+        # general que evita los nombres con 'ps4', solo para este repo.
+        "asset_prefix": "ps4mount"
+    },
+    {
+        "id": "LZ4-Game-Compressor",
+        "author": "gameboy829",
+        "api": "https://api.github.com/repos/gameboy829/PS5-LZ4-Game-Compressor/releases",
+        "source": "https://github.com/gameboy829/PS5-LZ4-Game-Compressor/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Compresor de juegos de PS5 con LZ4.",
+        # Todas sus versiones son prerelease (no hay 'latest'); con allow_prerelease
+        # cogemos la prerelease más reciente, solo para este repo.
+        "allow_prerelease": True,
+        "asset_prefix": "LZ4-Game-Compressor"
     }
+]
+
+# --- Payloads alojados en carpetas de hosted/ (no vienen de releases de GitHub) ---
+# Cada uno vive en su propia carpeta hosted/<folder>/. Para ACTUALIZAR no se toca el
+# código: solo dejas el nuevo .elf (y, si quieres, un icono .png/.jpg/.svg) en esa
+# carpeta. El script coge el .elf más reciente, saca la versión de su nombre, calcula
+# el checksum SHA-256 y usa la imagen de la carpeta como icono. Si dejas varios .elf,
+# coge el de versión más alta (orden natural: test10 > test9). Se añaden al final.
+HOSTED_PAYLOADS = [
+    {
+        "id": "kstuff-fpkg",
+        "name": "kstuff (FPKG)",
+        "folder": "kstuff_fpkg",          # carpeta dentro de hosted/
+        "author": "comunidad",
+        "category": "Sistema y Jailbreak",
+        "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
+    },
 ]
 
 # --- Formato de catálogo que entiende PS5 Payload Manager (ver CUSTOM_REPOSITORIES.md) ---
@@ -405,6 +456,39 @@ def extraer_ejecutables_validos(release):
         })
     return ejecutables
 
+def _version_desde_nombre(nombre):
+    """Saca una versión legible del nombre del fichero: primer patrón tipo 1.13...
+    'kstuff1.13-fpkg-dr-test8-rest.elf' -> '1.13-fpkg-dr-test8-rest'. Si no hay patrón
+    de versión, usa el nombre sin extensión."""
+    stem = os.path.splitext(nombre)[0]
+    m = re.search(r'\d+\.\d+[\w.\-]*', stem)
+    return m.group(0) if m else stem
+
+def _orden_natural(nombre):
+    """Clave de orden natural para que 'test10' quede por encima de 'test9'."""
+    return [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)', nombre)]
+
+def escanear_payload_hosted(hp):
+    """Escanea hosted/<folder>/ y devuelve (filename, version, ruta_local, icono_local)
+    con el .elf/.bin de versión más alta, o None si la carpeta no existe o está vacía."""
+    carpeta = os.path.join(HOSTED_FOLDER, hp["folder"])
+    if not os.path.isdir(carpeta):
+        return None
+    ejecutables = [f for f in os.listdir(carpeta) if f.lower().endswith(('.elf', '.bin'))]
+    if not ejecutables:
+        return None
+    ejecutables.sort(key=_orden_natural)
+    if len(ejecutables) > 1:
+        print(f"    AVISO: {len(ejecutables)} ejecutables en {carpeta}; uso el más nuevo: {ejecutables[-1]}")
+    nombre = ejecutables[-1]
+    ruta = os.path.join(carpeta, nombre)
+    # Icono: imagen de la carpeta (se prefiere icon0.*)
+    imagenes = [f for f in os.listdir(carpeta)
+                if os.path.splitext(f)[1].lower() in IMAGE_EXTENSIONS]
+    imagenes.sort(key=lambda f: (0 if os.path.splitext(f)[0].lower() == "icon0" else 1, f.lower()))
+    icono = os.path.join(carpeta, imagenes[0]) if imagenes else ""
+    return nombre, _version_desde_nombre(nombre), ruta, icono
+
 def obtener_datos_api(app):
     url = app['api']
     try:
@@ -442,7 +526,10 @@ def obtener_datos_api(app):
                             ejecutables_finales = exe
                         break
 
-            if not target_release:
+            # Por defecto se prefieren versiones estables. allow_prerelease lo desactiva
+            # para repos que solo publican prerelease (p. ej. LZ4-Game-Compressor): así
+            # se cae directamente a la más reciente, sea prerelease o no.
+            if not target_release and not app.get('allow_prerelease', False):
                 for r in releases:
                     if r.get("prerelease", False):
                         continue
@@ -467,10 +554,23 @@ def obtener_datos_api(app):
             last_update = target_release.get("published_at", "2026-01-01T")[:10] 
             
             elegido = None
-            for exe in ejecutables_finales:
-                if "ps5" in exe["nombre"].lower():
-                    elegido = exe
-                    break
+            # asset_prefix: elige de forma determinista el asset cuyo nombre empieza por
+            # este prefijo. Útil cuando hay varios .elf (web-file-mgr trae un helper) o
+            # cuando el nombre lleva 'ps4' y aun así queremos ese (ps4mount).
+            prefijo = app.get('asset_prefix')
+            if prefijo:
+                pref = prefijo.lower()
+                for exe in ejecutables_finales:
+                    if exe["nombre"].lower().startswith(pref):
+                        elegido = exe
+                        break
+                if not elegido:
+                    print(f"    AVISO: ningún asset empieza por '{prefijo}'; uso la heurística normal")
+            if not elegido:
+                for exe in ejecutables_finales:
+                    if "ps5" in exe["nombre"].lower():
+                        elegido = exe
+                        break
             if not elegido:
                 for exe in ejecutables_finales:
                     if "ps4" not in exe["nombre"].lower():
@@ -568,6 +668,48 @@ def main():
             print(f" -> OK: {version} ({nombre_archivo}) {'con icono' if icono else 'SIN ICONO'}")
         else:
             print(f" -> ERROR: No se encontró versión válida.")
+
+    # Payloads alojados en hosted/<folder>/: se detectan solos. Al final, debajo de todos.
+    for hp in HOSTED_PAYLOADS:
+        print(f"Procesando {hp['id']} (hosted)...")
+        info = escanear_payload_hosted(hp)
+        if not info:
+            print(f" -> ERROR: no hay .elf/.bin en hosted/{hp['folder']}/, se omite.")
+            continue
+        nombre, version, ruta_local, icono_local = info
+        with open(ruta_local, "rb") as f_elf:
+            checksum = hashlib.sha256(f_elf.read()).hexdigest()
+        url = f"{BASE_URL}/{HOSTED_FOLDER}/{urllib.parse.quote(hp['folder'])}/{urllib.parse.quote(nombre)}"
+
+        icono = ""
+        if icono_local:
+            try:
+                icono = convertir_icono_a_data_uri(icono_local)
+                print(f"    icono: {icono_local}")
+            except Exception as e:
+                print(f"    icono descartado ({icono_local}): {e}")
+
+        payload = {
+            "id": slug(hp["id"]),
+            "name": hp.get("name", hp["id"]),
+            "filename": nombre,
+            "url": url,
+            "source": hp.get("source", BASE_URL),
+            "source_direct": url,
+            "author": hp.get("author", ""),
+            "description": hp.get("description", ""),
+            "last_update": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "version": version,
+            "category": hp.get("category", "Utilidades y Herramientas"),
+            "checksum": checksum,
+        }
+        if icono:
+            clave = hashlib.sha256(icono.encode()).hexdigest()
+            icons_catalog[clave] = icono
+            payload["icon_key"] = clave
+
+        repo_data.append(payload)
+        print(f" -> OK: {version} ({nombre}) {'con icono' if icono else 'SIN ICONO'}")
 
     catalogo = {
         "name": NOMBRE_REPO,
