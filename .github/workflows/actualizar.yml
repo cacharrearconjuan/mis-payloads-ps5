@@ -33,9 +33,21 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          if ! git diff --cached --quiet; then
-            git commit -m "Actualizados payloads e iconos"
-            git push
-          else
+          if git diff --cached --quiet; then
             echo "Sin cambios nuevos."
+            exit 0
           fi
+          git commit -m "Actualizados payloads e iconos"
+          # GitHub a veces rechaza el push con un error temporal ('fatal error in
+          # commit_refs') o porque el remoto avanzó. Reintentamos con rebase.
+          for intento in 1 2 3 4 5; do
+            if git push; then
+              echo "Push OK (intento $intento)."
+              exit 0
+            fi
+            echo "Push falló (intento $intento); rebase y reintento..."
+            git pull --rebase --autostash origin main || true
+            sleep $((intento * 5))
+          done
+          echo "No se pudo hacer push tras varios intentos."
+          exit 1
