@@ -717,6 +717,16 @@ def main():
         "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
         "payloads": repo_data,
     }
+    # Si los payloads no han cambiado respecto al payloads.json anterior, se conserva su
+    # 'last_updated'. Así el fichero no cambia en cada ejecución y no se genera un commit
+    # (ni un push) si no hay novedades reales.
+    try:
+        with open("payloads.json", encoding="utf-8") as f:
+            anterior = json.load(f)
+        if anterior.get("payloads") == repo_data:
+            catalogo["last_updated"] = anterior.get("last_updated", catalogo["last_updated"])
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
     with open("payloads.json", "w", encoding="utf-8") as f:
         json.dump(catalogo, f, indent=4, ensure_ascii=False)
     # payloads_v2.json ya no se usa: si queda alguno viejo, se borra
