@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-05 04:55:04",
+    "last_updated": "2026-11-06 04:54:33",
     "payloads": [
         {
             "id": "pldmgr",
@@ -49,21 +49,6 @@
             "icon_key": "812b5db7e5285ba57cd54c92623768fc1d811f9a022becb47a4c53c9ec3bd5f4"
         },
         {
-            "id": "kstuff-lite",
-            "name": "kstuff-lite",
-            "filename": "kstuff.elf",
-            "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
-            "source": "https://github.com/EchoStretch/kstuff-lite/releases",
-            "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
-            "author": "EchoStretch",
-            "description": "Versión ligera (Lite) de kstuff.",
-            "last_update": "2026-09-20",
-            "version": "v1.11",
-            "category": "Sistema y Jailbreak",
-            "checksum": "ab9a6cb4d3b1daf139d4d646e402b1cf569071acd64599c936d7a3a6164dc779",
-            "icon_key": "49cd69ed47b304e678b1d86fea32a13c895885c29d985e2cde3ea9effb4715d2"
-        },
-        {
             "id": "elf-arsenal",
             "name": "elf-arsenal",
             "filename": "elf-arsenal.elf",
@@ -82,15 +67,15 @@
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta4/garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta9/garlic-savemgr.elf",
             "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta4/garlic-savemgr.elf",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta9/garlic-savemgr.elf",
             "author": "earthonion",
             "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
             "last_update": "2026-11-05",
-            "version": "v1.15-beta4",
+            "version": "v1.15-beta9",
             "category": "Utilidades y Herramientas",
-            "checksum": "808599e129652b37d2d643a639d4e66dcabe585355ba12e4276f297cdbb94ee8",
+            "checksum": "88ed2c04be0f20342a6e83eef7a97c8f3de9f15359f5859e00083e534888a062",
             "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
@@ -277,15 +262,15 @@
             "id": "ps4mount",
             "name": "ps4mount",
             "filename": "ps4mount.elf",
-            "url": "https://github.com/gasb07/ps4mount/releases/download/v0.7.2/ps4mount.elf",
+            "url": "https://github.com/gasb07/ps4mount/releases/download/v0.7.3/ps4mount.elf",
             "source": "https://github.com/gasb07/ps4mount/releases",
-            "source_direct": "https://github.com/gasb07/ps4mount/releases/download/v0.7.2/ps4mount.elf",
+            "source_direct": "https://github.com/gasb07/ps4mount/releases/download/v0.7.3/ps4mount.elf",
             "author": "gasb07",
             "description": "Monta y carga juegos de PS4 en la PS5.",
-            "last_update": "2026-10-29",
-            "version": "v0.7.2",
+            "last_update": "2026-11-05",
+            "version": "v0.7.3",
             "category": "Utilidades y Herramientas",
-            "checksum": "30627513e950f6b7b6b0e5ca43c30e954cdd873a646b8beefe0a4a925ac28479",
+            "checksum": "f107a443aa83196744deeefe748a7f09d8b8b340a30df1b232535b6ee0f15127",
             "icon_key": "1037539e490b52b486f994389c9030548b58eec0fa380bb1ecdaa6b71ae99154"
         },
         {
@@ -312,7 +297,7 @@
             "source_direct": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
             "author": "comunidad",
             "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
-            "last_update": "2026-11-05",
+            "last_update": "2026-11-06",
             "version": "1.13-fpkg-dr-test8-rest",
             "category": "Sistema y Jailbreak",
             "checksum": "127332652374157b8ee0f5eb1128976f9055b88df5da89c0c54183e9c326fc7f",
