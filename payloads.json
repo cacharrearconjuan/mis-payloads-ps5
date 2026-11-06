@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-06 04:54:33",
+    "last_updated": "2026-11-06 15:38:18",
     "payloads": [
         {
             "id": "pldmgr",
@@ -49,6 +49,21 @@
             "icon_key": "812b5db7e5285ba57cd54c92623768fc1d811f9a022becb47a4c53c9ec3bd5f4"
         },
         {
+            "id": "kstuff-lite",
+            "name": "kstuff-lite",
+            "filename": "kstuff.elf",
+            "url": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
+            "source": "https://github.com/EchoStretch/kstuff-lite/releases",
+            "source_direct": "https://github.com/EchoStretch/kstuff-lite/releases/download/v1.11/kstuff.elf",
+            "author": "EchoStretch",
+            "description": "Versión ligera (Lite) de kstuff.",
+            "last_update": "2026-09-20",
+            "version": "v1.11",
+            "category": "Sistema y Jailbreak",
+            "checksum": "ab9a6cb4d3b1daf139d4d646e402b1cf569071acd64599c936d7a3a6164dc779",
+            "icon_key": "49cd69ed47b304e678b1d86fea32a13c895885c29d985e2cde3ea9effb4715d2"
+        },
+        {
             "id": "elf-arsenal",
             "name": "elf-arsenal",
             "filename": "elf-arsenal.elf",
@@ -67,15 +82,15 @@
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta9/garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta12/garlic-savemgr.elf",
             "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta9/garlic-savemgr.elf",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta12/garlic-savemgr.elf",
             "author": "earthonion",
             "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
-            "last_update": "2026-11-05",
-            "version": "v1.15-beta9",
+            "last_update": "2026-11-06",
+            "version": "v1.15-beta12",
             "category": "Utilidades y Herramientas",
-            "checksum": "88ed2c04be0f20342a6e83eef7a97c8f3de9f15359f5859e00083e534888a062",
+            "checksum": "52ada30119d4f40800047f6bb8ece2beb15f836b3f3c74fda100e80fb54da30e",
             "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
