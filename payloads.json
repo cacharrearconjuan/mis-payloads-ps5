@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-06 15:38:18",
+    "last_updated": "2026-11-07 04:26:34",
     "payloads": [
         {
             "id": "pldmgr",
@@ -171,16 +171,16 @@
         {
             "id": "ps5-webkit-autoloader",
             "name": "ps5-webkit-autoloader",
-            "filename": "webkit-autoloader-installer_v0.6.2.elf",
-            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.2/webkit-autoloader-installer_v0.6.2.elf",
+            "filename": "webkit-autoloader-installer_v0.7.0.elf",
+            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.0/webkit-autoloader-installer_v0.7.0.elf",
             "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.6.2/webkit-autoloader-installer_v0.6.2.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.0/webkit-autoloader-installer_v0.7.0.elf",
             "author": "itsPLK",
             "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-            "last_update": "2026-10-28",
-            "version": "v0.6.2",
+            "last_update": "2026-11-06",
+            "version": "v0.7.0",
             "category": "Sistema y Jailbreak",
-            "checksum": "27fd335764270716972faea399a5cc7810b9e49a21abf4966d9759580756cb19",
+            "checksum": "10cb38baae078e41f252cffb0d356829c89ee63fd3234f1fd1e6b19f81eab1c7",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
         },
         {
@@ -312,7 +312,7 @@
             "source_direct": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
             "author": "comunidad",
             "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
-            "last_update": "2026-11-06",
+            "last_update": "2026-11-07",
             "version": "1.13-fpkg-dr-test8-rest",
             "category": "Sistema y Jailbreak",
             "checksum": "127332652374157b8ee0f5eb1128976f9055b88df5da89c0c54183e9c326fc7f",
