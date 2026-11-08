@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-08 04:10:42",
+    "last_updated": "2026-11-08 20:07:31",
     "payloads": [
         {
             "id": "pldmgr",
@@ -82,15 +82,15 @@
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta14/garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta15/garlic-savemgr.elf",
             "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta14/garlic-savemgr.elf",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta15/garlic-savemgr.elf",
             "author": "earthonion",
             "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
             "last_update": "2026-11-08",
-            "version": "v1.15-beta14",
+            "version": "v1.15-beta15",
             "category": "Utilidades y Herramientas",
-            "checksum": "2f9f4b575757b480443282f3c885b1e63cc4637e0ea2a043a8c79e392c792af0",
+            "checksum": "7e6a494eb3d19964e912d9a991014e398d115db36b25b3ab8c31c1bc9dae5758",
             "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
