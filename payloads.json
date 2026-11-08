@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-07 04:26:34",
+    "last_updated": "2026-11-08 04:10:42",
     "payloads": [
         {
             "id": "pldmgr",
@@ -82,15 +82,15 @@
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
-            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta12/garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta14/garlic-savemgr.elf",
             "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
-            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta12/garlic-savemgr.elf",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta14/garlic-savemgr.elf",
             "author": "earthonion",
             "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
-            "last_update": "2026-11-06",
-            "version": "v1.15-beta12",
+            "last_update": "2026-11-08",
+            "version": "v1.15-beta14",
             "category": "Utilidades y Herramientas",
-            "checksum": "52ada30119d4f40800047f6bb8ece2beb15f836b3f3c74fda100e80fb54da30e",
+            "checksum": "2f9f4b575757b480443282f3c885b1e63cc4637e0ea2a043a8c79e392c792af0",
             "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
@@ -171,16 +171,16 @@
         {
             "id": "ps5-webkit-autoloader",
             "name": "ps5-webkit-autoloader",
-            "filename": "webkit-autoloader-installer_v0.7.0.elf",
-            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.0/webkit-autoloader-installer_v0.7.0.elf",
+            "filename": "webkit-autoloader-installer_v0.7.1.elf",
+            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.1/webkit-autoloader-installer_v0.7.1.elf",
             "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.0/webkit-autoloader-installer_v0.7.0.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.1/webkit-autoloader-installer_v0.7.1.elf",
             "author": "itsPLK",
             "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-            "last_update": "2026-11-06",
-            "version": "v0.7.0",
+            "last_update": "2026-11-08",
+            "version": "v0.7.1",
             "category": "Sistema y Jailbreak",
-            "checksum": "10cb38baae078e41f252cffb0d356829c89ee63fd3234f1fd1e6b19f81eab1c7",
+            "checksum": "df60538570e9811bb0b4652a3fdb3e1a35ec3455b3ca7c80edc4140c5bb47ce2",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
         },
         {
@@ -312,7 +312,7 @@
             "source_direct": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
             "author": "comunidad",
             "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
-            "last_update": "2026-11-07",
+            "last_update": "2026-11-08",
             "version": "1.13-fpkg-dr-test8-rest",
             "category": "Sistema y Jailbreak",
             "checksum": "127332652374157b8ee0f5eb1128976f9055b88df5da89c0c54183e9c326fc7f",
