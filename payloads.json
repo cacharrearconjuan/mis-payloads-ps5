@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-09 04:24:52",
+    "last_updated": "2026-11-09 20:46:54",
     "payloads": [
         {
             "id": "pldmgr",
@@ -37,15 +37,15 @@
             "id": "ftpsrv",
             "name": "ftpsrv",
             "filename": "ftpsrv-ps5.elf",
-            "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.21.1/ftpsrv-ps5.elf",
+            "url": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.22/ftpsrv-ps5.elf",
             "source": "https://github.com/ps5-payload-dev/ftpsrv/releases",
-            "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.21.1/ftpsrv-ps5.elf",
+            "source_direct": "https://github.com/ps5-payload-dev/ftpsrv/releases/download/v0.22/ftpsrv-ps5.elf",
             "author": "ps5-payload-dev",
             "description": "Un servidor FTP sencillo para la PS5.",
-            "last_update": "2026-08-20",
-            "version": "v0.21.1",
+            "last_update": "2026-11-08",
+            "version": "v0.22",
             "category": "Redes y Servidores",
-            "checksum": "7d4b31c83eae4e056580482a3a074e1db25922efc74ac1e439473b45d71a5938",
+            "checksum": "41148c2c1cad1ea9e7cfde03e389fa918e3338e896d06167346de09adbdc8757",
             "icon_key": "812b5db7e5285ba57cd54c92623768fc1d811f9a022becb47a4c53c9ec3bd5f4"
         },
         {
@@ -182,21 +182,6 @@
             "category": "Sistema y Jailbreak",
             "checksum": "df60538570e9811bb0b4652a3fdb3e1a35ec3455b3ca7c80edc4140c5bb47ce2",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
-        },
-        {
-            "id": "spectrum-library",
-            "name": "Spectrum-Library",
-            "filename": "SpectrumLibrary_1.4.8.elf",
-            "url": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.8/SpectrumLibrary_1.4.8.elf",
-            "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
-            "source_direct": "https://github.com/Phoenixx1202/Spectrum-Library/releases/download/1.4.8/SpectrumLibrary_1.4.8.elf",
-            "author": "Phoenixx1202",
-            "description": "Librería y utilidades Spectrum para PS5.",
-            "last_update": "2026-10-01",
-            "version": "1.4.8",
-            "category": "Utilidades y Herramientas",
-            "checksum": "5d1372d48f76167e3f9e24b335cf571ea6e4b3960e6b7202d2802b0f78c3a519",
-            "icon_key": "c3d7b93cdf14e891760f8c226a46bdfe76e6e96dd694438859da7d5d9d8cb456"
         },
         {
             "id": "common-fps-for-ps5",
