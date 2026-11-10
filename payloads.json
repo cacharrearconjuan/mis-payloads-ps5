@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-09 20:46:54",
+    "last_updated": "2026-11-10 05:47:32",
     "payloads": [
         {
             "id": "pldmgr",
@@ -297,7 +297,7 @@
             "source_direct": "https://cacharrearconjuan.github.io/mis-payloads-ps5/hosted/kstuff_fpkg/kstuff1.13-fpkg-dr-test8-rest.elf",
             "author": "comunidad",
             "description": "kstuff para firmware HASTA 11.60. Necesario para poder lanzar FPKG (juegos en formato PKG).",
-            "last_update": "2026-11-09",
+            "last_update": "2026-11-10",
             "version": "1.13-fpkg-dr-test8-rest",
             "category": "Sistema y Jailbreak",
             "checksum": "127332652374157b8ee0f5eb1128976f9055b88df5da89c0c54183e9c326fc7f",
