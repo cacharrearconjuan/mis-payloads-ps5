@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-12 05:35:48",
+    "last_updated": "2026-11-12 14:32:08",
     "payloads": [
         {
             "id": "pldmgr",
@@ -242,6 +242,21 @@
             "category": "Utilidades y Herramientas",
             "checksum": "82e3548edcc41419b644482cccaef65689334fc0315dc20247f48b90bf182dca",
             "icon_key": "85c92b313ec0c388ba388ec2519193db80e0410a8f69f362d4fb1137e95fb2ab"
+        },
+        {
+            "id": "ps5-patchdl",
+            "name": "ps5-patchdl",
+            "filename": "patchdl_0.3.12.elf",
+            "url": "https://github.com/knutwurst/ps5-patchdl/releases/download/v0.3.12/patchdl_0.3.12.elf",
+            "source": "https://github.com/knutwurst/ps5-patchdl/releases",
+            "source_direct": "https://github.com/knutwurst/ps5-patchdl/releases/download/v0.3.12/patchdl_0.3.12.elf",
+            "author": "knutwurst",
+            "description": "Busca, descarga e instala las actualizaciones oficiales de tus juegos de PS5 desde el navegador.",
+            "last_update": "2026-11-02",
+            "version": "v0.3.12",
+            "category": "Utilidades y Herramientas",
+            "checksum": "a8aeb6039825188561b7346bb6f0c9244f72d7be1412dc7dd6c2bea0dd3f396a",
+            "icon_key": "1c4ac040504d89e16705bff96a0f10eeba0c8d074fc5c2053b1747bcce210dc6"
         },
         {
             "id": "web-file-mgr",
