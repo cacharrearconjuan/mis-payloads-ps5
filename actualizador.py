@@ -150,6 +150,16 @@ APPS = [
         "description": "Gestor de paquetes (PKG) para PlayStation 5."
     },
     {
+        "id": "ps5-patchdl",
+        "author": "knutwurst",
+        "api": "https://api.github.com/repos/knutwurst/ps5-patchdl/releases",
+        "source": "https://github.com/knutwurst/ps5-patchdl/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Busca, descarga e instala las actualizaciones oficiales de tus juegos de PS5 desde el navegador.",
+        # El repo publica el .elf junto a un .zip de código; asset_suffix fuerza el .elf.
+        "asset_suffix": ".elf"
+    },
+    {
         "id": "web-file-mgr",
         "author": "owendswang",
         "api": "https://api.github.com/repos/owendswang/ps5-web-file-manager/releases",
@@ -566,6 +576,17 @@ def obtener_datos_api(app):
                         break
                 if not elegido:
                     print(f"    AVISO: ningún asset empieza por '{prefijo}'; uso la heurística normal")
+            # asset_suffix: elige el asset cuyo nombre termina por esto (p. ej. '.elf'
+            # cuando el repo también publica un .zip de código como ps5-patchdl).
+            sufijo = app.get('asset_suffix')
+            if sufijo and not elegido:
+                suf = sufijo.lower()
+                for exe in ejecutables_finales:
+                    if exe["nombre"].lower().endswith(suf):
+                        elegido = exe
+                        break
+                if not elegido:
+                    print(f"    AVISO: ningún asset termina por '{sufijo}'; uso la heurística normal")
             if not elegido:
                 for exe in ejecutables_finales:
                     if "ps5" in exe["nombre"].lower():
