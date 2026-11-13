@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-13 04:53:09",
+    "last_updated": "2026-11-13 21:47:43",
     "payloads": [
         {
             "id": "pldmgr",
@@ -277,15 +277,15 @@
             "id": "ps4mount",
             "name": "ps4mount",
             "filename": "ps4mount.elf",
-            "url": "https://github.com/gasb07/ps4mount/releases/download/v0.7.3/ps4mount.elf",
+            "url": "https://github.com/gasb07/ps4mount/releases/download/v0.8.0/ps4mount.elf",
             "source": "https://github.com/gasb07/ps4mount/releases",
-            "source_direct": "https://github.com/gasb07/ps4mount/releases/download/v0.7.3/ps4mount.elf",
+            "source_direct": "https://github.com/gasb07/ps4mount/releases/download/v0.8.0/ps4mount.elf",
             "author": "gasb07",
             "description": "Monta y carga juegos de PS4 en la PS5.",
-            "last_update": "2026-11-05",
-            "version": "v0.7.3",
+            "last_update": "2026-11-13",
+            "version": "v0.8.0",
             "category": "Utilidades y Herramientas",
-            "checksum": "f107a443aa83196744deeefe748a7f09d8b8b340a30df1b232535b6ee0f15127",
+            "checksum": "2f7d548cdb5c2beba631299fa9f1e5c18cca65c648443f9f36ffab9940a6a5ac",
             "icon_key": "1037539e490b52b486f994389c9030548b58eec0fa380bb1ecdaa6b71ae99154"
         },
         {
