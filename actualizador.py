@@ -9,6 +9,7 @@ import base64
 import zipfile
 import shutil
 import io
+import subprocess
 from datetime import datetime, timezone
 
 APPS = [
@@ -478,6 +479,22 @@ def _orden_natural(nombre):
     """Clave de orden natural para que 'test10' quede por encima de 'test9'."""
     return [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)', nombre)]
 
+def _fecha_fichero(ruta):
+    """Fecha (AAAA-MM-DD) en que se subió el fichero: la del último commit de git que
+    lo tocó. Si no hay git/historial, usa la fecha de modificación del fichero."""
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%cd", "--date=short", "--", ruta],
+                             capture_output=True, text=True, timeout=15)
+        fecha = out.stdout.strip()
+        if fecha:
+            return fecha
+    except Exception:
+        pass
+    try:
+        return datetime.fromtimestamp(os.path.getmtime(ruta), timezone.utc).strftime("%Y-%m-%d")
+    except OSError:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
 def escanear_payload_hosted(hp):
     """Escanea hosted/<folder>/ y devuelve (filename, version, ruta_local, icono_local)
     con el .elf/.bin de versión más alta, o None si la carpeta no existe o está vacía."""
@@ -719,7 +736,7 @@ def main():
             "source_direct": url,
             "author": hp.get("author", ""),
             "description": hp.get("description", ""),
-            "last_update": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "last_update": _fecha_fichero(ruta_local),
             "version": version,
             "category": hp.get("category", "Utilidades y Herramientas"),
             "checksum": checksum,
