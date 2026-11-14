@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Descargar mi repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # historial completo: para saber la fecha en que se subió cada fichero de hosted/
 
       - name: Preparar Python
         uses: actions/setup-python@v5
