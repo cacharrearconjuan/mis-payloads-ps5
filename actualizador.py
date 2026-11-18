@@ -111,14 +111,6 @@ APPS = [
         "description": "Cargador automático para PS5 basado en el exploit WebKit."
     },
     {
-        "id": "Spectrum-Library", 
-        "author": "Phoenixx1202", 
-        "api": "https://api.github.com/repos/Phoenixx1202/Spectrum-Library/releases",
-        "source": "https://github.com/Phoenixx1202/Spectrum-Library/releases",
-        "category": "Utilidades y Herramientas",
-        "description": "Librería y utilidades Spectrum para PS5."
-    },
-    {
         "id": "Common-FPS-for-PS5", 
         "author": "porhe911", 
         "api": "https://api.github.com/repos/porhe911/Common-FPS-for-PS5/releases",
