@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-19 05:43:51",
+    "last_updated": "2026-11-19 17:01:15",
     "payloads": [
         {
             "id": "pldmgr",
@@ -62,6 +62,36 @@
             "category": "Sistema y Jailbreak",
             "checksum": "ab9a6cb4d3b1daf139d4d646e402b1cf569071acd64599c936d7a3a6164dc779",
             "icon_key": "49cd69ed47b304e678b1d86fea32a13c895885c29d985e2cde3ea9effb4715d2"
+        },
+        {
+            "id": "elf-arsenal",
+            "name": "elf-arsenal",
+            "filename": "elf-arsenal.elf",
+            "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
+            "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
+            "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
+            "author": "soniciso",
+            "description": "Varios payloads ELF empaquetados juntos.",
+            "last_update": "2026-09-23",
+            "version": "v1.6.23",
+            "category": "Utilidades y Herramientas",
+            "checksum": "20cdb0979ce627aff8e684a4506e18390a72492d5e3aa15ecef0bfe1bca08bb5",
+            "icon_key": "2cde7fc7c291a19ed75211cf0034f04841664a7de3033906120b65c29d29b0de"
+        },
+        {
+            "id": "garlic-savemgr",
+            "name": "garlic-savemgr",
+            "filename": "garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta23/garlic-savemgr.elf",
+            "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v1.15-beta23/garlic-savemgr.elf",
+            "author": "earthonion",
+            "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
+            "last_update": "2026-11-11",
+            "version": "v1.15-beta23",
+            "category": "Utilidades y Herramientas",
+            "checksum": "bef727f10a276e4797a16875eb31cb48da7e3e5bb06a0c1dcab46963ddc139f1",
+            "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
             "id": "lapy-jb-daemon",
