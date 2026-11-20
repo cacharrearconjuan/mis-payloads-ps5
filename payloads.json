@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-19 17:01:15",
+    "last_updated": "2026-11-20 05:32:41",
     "payloads": [
         {
             "id": "pldmgr",
@@ -171,16 +171,16 @@
         {
             "id": "ps5-webkit-autoloader",
             "name": "ps5-webkit-autoloader",
-            "filename": "webkit-autoloader-installer_v0.7.1.elf",
-            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.1/webkit-autoloader-installer_v0.7.1.elf",
+            "filename": "webkit-autoloader-installer_v0.8.0.elf",
+            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.0/webkit-autoloader-installer_v0.8.0.elf",
             "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.7.1/webkit-autoloader-installer_v0.7.1.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.0/webkit-autoloader-installer_v0.8.0.elf",
             "author": "itsPLK",
             "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-            "last_update": "2026-11-08",
-            "version": "v0.7.1",
+            "last_update": "2026-11-20",
+            "version": "v0.8.0",
             "category": "Sistema y Jailbreak",
-            "checksum": "df60538570e9811bb0b4652a3fdb3e1a35ec3455b3ca7c80edc4140c5bb47ce2",
+            "checksum": "015959f76c48e45df2b331ee2a6b52096afa3c2f9f1cbf9a29e67be699a6455b",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
         },
         {
@@ -217,15 +217,15 @@
             "id": "elfldr",
             "name": "elfldr",
             "filename": "elfldr-ps5.elf",
-            "url": "https://github.com/ps5-payload-dev/elfldr/releases/download/v0.27/elfldr-ps5.elf",
+            "url": "https://github.com/ps5-payload-dev/elfldr/releases/download/v0.28/elfldr-ps5.elf",
             "source": "https://github.com/ps5-payload-dev/elfldr/releases",
-            "source_direct": "https://github.com/ps5-payload-dev/elfldr/releases/download/v0.27/elfldr-ps5.elf",
+            "source_direct": "https://github.com/ps5-payload-dev/elfldr/releases/download/v0.28/elfldr-ps5.elf",
             "author": "ps5-payload-dev",
             "description": "Cargador de payloads para PS5 a través del puerto 9021.",
-            "last_update": "2026-10-21",
-            "version": "v0.27",
+            "last_update": "2026-11-19",
+            "version": "v0.28",
             "category": "Sistema y Jailbreak",
-            "checksum": "82f6227610172c98bad6efe68219fc93a10027035991f47eb4b75532d023407d",
+            "checksum": "66968bae6159d8fb06125fcd43fb99cf64d6bfdf730c70f37a6f5d056ff63458",
             "icon_key": "1975056922657afee345da1a3885334f107de0443b7d2698476eae1a56db99e9"
         },
         {
