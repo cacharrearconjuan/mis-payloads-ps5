@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-20 16:39:47",
+    "last_updated": "2026-11-21 05:26:45",
     "payloads": [
         {
             "id": "pldmgr",
@@ -62,6 +62,20 @@
             "category": "Sistema y Jailbreak",
             "checksum": "ab9a6cb4d3b1daf139d4d646e402b1cf569071acd64599c936d7a3a6164dc779",
             "icon_key": "49cd69ed47b304e678b1d86fea32a13c895885c29d985e2cde3ea9effb4715d2"
+        },
+        {
+            "id": "garlic-savemgr",
+            "name": "garlic-savemgr",
+            "filename": "garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v2.0/garlic-savemgr.elf",
+            "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v2.0/garlic-savemgr.elf",
+            "author": "earthonion",
+            "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
+            "last_update": "2026-11-20",
+            "version": "v2.0",
+            "category": "Utilidades y Herramientas",
+            "checksum": "805902a1ef3d54854850518b11602e0ab973192e0338fc30b28a3a9e4aae5be6"
         },
         {
             "id": "lapy-jb-daemon",
@@ -156,16 +170,16 @@
         {
             "id": "common-fps-for-ps5",
             "name": "Common-FPS-for-PS5",
-            "filename": "Common_FPS_PS5_v1.2.3.elf",
-            "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.3/Common_FPS_PS5_v1.2.3.elf",
+            "filename": "Common_FPS_PS5_v1.2.5.elf",
+            "url": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.5/Common_FPS_PS5_v1.2.5.elf",
             "source": "https://github.com/porhe911/Common-FPS-for-PS5/releases",
-            "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.3/Common_FPS_PS5_v1.2.3.elf",
+            "source_direct": "https://github.com/porhe911/Common-FPS-for-PS5/releases/download/v1.2.5/Common_FPS_PS5_v1.2.5.elf",
             "author": "porhe911",
             "description": "Parches y utilidades de desbloqueo de tasa de frames (FPS) para PS5.",
-            "last_update": "2026-10-16",
-            "version": "v1.2.3",
+            "last_update": "2026-11-20",
+            "version": "v1.2.5",
             "category": "Utilidades y Herramientas",
-            "checksum": "bb74aa448952e9af4fb001f256f48b3b15fdedff88c2dec472ee9d16b20dbed5",
+            "checksum": "5aac58f0f705909aec773f74cbcbec8d56a517d8199a67ca46f205b2c83a5da6",
             "icon_key": "1f328c4f99372165da73b1143a30334bec891ed7ab29d22dedc43884030e5274"
         },
         {
