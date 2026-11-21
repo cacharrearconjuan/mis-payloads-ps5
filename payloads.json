@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-21 05:26:45",
+    "last_updated": "2026-11-21 15:53:37",
     "payloads": [
         {
             "id": "pldmgr",
@@ -64,6 +64,20 @@
             "icon_key": "49cd69ed47b304e678b1d86fea32a13c895885c29d985e2cde3ea9effb4715d2"
         },
         {
+            "id": "elf-arsenal",
+            "name": "elf-arsenal",
+            "filename": "elf-arsenal.elf",
+            "url": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
+            "source": "https://git.etawen.dev/soniciso/elf-arsenal/releases",
+            "source_direct": "https://git.etawen.dev/soniciso/elf-arsenal/releases/download/v1.6.23/elf-arsenal.elf",
+            "author": "soniciso",
+            "description": "Varios payloads ELF empaquetados juntos.",
+            "last_update": "2026-09-23",
+            "version": "v1.6.23",
+            "category": "Utilidades y Herramientas",
+            "checksum": "20cdb0979ce627aff8e684a4506e18390a72492d5e3aa15ecef0bfe1bca08bb5"
+        },
+        {
             "id": "garlic-savemgr",
             "name": "garlic-savemgr",
             "filename": "garlic-savemgr.elf",
@@ -75,7 +89,8 @@
             "last_update": "2026-11-20",
             "version": "v2.0",
             "category": "Utilidades y Herramientas",
-            "checksum": "805902a1ef3d54854850518b11602e0ab973192e0338fc30b28a3a9e4aae5be6"
+            "checksum": "805902a1ef3d54854850518b11602e0ab973192e0338fc30b28a3a9e4aae5be6",
+            "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
             "id": "lapy-jb-daemon",
@@ -155,16 +170,16 @@
         {
             "id": "ps5-webkit-autoloader",
             "name": "ps5-webkit-autoloader",
-            "filename": "webkit-autoloader-installer_v0.8.2.elf",
-            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.2/webkit-autoloader-installer_v0.8.2.elf",
+            "filename": "webkit-autoloader-installer_v0.8.3.elf",
+            "url": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.3/webkit-autoloader-installer_v0.8.3.elf",
             "source": "https://github.com/itsPLK/ps5-webkit-autoloader/releases",
-            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.2/webkit-autoloader-installer_v0.8.2.elf",
+            "source_direct": "https://github.com/itsPLK/ps5-webkit-autoloader/releases/download/v0.8.3/webkit-autoloader-installer_v0.8.3.elf",
             "author": "itsPLK",
             "description": "Cargador automático para PS5 basado en el exploit WebKit.",
-            "last_update": "2026-11-20",
-            "version": "v0.8.2",
+            "last_update": "2026-11-21",
+            "version": "v0.8.3",
             "category": "Sistema y Jailbreak",
-            "checksum": "1c415bc124944c85b86a4751006b98010b977f142142d67306d13804899bad54",
+            "checksum": "f4b0dee9af572ea1cb77aaf1e6fc5bf8ef520fc0a0a30753dd94a5cbdc04dd8e",
             "icon_key": "cf0638e2449462e5df0467fbebb46f4404b66374650ce0dec4457408252815c7"
         },
         {
