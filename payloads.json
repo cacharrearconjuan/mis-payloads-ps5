@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-21 21:25:59",
+    "last_updated": "2026-11-22 15:08:30",
     "payloads": [
         {
             "id": "pldmgr",
@@ -257,6 +257,21 @@
             "category": "Utilidades y Herramientas",
             "checksum": "257cce632b9ad701094dad3f8c0206ff87ab6b417415a57ebfd558c5ee3b0c50",
             "icon_key": "1c4ac040504d89e16705bff96a0f10eeba0c8d074fc5c2053b1747bcce210dc6"
+        },
+        {
+            "id": "ps5upload",
+            "name": "ps5upload",
+            "filename": "ps5upload-12.6.21.elf",
+            "url": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.21/ps5upload-12.6.21.elf",
+            "source": "https://github.com/phantomptr/ps5upload/releases",
+            "source_direct": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.21/ps5upload-12.6.21.elf",
+            "author": "phantomptr",
+            "description": "Helper de PS5 Upload: se usa con su app de PC o móvil para pasar juegos y homebrew a la PS5 más rápido.",
+            "last_update": "2026-11-22",
+            "version": "v12.6.21",
+            "category": "Utilidades y Herramientas",
+            "checksum": "a6766a847adcf9b60011b95fa775ec35b58fd32a2fa5c0259019074366de1aae",
+            "icon_key": "9ba377846d0c2376d52329bf589932a1075d855fed800d3042b61b58afd1fb2e"
         },
         {
             "id": "web-file-mgr",
