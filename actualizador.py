@@ -153,6 +153,18 @@ APPS = [
         "asset_suffix": ".elf"
     },
     {
+        "id": "ps5upload",
+        "author": "phantomptr",
+        "api": "https://api.github.com/repos/phantomptr/ps5upload/releases",
+        "source": "https://github.com/phantomptr/ps5upload/releases",
+        "category": "Utilidades y Herramientas",
+        "description": "Helper de PS5 Upload: se usa con su app de PC o móvil para pasar juegos y homebrew a la PS5 más rápido.",
+        # La release trae ps5upload-<ver>.elf junto a muchos .zip de la app (PS5Upload-*.zip);
+        # asset_suffix fuerza el .elf. Sin allow_prerelease: el autor solo marca como
+        # 'Latest' las versiones ya probadas en consola.
+        "asset_suffix": ".elf"
+    },
+    {
         "id": "web-file-mgr",
         "author": "owendswang",
         "api": "https://api.github.com/repos/owendswang/ps5-web-file-manager/releases",
