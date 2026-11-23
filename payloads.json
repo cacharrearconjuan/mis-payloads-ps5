@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-23 05:32:07",
+    "last_updated": "2026-11-23 19:46:55",
     "payloads": [
         {
             "id": "pldmgr",
@@ -75,7 +75,23 @@
             "last_update": "2026-09-23",
             "version": "v1.6.23",
             "category": "Utilidades y Herramientas",
-            "checksum": ""
+            "checksum": "20cdb0979ce627aff8e684a4506e18390a72492d5e3aa15ecef0bfe1bca08bb5",
+            "icon_key": "2cde7fc7c291a19ed75211cf0034f04841664a7de3033906120b65c29d29b0de"
+        },
+        {
+            "id": "garlic-savemgr",
+            "name": "garlic-savemgr",
+            "filename": "garlic-savemgr.elf",
+            "url": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v2.0/garlic-savemgr.elf",
+            "source": "https://git.etawen.dev/earthonion/garlic-savemgr/releases",
+            "source_direct": "https://git.etawen.dev/earthonion/garlic-savemgr/releases/download/v2.0/garlic-savemgr.elf",
+            "author": "earthonion",
+            "description": "Descifrado/cifrado/exploración de partidas guardadas de PS5 con interfaz web integrada.",
+            "last_update": "2026-11-20",
+            "version": "v2.0",
+            "category": "Utilidades y Herramientas",
+            "checksum": "805902a1ef3d54854850518b11602e0ab973192e0338fc30b28a3a9e4aae5be6",
+            "icon_key": "0eec715e33202590223142daa87ef854a1bfcf1f22fe42cae16a1cd880c07c46"
         },
         {
             "id": "lapy-jb-daemon",
@@ -245,16 +261,16 @@
         {
             "id": "ps5upload",
             "name": "ps5upload",
-            "filename": "ps5upload-12.6.23.elf",
-            "url": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.23/ps5upload-12.6.23.elf",
+            "filename": "ps5upload-12.6.25.elf",
+            "url": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.25/ps5upload-12.6.25.elf",
             "source": "https://github.com/phantomptr/ps5upload/releases",
-            "source_direct": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.23/ps5upload-12.6.23.elf",
+            "source_direct": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.25/ps5upload-12.6.25.elf",
             "author": "phantomptr",
             "description": "Helper de PS5 Upload: se usa con su app de PC o móvil para pasar juegos y homebrew a la PS5 más rápido.",
             "last_update": "2026-11-23",
-            "version": "v12.6.23",
+            "version": "v12.6.25",
             "category": "Utilidades y Herramientas",
-            "checksum": "68a4c2135477aa0d2a9f396565c50cac7d672bbc0f158e718986616a14c6b71b",
+            "checksum": "ebf636206c7773a7232801923e321bebafef592c26de611980d9f83c8e8e0343",
             "icon_key": "9ba377846d0c2376d52329bf589932a1075d855fed800d3042b61b58afd1fb2e"
         },
         {
