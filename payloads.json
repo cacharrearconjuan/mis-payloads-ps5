@@ -1,7 +1,7 @@
 {
     "name": "Cacharrear con Juan",
     "icons_url": "icons.json",
-    "last_updated": "2026-11-26 06:39:07",
+    "last_updated": "2026-11-26 18:05:12",
     "payloads": [
         {
             "id": "pldmgr",
@@ -261,31 +261,31 @@
         {
             "id": "ps5upload",
             "name": "ps5upload",
-            "filename": "ps5upload-12.6.31.elf",
-            "url": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.31/ps5upload-12.6.31.elf",
+            "filename": "ps5upload-12.6.32.elf",
+            "url": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.32/ps5upload-12.6.32.elf",
             "source": "https://github.com/phantomptr/ps5upload/releases",
-            "source_direct": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.31/ps5upload-12.6.31.elf",
+            "source_direct": "https://github.com/phantomptr/ps5upload/releases/download/v12.6.32/ps5upload-12.6.32.elf",
             "author": "phantomptr",
             "description": "Helper de PS5 Upload: se usa con su app de PC o móvil para pasar juegos y homebrew a la PS5 más rápido.",
             "last_update": "2026-11-26",
-            "version": "v12.6.31",
+            "version": "v12.6.32",
             "category": "Utilidades y Herramientas",
-            "checksum": "57bc3a0df33226c7f37c9d870aa21ec549dedb2414c09e8c47e647d14f125e45",
+            "checksum": "5844c1cca0b23433850d59eeb57202c374aafc8beba986eeabf21b0a7ce9c20b",
             "icon_key": "9ba377846d0c2376d52329bf589932a1075d855fed800d3042b61b58afd1fb2e"
         },
         {
             "id": "web-file-mgr",
             "name": "web-file-mgr",
-            "filename": "web-file-mgr-v1.14.elf",
-            "url": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.14/web-file-mgr-v1.14.elf",
+            "filename": "web-file-mgr-v1.15.elf",
+            "url": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.15/web-file-mgr-v1.15.elf",
             "source": "https://github.com/owendswang/ps5-web-file-manager/releases",
-            "source_direct": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.14/web-file-mgr-v1.14.elf",
+            "source_direct": "https://github.com/owendswang/ps5-web-file-manager/releases/download/v1.15/web-file-mgr-v1.15.elf",
             "author": "owendswang",
             "description": "Gestor de archivos para PS5 con interfaz web.",
-            "last_update": "2026-11-10",
-            "version": "v1.14",
+            "last_update": "2026-11-26",
+            "version": "v1.15",
             "category": "Utilidades y Herramientas",
-            "checksum": "8493c0bd11d77f9cce4b6c93564ffcae7185a5b530ecf856a768519c2514e231",
+            "checksum": "a3527dff53bfc783b4321ae42a8a691944f8d7ac4246c2a3c46ea31b6dc1d4ff",
             "icon_key": "46e33ca099f395a8581b00a6585703bc6ca8d6c01829d949c21b93f37cb39f13"
         },
         {
